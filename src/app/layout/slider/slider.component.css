@@ -1,0 +1,10 @@
+.uk-button-secondary{
+    background-color: gold !important;
+    color: black !important;
+}
+
+.uk-button-secondary:hover{
+    background-color: rgb(228, 194, 0) !important;
+    color: #fff !important;
+    transition: all 0.5s ease-in-out;
+}
