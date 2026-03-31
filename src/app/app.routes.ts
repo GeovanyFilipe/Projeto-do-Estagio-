@@ -1,9 +1,19 @@
 import { Routes } from '@angular/router';
 import { InicioComponent } from './inicio/inicio.component';
+import { AuthGuard } from './services/auth.guard';
+import { LoginComponent } from './auth/login/login.component';
+import { ClienteDashboardComponent } from './cliente/dashboard/dashboard.component';
 
 export const routes: Routes = [
     { path: '', component: InicioComponent },
     { path: 'inicio', component: InicioComponent },
+    
+    // Autenticação
+    { path: 'login', component: LoginComponent },
+    
+    // Área do Cliente (protegida)
+    { path: 'cliente/dashboard', component: ClienteDashboardComponent, canActivate: [AuthGuard] },
+    
     // Páginas principais
     { path: 'porque', loadComponent: () => import('./paginas/porque/porque.component').then(m => m.PorqueComponent) },
     { path: 'planos', loadComponent: () => import('./paginas/planos/planos.component').then(m => m.PlanosComponent) },

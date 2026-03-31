@@ -1,0 +1,363 @@
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>Meu Painel</h2>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button 
+        class="nav-item" 
+        [class.active]="activeTab === 'overview'"
+        (click)="selectTab('overview')"
+      >
+        <span class="icon">📊</span>
+        <span class="label">Visão Geral</span>
+      </button>
+
+      <button 
+        class="nav-item" 
+        [class.active]="activeTab === 'plano'"
+        (click)="selectTab('plano')"
+      >
+        <span class="icon">🎯</span>
+        <span class="label">Meu Plano</span>
+      </button>
+
+      <button 
+        class="nav-item" 
+        [class.active]="activeTab === 'dispositivos'"
+        (click)="selectTab('dispositivos')"
+      >
+        <span class="icon">📱</span>
+        <span class="label">Dispositivos</span>
+      </button>
+
+      <button 
+        class="nav-item" 
+        [class.active]="activeTab === 'faturamento'"
+        (click)="selectTab('faturamento')"
+      >
+        <span class="icon">💳</span>
+        <span class="label">Faturamento</span>
+      </button>
+
+      <button 
+        class="nav-item" 
+        [class.active]="activeTab === 'suporte'"
+        (click)="selectTab('suporte')"
+      >
+        <span class="icon">💬</span>
+        <span class="label">Suporte</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="btn-logout" (click)="confirmLogout()">
+        <span class="icon">🚪</span>
+        <span class="label">Sair</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Conteúdo Principal -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="dashboard-header">
+      <div class="header-content">
+        <h1>Bem-vindo, {{ currentUser?.nome }}!</h1>
+        <p class="header-subtitle">Gerencie sua assinatura VPN aqui</p>
+      </div>
+      <div class="user-info">
+        <div class="user-avatar">{{ (currentUser?.nome || 'U').charAt(0).toUpperCase() }}</div>
+        <div class="user-details">
+          <p class="user-name">{{ currentUser?.nome }}</p>
+          <p class="user-email">{{ currentUser?.email }}</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Conteúdo abas -->
+    <div class="tabs-content">
+
+      <!-- TAB: Visão Geral -->
+      <section *ngIf="activeTab === 'overview'" class="tab-pane active">
+        <div class="overview-grid">
+          <!-- Card de Status -->
+          <div class="info-card card-status">
+            <div class="card-header">
+              <h3>Status da Assinatura</h3>
+              <span class="badge badge-active">Ativo</span>
+            </div>
+            <div class="card-body">
+              <p class="status-info">
+                <strong>Plano:</strong> {{ currentUser?.plano }}
+              </p>
+              <p class="status-info">
+                <strong>Membro desde:</strong> {{ currentUser?.dataCadastro | date: 'shortDate' }}
+              </p>
+              <p class="status-info">
+                <strong>Próximo pagamento:</strong> 30/04/2026
+              </p>
+              <button class="btn btn-secondary" (click)="selectTab('plano')">Gerenciar Plano</button>
+            </div>
+          </div>
+
+          <!-- Card de Uso -->
+          <div class="info-card card-usage">
+            <div class="card-header">
+              <h3>Uso de Largura de Banda</h3>
+            </div>
+            <div class="card-body">
+              <div class="usage-bar">
+                <div class="usage-fill" style="width: 65%"></div>
+              </div>
+              <p class="usage-text">6.5 GB de 10 GB utilizados</p>
+              <p class="usage-percentage">65%</p>
+            </div>
+          </div>
+
+          <!-- Card de Dispositivos -->
+          <div class="info-card card-devices">
+            <div class="card-header">
+              <h3>Dispositivos Conectados</h3>
+            </div>
+            <div class="card-body">
+              <p class="device-count">2 de 5 dispositivos</p>
+              <ul class="device-list">
+                <li class="device-item active">
+                  <span class="device-name">Notebook</span>
+                  <span class="device-status">Ativo agora</span>
+                </li>
+                <li class="device-item active">
+                  <span class="device-name">Celular</span>
+                  <span class="device-status">Ativo agora</span>
+                </li>
+              </ul>
+              <button class="btn btn-secondary" (click)="selectTab('dispositivos')">Ver Mais</button>
+            </div>
+          </div>
+
+          <!-- Card de Suporte -->
+          <div class="info-card card-support">
+            <div class="card-header">
+              <h3>Precisa de Ajuda?</h3>
+            </div>
+            <div class="card-body">
+              <p>Estamos aqui para ajudar! Entre em contato conosco:</p>
+              <button class="btn btn-primary" (click)="contacterSuporte()">Abrir Suporte</button>
+              <p class="support-info">Resposta em até 2 horas</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Meu Plano -->
+      <section *ngIf="activeTab === 'plano'" class="tab-pane active">
+        <h2 class="section-title">Planos Disponíveis</h2>
+        
+        <div class="plans-grid">
+          <!-- Plano YouTube -->
+          <div class="plan-card" [class.current]="currentUser?.plano === 'Plano YouTube sem Anúncios'">
+            <div class="plan-header">
+              <h3>YouTube sem Anúncios</h3>
+              <span *ngIf="currentUser?.plano === 'Plano YouTube sem Anúncios'" class="badge badge-current">Plano Atual</span>
+            </div>
+            <div class="plan-price">
+              <span class="price">AOA 5.99</span>
+              <span class="period">/mês</span>
+            </div>
+            <div class="plan-features">
+              <p>✓ Assistir YouTube sem anúncios</p>
+              <p>✓ Download de vídeos</p>
+              <p>✓ Qualidade até 1080p</p>
+              <p>✓ Suporte 24/7</p>
+            </div>
+            <button 
+              class="btn btn-primary"
+              *ngIf="currentUser?.plano !== 'Plano YouTube sem Anúncios'"
+              (click)="changePlan('Plano YouTube sem Anúncios')"
+            >
+              Selecionar Plano
+            </button>
+            <button 
+              class="btn btn-disabled"
+              *ngIf="currentUser?.plano === 'Plano YouTube sem Anúncios'"
+              disabled
+            >
+              Plano Ativo
+            </button>
+          </div>
+
+          <!-- Plano GOV.AO -->
+          <div class="plan-card" [class.current]="currentUser?.plano === 'Plano .GOV.AO'">
+            <div class="plan-header">
+              <h3>Plano .GOV.AO</h3>
+              <span *ngIf="currentUser?.plano === 'Plano .GOV.AO'" class="badge badge-current">Plano Atual</span>
+            </div>
+            <div class="plan-price">
+              <span class="price">AOA 9.99</span>
+              <span class="period">/mês</span>
+            </div>
+            <div class="plan-features">
+              <p>✓ Acesso a plataforma .GOV.AO</p>
+              <p>✓ Documentos seguros e encriptados</p>
+              <p>✓ Suporte prioritário</p>
+              <p>✓ Múltiplos dispositivos</p>
+            </div>
+            <button 
+              class="btn btn-primary"
+              *ngIf="currentUser?.plano !== 'Plano .GOV.AO'"
+              (click)="changePlan('Plano .GOV.AO')"
+            >
+              Selecionar Plano
+            </button>
+            <button 
+              class="btn btn-disabled"
+              *ngIf="currentUser?.plano === 'Plano .GOV.AO'"
+              disabled
+            >
+              Plano Ativo
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Dispositivos -->
+      <section *ngIf="activeTab === 'dispositivos'" class="tab-pane active">
+        <h2 class="section-title">Meus Dispositivos</h2>
+        
+        <div class="devices-table">
+          <div class="table-header">
+            <div class="table-cell">Dispositivo</div>
+            <div class="table-cell">Status</div>
+            <div class="table-cell">IP</div>
+            <div class="table-cell">Último Acesso</div>
+            <div class="table-cell">Ação</div>
+          </div>
+
+          <div *ngFor="let device of devices" class="table-row">
+            <div class="table-cell">
+              <strong>{{ device.nome }}</strong>
+            </div>
+            <div class="table-cell">
+              <span class="status-badge" [class.active]="device.status === 'Ativo'">
+                {{ device.status }}
+              </span>
+            </div>
+            <div class="table-cell">{{ device.ip }}</div>
+            <div class="table-cell">{{ device.ultimoAcesso }}</div>
+            <div class="table-cell">
+              <button 
+                class="btn btn-small btn-danger"
+                (click)="disconnectDevice(device.id)"
+              >
+                Desconectar
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Faturamento -->
+      <section *ngIf="activeTab === 'faturamento'" class="tab-pane active">
+        <h2 class="section-title">Histórico de Faturas</h2>
+        
+        <div class="invoices-table">
+          <div class="table-header">
+            <div class="table-cell">Data</div>
+            <div class="table-cell">Valor</div>
+            <div class="table-cell">Status</div>
+            <div class="table-cell">Método</div>
+            <div class="table-cell">Ação</div>
+          </div>
+
+          <div *ngFor="let invoice of invoices" class="table-row">
+            <div class="table-cell">{{ invoice.data }}</div>
+            <div class="table-cell"><strong>{{ invoice.valor }}</strong></div>
+            <div class="table-cell">
+              <span class="status-badge paid">{{ invoice.status }}</span>
+            </div>
+            <div class="table-cell">{{ invoice.metodo }}</div>
+            <div class="table-cell">
+              <button 
+                class="btn btn-small btn-secondary"
+                (click)="downloadInvoice(invoice.id)"
+              >
+                Baixar
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Suporte -->
+      <section *ngIf="activeTab === 'suporte'" class="tab-pane active">
+        <h2 class="section-title">Central de Suporte</h2>
+        
+        <div class="support-grid">
+          <div class="support-card">
+            <div class="support-icon">💬</div>
+            <h3>Chat de Suporte</h3>
+            <p>Fale com nosso time direto em tempo real</p>
+            <button class="btn btn-primary">Iniciar Chat</button>
+          </div>
+
+          <div class="support-card">
+            <div class="support-icon">📧</div>
+            <h3>Email</h3>
+            <p>Envie sua dúvida para suporte&#64;vpnangola.ao</p>
+            <button class="btn btn-primary">Enviar Email</button>
+          </div>
+
+          <div class="support-card">
+            <div class="support-icon">📱</div>
+            <h3>Suporte Técnico</h3>
+            <p>Resolva problemas técnicos com nosso time</p>
+            <button class="btn btn-primary" (click)="selectTab('suporte'); router.navigate(['/suporte/tecnico'])">
+              Ver Mais
+            </button>
+          </div>
+
+          <div class="support-card">
+            <div class="support-icon">🛍️</div>
+            <h3>Suporte Comercial</h3>
+            <p>Dúvidas sobre planos e preços? Fale conosco</p>
+            <button class="btn btn-primary" (click)="selectTab('suporte'); router.navigate(['/suporte/comercial'])">
+              Ver Mais
+            </button>
+          </div>
+        </div>
+
+        <div class="faq-section">
+          <h3>Perguntas Frequentes</h3>
+          <div class="faq-item">
+            <h4>Como conectar em múltiplos dispositivos?</h4>
+            <p>Você pode conectar até 5 dispositivos simultaneamente. Vá para "Dispositivos" para gerenciar suas conexões.</p>
+          </div>
+          <div class="faq-item">
+            <h4>Como cancelar minha assinatura?</h4>
+            <p>Você pode cancelar a qualquer momento sem penalidades. Entre em contato com nossa equipe de suporte.</p>
+          </div>
+          <div class="faq-item">
+            <h4>Qual é a política de reembolso?</h4>
+            <p>Oferecemos garantia de 30 dias. Se não estiver satisfeito, devolveremos 100% de seu dinheiro.</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- Modal de confirmação de logout -->
+<div *ngIf="showLogoutConfirm" class="modal-overlay" (click)="cancelLogout()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h3>Confirmar Saída</h3>
+    <p>Tem certeza que deseja sair da sua conta?</p>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" (click)="cancelLogout()">Cancelar</button>
+      <button class="btn btn-danger" (click)="logout()">Sair</button>
+    </div>
+  </div>
+</div>

@@ -76,10 +76,23 @@
         </li>
       </ul>
 
-      <!-- Botões de Ação -->
-      <div class="navbar-actions">
-        <button class="btn-login" (click)="closeMobileMenu()">Entrar</button>
+      <!-- Botões de Ação - Não Autenticado -->
+      <div class="navbar-actions" *ngIf="!isAuthenticated">
+        <button class="btn-login" (click)="goToLogin()">Entrar</button>
         <button class="btn-primary" (click)="closeMobileMenu()">Experimente Grátis</button>
+      </div>
+
+      <!-- Botões de Ação - Autenticado -->
+      <div class="navbar-actions-auth" *ngIf="isAuthenticated">
+        <div class="user-profile">
+          <div class="user-avatar">{{ (currentUser?.nome || 'U').charAt(0).toUpperCase() }}</div>
+          <div class="user-info">
+            <p class="user-name">{{ currentUser?.nome }}</p>
+            <p class="user-plan">{{ currentUser?.plano }}</p>
+          </div>
+        </div>
+        <button class="btn-dashboard" (click)="goToDashboard()">Meu Painel</button>
+        <button class="btn-logout" (click)="logout()">Sair</button>
       </div>
     </div>
   </div>
