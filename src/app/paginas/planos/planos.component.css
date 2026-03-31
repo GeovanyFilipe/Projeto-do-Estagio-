@@ -1,0 +1,136 @@
+.pagina-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.hero {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%);
+  color: white;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 48px;
+  margin: 0 0 20px 0;
+  font-weight: 700;
+}
+
+.hero p {
+  font-size: 20px;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.planos-container {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+.planos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+.plano-card {
+  background: white;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.plano-card.destaque {
+  transform: scale(1.05);
+  box-shadow: 0 12px 40px rgba(0, 153, 255, 0.2);
+  border: 2px solid #0099ff;
+}
+
+.plano-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+.plano-card.destaque:hover {
+  transform: scale(1.05) translateY(-10px);
+}
+
+.plano-header h2 {
+  font-size: 22px;
+  color: #1e3a5f;
+  margin: 0 0 15px 0;
+}
+
+.preco {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+.valor {
+  font-size: 36px;
+  font-weight: 700;
+  color: #0099ff;
+}
+
+.periodo {
+  color: #666;
+  font-size: 14px;
+}
+
+.descricao {
+  color: #666;
+  font-size: 14px;
+  margin: 0 0 25px 0;
+}
+
+.features {
+  list-style: none;
+  margin: 0 0 30px 0;
+  padding: 0;
+  flex-grow: 1;
+}
+
+.features li {
+  padding: 10px 0;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.features li:last-child {
+  border-bottom: none;
+}
+
+.checkmark {
+  color: #0099ff;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.btn-plano {
+  padding: 12px 30px;
+  background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.btn-plano:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 153, 255, 0.3);
+}

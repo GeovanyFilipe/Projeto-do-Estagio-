@@ -1,0 +1,28 @@
+<div class="pagina-container">
+  <section class="hero">
+    <h1>Nossos Planos</h1>
+    <p>Escolha o plano perfeito para suas necessidades</p>
+  </section>
+
+  <section class="planos-container">
+    <div class="planos-grid">
+      <div *ngFor="let plano of planos" class="plano-card" [class.destaque]="plano.destaque">
+        <div class="plano-header">
+          <h2>{{ plano.titulo }}</h2>
+          <div class="preco">
+            <span class="valor">AOA {{ plano.preco }}</span>
+            <span class="periodo">/mês</span>
+          </div>
+        </div>
+        <p class="descricao">{{ plano.descricao }}</p>
+        <ul class="features">
+          <li *ngFor="let feature of plano.features">
+            <span class="checkmark">✓</span>
+            {{ feature }}
+          </li>
+        </ul>
+        <button class="btn-plano" [routerLink]="plano.rota">{{ plano.cta }}</button>
+      </div>
+    </div>
+  </section>
+</div>

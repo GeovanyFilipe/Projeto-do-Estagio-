@@ -1,0 +1,100 @@
+.pagina-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.hero {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%);
+  color: white;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 48px;
+  margin: 0 0 20px 0;
+  font-weight: 700;
+}
+
+.suporte-container {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 20px;
+  margin-bottom: 60px;
+}
+
+.suporte-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.faq-section,
+.contact-section {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.faq-section h2,
+.contact-section h2 {
+  font-size: 28px;
+  color: #1e3a5f;
+  margin: 0 0 30px 0;
+}
+
+.faq-item {
+  margin-bottom: 25px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid #eee;
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.faq-item h3 {
+  font-size: 16px;
+  color: #1e3a5f;
+  margin: 0 0 10px 0;
+}
+
+.faq-item p {
+  color: #666;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.contact-section p {
+  font-size: 16px;
+  color: #333;
+  margin: 10px 0;
+}
+
+.btn-chat {
+  padding: 15px 40px;
+  background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.btn-chat:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 153, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+  .suporte-content {
+    grid-template-columns: 1fr;
+  }
+}

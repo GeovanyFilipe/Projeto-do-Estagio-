@@ -1,0 +1,79 @@
+.pagina-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.hero {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%);
+  color: white;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 48px;
+  margin: 0 0 20px 0;
+  font-weight: 700;
+}
+
+.downloads-container {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+.downloads-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+.download-card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.download-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+.download-card .icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+}
+
+.download-card h3 {
+  font-size: 20px;
+  color: #1e3a5f;
+  margin: 15px 0 10px 0;
+}
+
+.download-card p {
+  color: #666;
+  font-size: 14px;
+  margin: 0 0 20px 0;
+}
+
+.btn-download {
+  padding: 12px 25px;
+  background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.btn-download:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 153, 255, 0.3);
+}

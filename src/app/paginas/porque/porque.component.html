@@ -1,0 +1,21 @@
+<div class="pagina-container">
+  <section class="hero">
+    <h1>Porquê Escolher Angolan VPN?</h1>
+    <p>Proteção, segurança e velocidade para sua conexão</p>
+  </section>
+
+  <section class="razoes-container">
+    <div class="razoes-grid">
+      <div *ngFor="let razao of razoes" class="razao-card">
+        <div class="razao-icon">{{ razao.icon }}</div>
+        <h3>{{ razao.titulo }}</h3>
+        <p>{{ razao.descricao }}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <h2>Pronto para começar?</h2>
+    <button class="btn-primary">Experimente Grátis</button>
+  </section>
+</div>

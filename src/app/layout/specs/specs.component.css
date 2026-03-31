@@ -1,7 +1,165 @@
-p, h3, b, a{
-    color: rgb(238, 202, 0) !important;
+/* ======================== SPECS CONTAINER ======================== */
+.specs-container {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e9f0f7 100%);
+  padding: 80px 20px;
 }
 
-.uk-card-secondary{
-    background-color: #000000 !important;
+.specs-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.specs-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.specs-header h2 {
+  font-size: 42px;
+  color: #1e3a5f;
+  margin: 0 0 15px 0;
+  font-weight: 700;
+}
+
+.specs-header p {
+  font-size: 18px;
+  color: #666;
+  margin: 0;
+}
+
+/* ======================== SPECS GRID ======================== */
+.specs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+.spec-card {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.spec-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #00d4ff 0%, #0099ff 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.spec-card:hover::before {
+  transform: scaleX(1);
+}
+
+.spec-card:hover {
+  transform: translateY(-15px);
+  box-shadow: 0 20px 50px rgba(0, 212, 255, 0.2);
+  border-color: rgba(0, 212, 255, 0.2);
+}
+
+/* ======================== CARD ICON ======================== */
+.card-icon {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+  color: #00d4ff;
+  transition: all 0.3s ease;
+}
+
+.spec-card:hover .card-icon {
+  background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+  color: white;
+  transform: scale(1.1);
+}
+
+/* ======================== CARD CONTENT ======================== */
+.spec-card h3 {
+  font-size: 22px;
+  color: #1e3a5f;
+  margin: 0 0 15px 0;
+  font-weight: 700;
+}
+
+.spec-card > p {
+  color: #666;
+  line-height: 1.8;
+  margin: 0 0 25px 0;
+  font-size: 15px;
+}
+
+/* ======================== FEATURES LIST ======================== */
+.features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.features-list li {
+  color: #333;
+  font-size: 14px;
+  padding: 8px 0;
+  padding-left: 25px;
+  position: relative;
+}
+
+.features-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #00d4ff;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* ======================== RESPONSIVE ======================== */
+@media (max-width: 768px) {
+  .specs-container {
+    padding: 60px 20px;
+  }
+
+  .specs-header h2 {
+    font-size: 32px;
+  }
+
+  .specs-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .spec-card {
+    padding: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .specs-header h2 {
+    font-size: 24px;
+  }
+
+  .spec-card {
+    padding: 20px;
+  }
+
+  .spec-card h3 {
+    font-size: 18px;
+  }
 }

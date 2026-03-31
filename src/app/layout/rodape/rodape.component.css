@@ -1,3 +1,235 @@
-footer {
-    background-color: #000 !important;
+/* ======================== FOOTER CONTAINER ======================== */
+.footer-container {
+  background: linear-gradient(135deg, #0f1419 0%, #1e3a5f 50%, #0f1419 100%);
+  color: #ecf0f1;
+  padding: 60px 0 0;
+  margin-top: 80px;
+  border-top: 4px solid #00d4ff;
+}
+
+.footer-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ======================== FOOTER CONTENT ======================== */
+.footer-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+  padding: 60px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-section h4 {
+  color: #00d4ff;
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 25px 0;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+/* Brand Section */
+.footer-brand .footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.footer-brand .footer-logo img {
+  height: 40px;
+  width: auto;
+}
+
+.footer-brand .footer-logo h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #ffffff;
+}
+
+.footer-brand > p {
+  margin: 0 0 25px 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #bdc3c7;
+}
+
+/* Social Links */
+.social-links {
+  display: flex;
+  gap: 15px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0, 212, 255, 0.1);
+  color: #00d4ff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+  color: white;
+  transform: translateY(-3px);
+}
+
+/* Footer Links */
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-links li {
+  margin: 0;
+}
+
+.footer-links a {
+  color: #bdc3c7;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.footer-links a:hover {
+  color: #00d4ff;
+  padding-left: 8px;
+  transform: translateX(4px);
+}
+
+/* ======================== FOOTER BOTTOM ======================== */
+.footer-bottom {
+  padding: 30px 0;
+  text-align: center;
+}
+
+.footer-bottom-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  font-size: 13px;
+}
+
+.footer-bottom-content p {
+  margin: 0;
+  color: #9da5b0;
+}
+
+.payment-methods {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.method-label {
+  color: #00d4ff;
+  font-weight: 600;
+}
+
+/* ======================== RESPONSIVE ======================== */
+@media (max-width: 1024px) {
+  .footer-content {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-container {
+    padding: 40px 0 0;
+    margin-top: 40px;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 40px 0;
+  }
+
+  .footer-bottom-content {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .payment-methods {
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-section h4 {
+    font-size: 13px;
+    margin-bottom: 15px;
+  }
+
+  .footer-links {
+    gap: 10px;
+  }
+
+  .footer-links a {
+    font-size: 13px;
+  }
+
+  .social-links {
+    gap: 10px;
+  }
+
+  .social-icon {
+    width: 36px;
+    height: 36px;
+  }
+}
+    display: flex;
+    gap: 1.5rem;
+}
+
+.social-links a {
+    color: #bdc3c7;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #bdc3c7;
+}
+
+.social-links a:hover {
+    background-color: #00d4ff;
+    color: #1e3a5f;
+    border-color: #00d4ff;
+    transform: translateY(-3px);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(0, 212, 255, 0.2);
+    color: #95a5a6;
+    font-size: 0.9rem;
 }
