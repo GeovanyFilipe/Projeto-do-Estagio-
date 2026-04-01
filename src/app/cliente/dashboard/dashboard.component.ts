@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 import { AuthService, User } from '../../services/auth.service';
 
 @Component({
@@ -10,10 +11,12 @@ import { AuthService, User } from '../../services/auth.service';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class ClienteDashboardComponent implements OnInit {
+export class ClienteDashboardComponent implements OnInit, OnDestroy {
   currentUser: User | null = null;
   activeTab: string = 'overview';
   showLogoutConfirm: boolean = false;
+  
+  private destroy$ = new Subject<void>();
 
   devices = [
     { id: 1, nome: 'Notebook - Chrome', status: 'Ativo', ip: '192.168.1.100', ultimoAcesso: '2 min atrás' },
@@ -75,12 +78,17 @@ export class ClienteDashboardComponent implements OnInit {
     this.showLogoutConfirm = true;
   }
 
+  cancelLogout(): void {
+    this.showLogoutConfirm = false;
+  }
+
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/']);
   }
 
-  cancelLogout(): void {
-    this.showLogoutConfirm = false;
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

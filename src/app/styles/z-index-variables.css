@@ -1,0 +1,90 @@
+/**
+ * Z-INDEX HIERARCHY - VARIÁVEIS PARA TODA A APLICAÇÃO
+ * 
+ * Usar estas variáveis CSS em todo o projeto para manter consistência
+ * e evitar conflitos de sobreposição entre elementos.
+ * 
+ * REGRA IMPORTANTE: Nunca usar z-index fora desta hierarquia!
+ */
+
+:root {
+  /* ======================== BASE ELEMENTS ======================== */
+  /* Elementos normais do fluxo (z-index implícito: 0) */
+  --z-base: 1;
+
+  /* ======================== STICKY/ELEVATED ELEMENTS ======================== */
+  /* Barras de ferramentas, navbars sticky, floating elements */
+  --z-sticky: 100;
+  
+  /* Dropdowns, tooltips, popovers (aparecem acima do navbar) */
+  --z-dropdown: 150;
+  
+  /* Menus móveis, sidebars em mobile */
+  --z-mobile-menu: 99;
+  
+  /* ======================== OVERLAYS & MODALS ======================== */
+  /* Backdrop/Overlay (a sombra negra atrás do modal) */
+  --z-overlay-backdrop: 1000;
+  
+  /* Conteúdo modal/diálogo (aparece acima do backdrop) */
+  --z-modal: 1001;
+  
+  /* ======================== TOP-LEVEL ELEMENTS ======================== */
+  /* Notificações fixas, toasts, snackbars */
+  --z-notification: 2000;
+  
+  /* Modais críticas, confirmations importantes */
+  --z-modal-critical: 2001;
+}
+
+/**
+ * EXEMPLOS DE USO:
+ * 
+ * 1. Navbar sticky:
+ *    .navbar-container {
+ *      z-index: var(--z-sticky);
+ *    }
+ * 
+ * 2. Dropdown do navbar:
+ *    .dropdown-menu {
+ *      z-index: var(--z-dropdown);
+ *    }
+ * 
+ * 3. Modal backdrop:
+ *    .modal-overlay {
+ *      z-index: var(--z-overlay-backdrop);
+ *    }
+ * 
+ * 4. Modal conteúdo:
+ *    .modal-content {
+ *      z-index: var(--z-modal);
+ *    }
+ * 
+ * 5. Notificação toast:
+ *    .toast {
+ *      z-index: var(--z-notification);
+ *    }
+ */
+
+/* ======================== APLICAÇÃO DOS PADRÕES ======================== */
+
+/* Utiliza as variáveis já aplicadas nos componentes */
+.navbar-container {
+  z-index: var(--z-sticky);
+}
+
+.dropdown-menu {
+  z-index: var(--z-dropdown);
+}
+
+.mobile-toggle {
+  z-index: calc(var(--z-sticky) + 1);
+}
+
+.modal-overlay {
+  z-index: var(--z-overlay-backdrop);
+}
+
+.modal-content {
+  z-index: var(--z-modal);
+}

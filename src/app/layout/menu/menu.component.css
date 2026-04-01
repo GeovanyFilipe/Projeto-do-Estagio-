@@ -4,7 +4,7 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 100;
   transition: all 0.3s ease;
 }
 
@@ -129,7 +129,7 @@
   transform: translateY(-10px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 8px;
-  z-index: 1001;
+  z-index: 150;
 }
 
 .dropdown-menu.show {
@@ -320,7 +320,7 @@
   border: none;
   cursor: pointer;
   padding: 5px;
-  z-index: 1002;
+  z-index: 101;
 }
 
 .mobile-toggle span {
@@ -379,11 +379,15 @@
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
+    z-index: 99;
+    pointer-events: none;
   }
 
   .navbar-menu.mobile-open {
     max-height: 100vh;
     overflow-y: auto;
+    pointer-events: auto;
+    z-index: 99;
   }
 
   .navbar-nav {

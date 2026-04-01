@@ -203,9 +203,6 @@
     height: 36px;
   }
 }
-    display: flex;
-    gap: 1.5rem;
-}
 
 .social-links a {
     color: #bdc3c7;

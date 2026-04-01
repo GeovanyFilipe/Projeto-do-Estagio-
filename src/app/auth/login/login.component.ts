@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService, LoginResponse } from '../../services/auth.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +13,7 @@ import { AuthService, LoginResponse } from '../../services/auth.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   email: string = '';
   password: string = '';
   nome: string = '';
@@ -21,6 +23,8 @@ export class LoginComponent implements OnInit {
   success: string = '';
   plano: string = 'Plano YouTube sem Anúncios';
   returnUrl: string = '';
+
+  private destroy$ = new Subject<void>();
 
   planos = [
     { id: 'youtube', nome: 'Plano YouTube sem Anúncios', preco: 'AOA 5.99/mês' },
@@ -60,19 +64,21 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.error = '';
 
-    this.authService.login(this.email, this.password).subscribe({
-      next: (response: LoginResponse) => {
-        this.loading = false;
-        this.success = 'Login realizado com sucesso!';
-        setTimeout(() => {
-          this.router.navigate([this.returnUrl]);
-        }, 1500);
-      },
-      error: (err: any) => {
-        this.loading = false;
-        this.error = err.message || 'Erro ao fazer login. Tente novamente.';
-      }
-    });
+    this.authService.login(this.email, this.password)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response: LoginResponse) => {
+          this.loading = false;
+          this.success = 'Login realizado com sucesso!';
+          setTimeout(() => {
+            this.router.navigate([this.returnUrl]);
+          }, 1500);
+        },
+        error: (err: any) => {
+          this.loading = false;
+          this.error = err.message || 'Erro ao fazer login. Tente novamente.';
+        }
+      });
   }
 
   register(): void {
@@ -89,19 +95,21 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.error = '';
 
-    this.authService.register(this.email, this.password, this.nome, this.plano).subscribe({
-      next: (response: LoginResponse) => {
-        this.loading = false;
-        this.success = 'Cadastro realizado com sucesso! Bem-vindo!';
-        setTimeout(() => {
-          this.router.navigate([this.returnUrl]);
-        }, 1500);
-      },
-      error: (err: any) => {
-        this.loading = false;
-        this.error = err.message || 'Erro ao fazer cadastro. Tente novamente.';
-      }
-    });
+    this.authService.register(this.email, this.password, this.nome, this.plano)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response: LoginResponse) => {
+          this.loading = false;
+          this.success = 'Cadastro realizado com sucesso! Bem-vindo!';
+          setTimeout(() => {
+            this.router.navigate([this.returnUrl]);
+          }, 1500);
+        },
+        error: (err: any) => {
+          this.loading = false;
+          this.error = err.message || 'Erro ao fazer cadastro. Tente novamente.';
+        }
+      });
   }
 
   submit(): void {
@@ -110,5 +118,10 @@ export class LoginComponent implements OnInit {
     } else {
       this.login();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

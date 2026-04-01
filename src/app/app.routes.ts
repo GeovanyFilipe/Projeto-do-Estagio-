@@ -24,6 +24,4 @@ export const routes: Routes = [
     // Suporte
     { path: 'suporte/tecnico', loadComponent: () => import('./paginas/suporte/tecnico/tecnico.component').then(m => m.TecnicoComponent) },
     { path: 'suporte/comercial', loadComponent: () => import('./paginas/suporte/comercial/comercial.component').then(m => m.ComercialComponent) },
-    // Admin
-    { path: 'admin', loadComponent: () => import('./admin/painel/painel.component').then(m => m.PainelComponent) },
 ];
