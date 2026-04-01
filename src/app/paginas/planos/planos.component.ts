@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { MenuComponent } from '../../layout/menu/menu.component';
 
 @Component({
   selector: 'app-planos',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, MenuComponent],
   templateUrl: './planos.component.html',
   styleUrl: './planos.component.css'
 })
