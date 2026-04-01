@@ -20,19 +20,35 @@ export interface LoginResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private currentUserSubject = new BehaviorSubject<User | null>(this.getUserFromStorage());
+
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(!!this.getToken());
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
   constructor() {
     this.loadUserFromStorage();
   }
 
+  // ✅ Verificação segura do browser
+  private isBrowser(): boolean {
+    return typeof window !== 'undefined';
+  }
+
   private getUserFromStorage(): User | null {
-    const user = localStorage.getItem('currentUser');
-    return user ? JSON.parse(user) : null;
+    if (this.isBrowser()) {
+      const user = localStorage.getItem('currentUser');
+      return user ? JSON.parse(user) : null;
+    }
+    return null;
+  }
+
+  private getToken(): string | null {
+    if (this.isBrowser()) {
+      return localStorage.getItem('token');
+    }
+    return null;
   }
 
   private loadUserFromStorage(): void {
@@ -47,7 +63,6 @@ export class AuthService {
 
   login(email: string, password: string): Observable<LoginResponse> {
     return new Observable(observer => {
-      // Simular autenticação (em produção, seria uma chamada HTTP)
       setTimeout(() => {
         if (email && password.length >= 6) {
           const token = this.generateToken();
@@ -60,8 +75,10 @@ export class AuthService {
             ativo: true
           };
 
-          localStorage.setItem('token', token);
-          localStorage.setItem('currentUser', JSON.stringify(user));
+          if (this.isBrowser()) {
+            localStorage.setItem('token', token);
+            localStorage.setItem('currentUser', JSON.stringify(user));
+          }
 
           this.currentUserSubject.next(user);
           this.isAuthenticatedSubject.next(true);
@@ -96,8 +113,10 @@ export class AuthService {
             ativo: true
           };
 
-          localStorage.setItem('token', token);
-          localStorage.setItem('currentUser', JSON.stringify(user));
+          if (this.isBrowser()) {
+            localStorage.setItem('token', token);
+            localStorage.setItem('currentUser', JSON.stringify(user));
+          }
 
           this.currentUserSubject.next(user);
           this.isAuthenticatedSubject.next(true);
@@ -119,14 +138,12 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('currentUser');
+    if (this.isBrowser()) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('currentUser');
+    }
     this.currentUserSubject.next(null);
     this.isAuthenticatedSubject.next(false);
-  }
-
-  getToken(): string | null {
-    return localStorage.getItem('token');
   }
 
   getCurrentUser(): User | null {
@@ -149,8 +166,12 @@ export class AuthService {
     const user = this.currentUserSubject.value;
     if (user) {
       user.plano = novoPlano;
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      this.currentUserSubject.next({...user});
+
+      if (this.isBrowser()) {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+      }
+
+      this.currentUserSubject.next({ ...user });
     }
   }
 }
