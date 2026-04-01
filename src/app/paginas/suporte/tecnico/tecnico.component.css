@@ -93,6 +93,10 @@
   box-shadow: 0 8px 20px rgba(0, 153, 255, 0.3);
 }
 
+.m-plite{
+  margin-bottom: 20px;
+}
+
 @media (max-width: 768px) {
   .suporte-content {
     grid-template-columns: 1fr;
