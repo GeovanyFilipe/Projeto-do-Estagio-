@@ -57,12 +57,13 @@
       <!-- Coluna 4: Legal -->
       <div class="footer-section">
         <h4>Legal</h4>
-        <ul class="footer-links">
-          <li><a href="#">Termos e Condições</a></li>
-          <li><a href="#">Política de Privacidade</a></li>
-          <li><a href="#">Política de Cookies</a></li>
-          <li><a href="#">Proteção de Dados</a></li>
-        </ul>
+        <!-- Exemplo no rodapé -->
+<ul>
+  <li><a [routerLink]="['/termos']">Termos e Condições</a></li>
+  <li><a [routerLink]="['/privacidade']">Política de Privacidade</a></li>
+  <li><a [routerLink]="['/cookies']">Política de Cookies</a></li>
+  <li><a [routerLink]="['/protecao']">Proteção de Dados</a></li>
+</ul>
       </div>
     </div>
 
