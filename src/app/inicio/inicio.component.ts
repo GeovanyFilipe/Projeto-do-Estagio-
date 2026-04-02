@@ -28,6 +28,11 @@ export class InicioComponent {
     this.router.navigate(['/login']); // ajuste para a rota real
   }
 
+  // Botão Saiba Mais
+  goToSaibaMais() {
+    this.router.navigate(['/porque']);
+  }
+
   // Navegar para cada plano
   goToPlano(plano: string) {
     if (plano === 'youtube') {
