@@ -51,12 +51,15 @@
   min-height: 500px;
 }
 
-.hero-title {
+.hero-title /*{
   font-size: 56px;
   font-weight: 700;
   margin: 0;
   line-height: 1.2;
-  color: #fff;
+<<<<<<< HEAD
+  color: #ffffff;
+=======
+  color: #fff;//*
 }
 
 .hero-carousel .uk-slideshow-items,
@@ -88,6 +91,7 @@
   margin: 0;
   line-height: 1.2;
     color: #fff;
+>>>>>>> c6f5e7004fd83097b0175230606fe3c1d47f0d6b
 }
 
 .hero-subtitle {
@@ -257,6 +261,7 @@
 .cta-content h2 {
   font-size: 42px;
   margin: 0 0 15px 0;
+  color: #fff;
 }
 
 .cta-content p {
