@@ -32,6 +32,10 @@
     <p class="hero-subtitle">VPN Segura, Rápida e Confiável Desenvolvida para Angola</p>
 
     <div class="hero-buttons">
+
+      <button class="btn-primary" routerLink="/planos">Experimente Grátis</button>
+      <button class="btn-secondary">Saiba Mais</button>
+
       <!-- Botão Experimente Grátis -->
       <button class="btn-primary" (click)="goToCadastro()">Experimente Grátis</button>
       <!-- Botão Planos -->
@@ -48,6 +52,20 @@
           </a>
         </div>
       </div>
+<div class="btn-secondary" (click)="toggleDropdown('planos')">
+  Planos ▼
+  <div class="dropdown-menu" [class.show]="activeDropdown === 'planos'">
+    <a class="dropdown-item" (click)="goToPlano('youtube')">
+      <span class="icon">📺</span>
+      Plano YouTube sem Anúncios
+    </a>
+    <a class="dropdown-item" (click)="goToPlano('gov')">
+      <span class="icon">🏛️</span>
+      Plano .GOV.AO
+    </a>
+  </div>
+</div>
+
     </div>
   </div>
 </section>
@@ -112,4 +130,25 @@
   </div>
 </section>
 
+<<<<<<< HEAD
+=======
+
+<app-rodape></app-rodape>
+
+
+
+<div class="uk-container uk-margin-medium-bottom  uk-text-center uk-margin">
+    <h1>Descarregue AngolanVPN. <br> É gratuito por 7 dias!</h1>
+    <div class="uk-grid-column-medium uk-margin uk-grid-row-large uk-padding uk-child-width-1-3@m uk-grid">
+        <a href="" uk-icon="icon: microsoft; ratio: 5"></a>
+        <a href="" uk-icon="icon: apple; ratio: 5"></a>
+        <a href="" uk-icon="icon: android; ratio: 5"></a>
+
+
+
+    </div>
+
+</div>
+
+>>>>>>> 7a045e20056845cc7483c5b97e955d79b158b8b2
 <app-rodape></app-rodape>
