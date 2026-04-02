@@ -14,11 +14,22 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  position: fixed;
+  position: sticky;
+  top: 0;
   left: 0;
   width: 250px;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+  z-index: 10;
 }
+
+.main-content {
+  margin-left: 250px;
+  padding: 40px;
+  overflow-y: auto;
+  min-height: 100vh;
+  position: relative;
+}
+
 
 .sidebar-header {
   padding: 0 20px 30px;
@@ -100,7 +111,7 @@
   margin-left: 250px;
   padding: 40px;
   overflow-y: auto;
-  max-height: 100vh;
+  min-height: calc(100vh - 60px);
 }
 
 .dashboard-header {
@@ -204,6 +215,10 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   transition: all 0.3s;
+  min-height: 262px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .info-card:hover {

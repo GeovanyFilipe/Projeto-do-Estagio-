@@ -9,4 +9,10 @@ import { MenuComponent } from '../../../layout/menu/menu.component';
   templateUrl: './tecnico.component.html',
   styleUrl: './tecnico.component.css'
 })
-export class TecnicoComponent {}
+export class TecnicoComponent {
+  abrirChatAoVivo() {
+    const whatsappUrl = 'https://wa.me/244931234567';
+    window.open(whatsappUrl, '_blank');
+  }
+}
+

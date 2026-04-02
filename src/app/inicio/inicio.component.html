@@ -5,6 +5,7 @@
   <div class="hero-carousel" uk-slideshow="animation: push; autoplay: true; autoplay-interval: 5000; pause-on-hover: true">
     <ul class="uk-slideshow-items">
       <li>
+<<<<<<< HEAD
         <img src="/imagens/homemcomtelemovel.jpg" alt="VPN Banner 1" uk-cover>
       </li>
       <li>
@@ -12,12 +13,26 @@
       </li>
       <li>
         <img src="/imagens/londonw.jpg" alt="VPN Banner 3" uk-cover>
+=======
+        <img src="/imagens/luanda7.avif" alt="Pessoa negra usando telefone fora de Angola" uk-cover>
+      </li>
+      <li>
+        <img src="/imagens/luanda3.avif" alt="Pessoa negra trabalhando no computador fora de Angola" uk-cover>
+      </li>
+      <li>
+        <img src="/imagens/luanda11.avif" alt="Equipe negra usando dispositivos fora de Angola" uk-cover>
+      </li>
+      <li>
+        <img src="/imagens/luanda9.avif" alt="Mulher negra usando notebook fora de Angola" uk-cover>
+      </li>
+      <li>
+        <img src="/imagens/luanda8.png" alt="Jovem negro usando celular fora de Angola" uk-cover>
+>>>>>>> 5c790f4a696a109dd899932b5b6623a9bcd65095
       </li>
     </ul>
 
     <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
     <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
-
     <ul class="uk-slideshow-nav uk-dotnav uk-flex-center uk-margin"></ul>
   </div>
 
@@ -25,9 +40,42 @@
     <h1 class="hero-title">Conectando o Mundo à Internet Angolana</h1>
     <p class="hero-subtitle">O AngolanVPN é uma solução inovadora de VPN que melhora a conectividade à internet angolana, oferecendo acesso seguro e eficiente a sistemas, oportunidades de negócio e uma melhor experiência digital para empresas e indivíduos.</p>
     <p class="hero-subtitle">VPN Segura, Rápida e Confiável Desenvolvida para Angola</p>
+
     <div class="hero-buttons">
-      <button class="btn-primary">Experimente Grátis</button>
+
+      <button class="btn-primary" routerLink="/planos">Experimente Grátis</button>
       <button class="btn-secondary">Saiba Mais</button>
+
+      <!-- Botão Experimente Grátis -->
+      <button class="btn-primary" (click)="goToCadastro()">Experimente Grátis</button>
+      <!-- Botão Planos -->
+      <div class="btn-secondary" (click)="toggleDropdown('planos')">
+        Planos ▼
+        <div class="dropdown-menu" [class.show]="activeDropdown === 'planos'">
+          <a class="dropdown-item" (click)="goToPlano('youtube')">
+            <span class="icon">📺</span>
+            Plano YouTube sem Anúncios
+          </a>
+          <a class="dropdown-item" (click)="goToPlano('gov')">
+            <span class="icon">🏛️</span>
+            Plano .GOV.AO
+          </a>
+        </div>
+      </div>
+<div class="btn-secondary" (click)="toggleDropdown('planos')">
+  Planos ▼
+  <div class="dropdown-menu" [class.show]="activeDropdown === 'planos'">
+    <a class="dropdown-item" (click)="goToPlano('youtube')">
+      <span class="icon">📺</span>
+      Plano YouTube sem Anúncios
+    </a>
+    <a class="dropdown-item" (click)="goToPlano('gov')">
+      <span class="icon">🏛️</span>
+      Plano .GOV.AO
+    </a>
+  </div>
+</div>
+
     </div>
   </div>
 </section>
@@ -72,43 +120,13 @@
 <section class="beneficios-section">
   <div class="beneficios-wrapper">
     <h2>Por Que Escolher Angolan VPN?</h2>
-    
     <div class="beneficios-grid">
-      <div class="beneficio-item">
-        <div class="beneficio-icon">🔒</div>
-        <h3>Criptografia Forte</h3>
-        <p>Proteção de nível militar para seus dados com AES-256</p>
-      </div>
-
-      <div class="beneficio-item">
-        <div class="beneficio-icon">⚡</div>
-        <h3>Velocidade Máxima</h3>
-        <p>Servidores otimizados para melhor desempenho</p>
-      </div>
-
-      <div class="beneficio-item">
-        <div class="beneficio-icon">📱</div>
-        <h3>Todos os Dispositivos</h3>
-        <p>Windows, macOS, Linux, iOS e Android</p>
-      </div>
-
-      <div class="beneficio-item">
-        <div class="beneficio-icon">🌍</div>
-        <h3>Múltiplos Servidores</h3>
-        <p>Conecte-se em vários países ao redor do mundo</p>
-      </div>
-
-      <div class="beneficio-item">
-        <div class="beneficio-icon">💬</div>
-        <h3>Suporte 24/7</h3>
-        <p>Equipe dedicada em português pronta para ajudar</p>
-      </div>
-
-      <div class="beneficio-item">
-        <div class="beneficio-icon">💰</div>
-        <h3>Preços Justos</h3>
-        <p>Acessibilidade para todos os orçamentos</p>
-      </div>
+      <div class="beneficio-item"><div class="beneficio-icon">🔒</div><h3>Criptografia Forte</h3><p>Proteção de nível militar para seus dados com AES-256</p></div>
+      <div class="beneficio-item"><div class="beneficio-icon">⚡</div><h3>Velocidade Máxima</h3><p>Servidores otimizados para melhor desempenho</p></div>
+      <div class="beneficio-item"><div class="beneficio-icon">📱</div><h3>Todos os Dispositivos</h3><p>Windows, macOS, Linux, iOS e Android</p></div>
+      <div class="beneficio-item"><div class="beneficio-icon">🌍</div><h3>Múltiplos Servidores</h3><p>Conecte-se em vários países ao redor do mundo</p></div>
+      <div class="beneficio-item"><div class="beneficio-icon">💬</div><h3>Suporte 24/7</h3><p>Equipe dedicada em português pronta para ajudar</p></div>
+      <div class="beneficio-item"><div class="beneficio-icon">💰</div><h3>Preços Justos</h3><p>Acessibilidade para todos os orçamentos</p></div>
     </div>
   </div>
 </section>
@@ -122,6 +140,13 @@
   </div>
 </section>
 
+<<<<<<< HEAD
+=======
+
+<app-rodape></app-rodape>
+
+
+
 <div class="uk-container uk-margin-medium-bottom  uk-text-center uk-margin">
     <h1>Descarregue AngolanVPN. <br> É gratuito por 7 dias!</h1>
     <div class="uk-grid-column-medium uk-margin uk-grid-row-large uk-padding uk-child-width-1-3@m uk-grid">
@@ -132,8 +157,8 @@
 
 
     </div>
+
 </div>
 
-
-
+>>>>>>> 7a045e20056845cc7483c5b97e955d79b158b8b2
 <app-rodape></app-rodape>
