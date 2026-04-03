@@ -4,7 +4,7 @@
     <div class="footer-content">
       <!-- Coluna 1: Logo e Descrição -->
       <div class="footer-section footer-brand">
-        <div class="footer-logo">
+        <div class="footer-logo"> 
           <img src="/imagens/logo.svg" alt="Angolan VPN">
           <h3>Angolan VPN</h3>
         </div>
@@ -59,13 +59,12 @@
       <!-- Coluna 4: Legal -->
       <div class="footer-section">
         <h4>Legal</h4>
-        <!-- Exemplo no rodapé -->
-<ul>
-  <li><a [routerLink]="['/termos']">Termos e Condições</a></li>
-  <li><a [routerLink]="['/privacidade']">Política de Privacidade</a></li>
-  <li><a [routerLink]="['/cookies']">Política de Cookies</a></li>
-  <li><a [routerLink]="['/protecao']">Proteção de Dados</a></li>
-</ul>
+        <ul class="footer-links legal-links">
+          <li><a [routerLink]="['/termos']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Termos e Condições</a></li>
+          <li><a [routerLink]="['/privacidade']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Política de Privacidade</a></li>
+          <li><a [routerLink]="['/cookies']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Política de Cookies</a></li>
+          <li><a [routerLink]="['/protecao']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Proteção de Dados</a></li>
+        </ul>
       </div>
     </div>
 
