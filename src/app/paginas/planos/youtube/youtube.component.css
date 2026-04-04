@@ -4,11 +4,8 @@
 }
 
 .hero {
-<<<<<<< HEAD
   background: linear-gradient(135deg, #00aaff 0%, #5b70dc 100%);
-=======
   background: linear-gradient(to right, #8B0000, #FF0000);;
->>>>>>> HiddenCode
   color: white;
   padding: 60px 20px;
   text-align: center;

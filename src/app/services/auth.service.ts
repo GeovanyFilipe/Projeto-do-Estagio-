@@ -21,11 +21,6 @@ export interface LoginResponse {
 })
 export class AuthService {
 
-  private currentUserSubject = new BehaviorSubject<User | null>(null);
-  private isBrowser(): boolean {
-    return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
-  }
-
   private currentUserSubject = new BehaviorSubject<User | null>(this.getUserFromStorage());
   public currentUser$ = this.currentUserSubject.asObservable();
 
@@ -36,9 +31,8 @@ export class AuthService {
     this.loadUserFromStorage();
   }
 
-  // ✅ Verificação segura do browser
   private isBrowser(): boolean {
-    return typeof window !== 'undefined';
+    return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
   }
 
   private getUserFromStorage(): User | null {
@@ -50,14 +44,8 @@ export class AuthService {
   }
 
   private getToken(): string | null {
-    if (this.isBrowser()) {
-      return localStorage.getItem('token');
-    }
-    return null;
     if (!this.isBrowser()) return null;
-
-    const user = localStorage.getItem('currentUser');
-    return user ? JSON.parse(user) : null;
+    return localStorage.getItem('token');
   }
 
   private loadUserFromStorage(): void {
@@ -79,9 +67,9 @@ export class AuthService {
           const token = this.generateToken();
           const user: User = {
             id: this.generateId(),
-            email: email,
+            email,
             nome: email.split('@')[0],
-            plano: 'Plano YouTube sem Anúncios',
+            plano: 'youtube',
             dataCadastro: new Date().toISOString(),
             ativo: true
           };
@@ -97,10 +85,7 @@ export class AuthService {
           observer.next({ token, user, success: true });
           observer.complete();
         } else {
-          observer.error({
-            success: false,
-            message: 'Email ou senha inválidos'
-          });
+          observer.error({ success: false, message: 'Email ou senha inválidos' });
         }
       }, 1000);
     });
@@ -115,7 +100,7 @@ export class AuthService {
             id: this.generateId(),
             email,
             nome,
-            plano: plano || 'Plano YouTube sem Anúncios',
+            plano: plano || 'youtube',
             dataCadastro: new Date().toISOString(),
             ativo: true
           };
@@ -131,10 +116,7 @@ export class AuthService {
           observer.next({ token, user, success: true });
           observer.complete();
         } else {
-          observer.error({
-            success: false,
-            message: 'Preencha todos os campos corretamente'
-          });
+          observer.error({ success: false, message: 'Preencha todos os campos corretamente' });
         }
       }, 1000);
     });
@@ -150,11 +132,6 @@ export class AuthService {
     this.isAuthenticatedSubject.next(false);
   }
 
-  getToken(): string | null {
-    if (!this.isBrowser()) return null;
-    return localStorage.getItem('token');
-  }
-
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
   }
@@ -163,25 +140,23 @@ export class AuthService {
     return !!this.getToken();
   }
 
+  updatePlano(novoPlano: string): void {
+    const user = this.currentUserSubject.value;
+
+    if (user) {
+      user.plano = novoPlano;
+      if (this.isBrowser()) {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+      }
+      this.currentUserSubject.next({ ...user });
+    }
+  }
+
   private generateToken(): string {
     return 'token_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
   }
 
   private generateId(): string {
     return 'user_' + Math.random().toString(36).substr(2, 9);
-  }
-
-  updatePlano(novoPlano: string): void {
-    const user = this.currentUserSubject.value;
-
-    if (user) {
-      user.plano = novoPlano;
-
-      if (this.isBrowser()) {
-        localStorage.setItem('currentUser', JSON.stringify(user));
-      }
-
-      this.currentUserSubject.next({ ...user });
-    }
   }
 }
