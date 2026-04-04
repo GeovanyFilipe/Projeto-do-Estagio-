@@ -108,6 +108,8 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  cursor: pointer;
+  user-select: none;
 }
 
 .dropdown-icon {
@@ -115,6 +117,7 @@
   margin-left: 4px;
 }
 
+/* Dropdown container */
 .dropdown-menu {
   position: absolute;
   top: 100%;
@@ -132,12 +135,14 @@
   z-index: 150;
 }
 
+/* Mostra quando ativo */
 .dropdown-menu.show {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
 }
 
+/* Dropdown item */
 .dropdown-item {
   display: flex;
   align-items: center;
@@ -179,6 +184,19 @@
   padding-left: 36px;
 }
 
+/* Hover para desktop */
+.nav-item.dropdown:hover > .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Mobile */
+.navbar-menu.mobile-open .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
 /* ======================== NAVBAR ACTIONS ======================== */
 .navbar-actions {
   display: flex;
@@ -309,6 +327,67 @@
   background: rgba(255, 255, 255, 0.3);
   border-color: rgba(255, 255, 255, 0.5);
   transform: translateY(-2px);
+}
+
+/* ======================== USER PROFILE DROPDOWN ======================== */
+/* ======================== USER PROFILE (AUTHENTICATED) ======================== */
+.navbar-actions-auth {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-left: auto;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+}
+
+.user-profile:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+
+.user-avatar {
+  width: 35px;
+  height: 35px;
+  background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.user-name {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 13px;
+  margin: 0;
+}
+
+.user-plan {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 11px;
+  margin: 0;
 }
 
 /* ======================== MOBILE TOGGLE ======================== */
@@ -476,3 +555,5 @@
     font-size: 13px;
   }
 }
+
+

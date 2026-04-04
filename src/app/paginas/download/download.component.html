@@ -1,4 +1,8 @@
 <app-menu></app-menu>
+<<<<<<< HEAD
+=======
+
+>>>>>>> HiddenCode
 <div class="pagina-container">
   <section class="hero">
     <h1>Download VPN</h1>
@@ -11,32 +15,34 @@
         <div class="icon">💻</div>
         <h3>Windows</h3>
         <p>Versão compatível com Windows 10+</p>
-        <button class="btn-download">Baixar para Windows</button>
+        <button class="btn-download" (click)="downloadApp('windows')">Baixar para Windows</button>
       </div>
       <div class="download-card">
         <div class="icon">🍎</div>
         <h3>macOS</h3>
         <p>Versão compatível com macOS 10.15+</p>
-        <button class="btn-download">Baixar para macOS</button>
+        <button class="btn-download" (click)="downloadApp('macos')">Baixar para macOS</button>
       </div>
       <div class="download-card">
         <div class="icon">🐧</div>
         <h3>Linux</h3>
         <p>Versão compatível com Ubuntu/Debian</p>
-        <button class="btn-download">Baixar para Linux</button>
+        <button class="btn-download" (click)="downloadApp('linux')">Baixar para Linux</button>
       </div>
       <div class="download-card">
         <div class="icon">📱</div>
         <h3>iOS</h3>
         <p>Disponível na App Store</p>
-        <button class="btn-download">Baixar para iOS</button>
+        <button class="btn-download" (click)="downloadApp('ios')">Baixar para iOS</button>
       </div>
       <div class="download-card">
         <div class="icon">🤖</div>
         <h3>Android</h3>
         <p>Disponível no Google Play</p>
-        <button class="btn-download">Baixar para Android</button>
+        <button class="btn-download" (click)="downloadApp('android')">Baixar para Android</button>
       </div>
     </div>
   </section>
 </div>
+
+<app-rodape></app-rodape>

@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MenuComponent } from '../../layout/menu/menu.component';
+import { RodapeComponent } from '../../layout/rodape/rodape.component';
 
 @Component({
   selector: 'app-porque',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MenuComponent,RodapeComponent],
   templateUrl: './porque.component.html',
   styleUrl: './porque.component.css'
 })

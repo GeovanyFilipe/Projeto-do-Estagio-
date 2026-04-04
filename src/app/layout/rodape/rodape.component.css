@@ -108,15 +108,28 @@
   color: #bdc3c7;
   text-decoration: none;
   font-size: 14px;
-  transition: all 0.3s ease;
+  font-weight: 500;
+  line-height: 1.6;
+  transition: all 0.2s ease;
   display: inline-block;
 }
 
-.footer-links a:hover {
+.footer-links a:hover,
+.footer-links a:focus,
+.footer-links a.active-link {
   color: #00d4ff;
-  padding-left: 8px;
-  transform: translateX(4px);
+  text-decoration: none;
+  transform: translateX(3px);
 }
+
+.legal-links {
+  margin-top: -8px;
+}
+
+.legal-links li {
+  margin: 6px 0;
+}
+
 
 /* ======================== FOOTER BOTTOM ======================== */
 .footer-bottom {
@@ -203,6 +216,8 @@
     height: 36px;
   }
 }
+
+
 .social-links a {
     color: #bdc3c7;
     transition: all 0.3s ease;

@@ -1,0 +1,146 @@
+.painel-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 40px 20px;
+}
+
+.painel-header {
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  color: #1e3a5f;
+}
+
+.painel-header h1 {
+  font-size: 36px;
+  margin: 0 0 10px 0;
+}
+
+.painel-header p {
+  margin: 0;
+  color: #666;
+  font-size: 16px;
+}
+
+.painel-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.painel-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.painel-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+.painel-card h2 {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%);
+  color: white;
+  padding: 20px;
+  margin: 0;
+  font-size: 20px;
+}
+
+.card-content {
+  padding: 25px;
+}
+
+.card-content p {
+  margin: 10px 0;
+  color: #333;
+}
+
+.card-content p:first-child {
+  margin-top: 0;
+}
+
+.status-ativo {
+  background: #d4edda;
+  color: #155724;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.dispositivo {
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.dispositivo:last-child {
+  border-bottom: none;
+}
+
+.dispositivo p {
+  margin: 5px 0;
+  color: #333;
+}
+
+.data {
+  font-size: 12px;
+  color: #999;
+}
+
+.btn-acao {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.btn-acao:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 153, 255, 0.3);
+}
+
+.btn-acao.secundario {
+  background: white;
+  color: #1e3a5f;
+  border: 2px solid #ddd;
+}
+
+.btn-acao.secundario:hover {
+  border-color: #0099ff;
+  color: #0099ff;
+}
+
+.btn-acao.perigo {
+  background: #f8d7da;
+  color: #721c24;
+  border: none;
+}
+
+.btn-acao.perigo:hover {
+  background: #f5c6cb;
+}
+
+.teste{
+  color: rgb(255, 250, 250);
+}
+
+@media (max-width: 768px) {
+  .painel-header {
+    margin-bottom: 25px;
+  }
+
+  .painel-header h1 {
+    font-size: 28px;
+  }
+}

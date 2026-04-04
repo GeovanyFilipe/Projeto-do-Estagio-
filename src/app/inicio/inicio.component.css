@@ -32,6 +32,39 @@
   width:100%;
   height:100%;
   object-fit:cover;
+  color: white;
+  min-height: 500px;
+  padding: 40px 20px;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(30,58,95,0.62) 0%, rgba(45,90,140,0.56) 48%, rgba(0,212,255,0.32) 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.hero-carousel {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-carousel .uk-slideshow-items,
+.hero-carousel .uk-slideshow-items li {
+  width: 100%;
+  height: 100%;
+}
+
+.hero-carousel .uk-slideshow-items img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .hero-content {
@@ -52,6 +85,57 @@
   border:none;
   border-radius:6px;
   cursor:pointer;
+  z-index: 3;
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 80px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  min-height: 500px;
+}
+
+.hero-title {
+  font-size: 56px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+  color: #ffffff;
+  color: #fff;
+}
+
+.hero-carousel .uk-slideshow-items,
+.hero-carousel .uk-slideshow-items li {
+  height: 100%;
+}
+
+.hero-carousel .uk-slideshow-items img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-carousel .uk-position-small {
+  color: #ffffff;
+}
+
+.hero-title {
+  font-size: 56px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.hero-title {
+  font-size: 56px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+    color: #fff;
 }
 
 .btn-primary { background: #00d4ff; color:white; }
@@ -72,4 +156,308 @@
   .hero-content { padding-top:80px; }
   .hero-title { font-size:24px; }
   .hero-subtitle { font-size:12px; }
+.hero-buttons {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.btn-primary {
+  padding: 15px 40px;
+  background: white;
+  color: #1e3a5f;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary {
+  padding: 15px 40px;
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: white;
+  color: #1e3a5f;
+  transform: translateY(-3px);
+}
+
+.hero-image img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ======================== FEATURED SECTION ======================== */
+.featured-section {
+  background: white;
+  padding: 40px 20px;
+  margin-bottom: 60px;
+}
+
+.featured-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 25px;
+}
+
+.featured-card {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e9f0f7 100%);
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.featured-card:hover {
+  border-color: #00d4ff;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+}
+
+.featured-card img {
+  height: 60px;
+  width: auto;
+  margin-bottom: 15px;
+}
+
+.featured-card h3 {
+  font-size: 18px;
+  color: #1e3a5f;
+  margin: 0 0 10px 0;
+}
+
+.featured-card p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+/* ======================== BENEFICIOS SECTION ======================== */
+.beneficios-section {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e9f0f7 100%);
+  padding: 80px 20px;
+}
+
+.beneficios-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.beneficios-wrapper h2 {
+  text-align: center;
+  font-size: 42px;
+  color: #1e3a5f;
+  margin: 0 0 60px 0;
+}
+
+.beneficios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.beneficio-item {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.beneficio-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.beneficio-icon {
+  font-size: 56px;
+  margin-bottom: 20px;
+}
+
+.beneficio-item h3 {
+  font-size: 22px;
+  color: #1e3a5f;
+  margin: 0 0 15px 0;
+}
+
+.beneficio-item p {
+  color: #666;
+  margin: 0;
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+/* ======================== CTA SECTION ======================== */
+.cta-section {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 50%, #0099ff 100%);
+  color: white;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.cta-content h2 {
+  font-size: 42px;
+  margin: 0 0 15px 0;
+  color: white;
+  color: #fff;
+}
+
+.cta-content p {
+  font-size: 18px;
+  margin: 0 0 40px 0;
+  opacity: 0.95;
+}
+
+.btn-large {
+  padding: 18px 50px;
+  background: #1e3a5f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-large:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* ======================== RESPONSIVE ======================== */
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: 520px;
+    padding: 20px;
+  }
+
+  .hero-title {
+    font-size: 36px;
+  }
+
+  .hero-subtitle {
+    font-size: 16px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+  }
+
+  .beneficios-wrapper h2,
+  .cta-section h2 {
+    font-size: 32px;
+  }
+
+  .beneficios-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 28px;
+  }
+
+  .featured-wrapper {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ======================== DROPDOWN ======================== */
+.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+  position: relative; /* necessário para posicionamento do menu */
+}
+
+.dropdown-icon {
+  transition: transform 0.3s ease;
+  margin-left: 4px;
+}
+
+/* Dropdown container */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border-radius: 12px;
+  min-width: 280px;
+  margin-top: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 8px;
+  z-index: 1001;
+}
+
+/* Mostra quando ativo */
+.dropdown-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Dropdown item */
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  color: #1e3a5f;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.dropdown-item:hover {
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(0, 153, 255, 0.1) 100%);
+  color: #0099ff;
+  transform: translateX(4px);
+}
+
+.dropdown-item .icon {
+  font-size: 18px;
+}
+
+/* Hover para desktop */
+.dropdown-toggle:hover > .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Mobile */
+.navbar-menu.mobile-open .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
 }

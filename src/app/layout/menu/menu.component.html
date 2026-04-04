@@ -39,9 +39,9 @@
               Plano YouTube sem Anúncios
             </a>
             <a href="/planos/gobierno" class="dropdown-item" (click)="closeMobileMenu()">
-              <span class="icon">🏛️</span>
-              Plano .GOV.AO
-            </a>
+  <span class="icon">🏛️</span>
+  Plano .GOV.AO
+</a>
           </div>
         </li>
 
@@ -79,20 +79,17 @@
       <!-- Botões de Ação - Não Autenticado -->
       <div class="navbar-actions" *ngIf="!isAuthenticated">
         <button class="btn-login" (click)="goToLogin()">Entrar</button>
-        <button class="btn-primary" (click)="closeMobileMenu()">Experimente Grátis</button>
       </div>
 
       <!-- Botões de Ação - Autenticado -->
       <div class="navbar-actions-auth" *ngIf="isAuthenticated">
-        <div class="user-profile">
+        <button class="user-profile" (click)="goToPerfil()">
           <div class="user-avatar">{{ (currentUser?.nome || 'U').charAt(0).toUpperCase() }}</div>
           <div class="user-info">
             <p class="user-name">{{ currentUser?.nome }}</p>
-            <p class="user-plan">{{ currentUser?.plano }}</p>
+            <p class="user-plan">{{ currentUser?.plano || 'Sem plano' }}</p>
           </div>
-        </div>
-        <button class="btn-dashboard" (click)="goToDashboard()">Meu Painel</button>
-        <button class="btn-logout" (click)="logout()">Sair</button>
+        </button>
       </div>
     </div>
   </div>

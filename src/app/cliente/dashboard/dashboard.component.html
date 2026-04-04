@@ -1,3 +1,5 @@
+<app-menu></app-menu>
+
 <div class="dashboard-container">
   <!-- Sidebar -->
   <aside class="sidebar">
@@ -11,7 +13,6 @@
         [class.active]="activeTab === 'overview'"
         (click)="selectTab('overview')"
       >
-        <span class="icon">📊</span>
         <span class="label">Visão Geral</span>
       </button>
 
@@ -20,7 +21,6 @@
         [class.active]="activeTab === 'plano'"
         (click)="selectTab('plano')"
       >
-        <span class="icon">🎯</span>
         <span class="label">Meu Plano</span>
       </button>
 
@@ -29,7 +29,6 @@
         [class.active]="activeTab === 'dispositivos'"
         (click)="selectTab('dispositivos')"
       >
-        <span class="icon">📱</span>
         <span class="label">Dispositivos</span>
       </button>
 
@@ -38,7 +37,6 @@
         [class.active]="activeTab === 'faturamento'"
         (click)="selectTab('faturamento')"
       >
-        <span class="icon">💳</span>
         <span class="label">Faturamento</span>
       </button>
 
@@ -47,7 +45,6 @@
         [class.active]="activeTab === 'suporte'"
         (click)="selectTab('suporte')"
       >
-        <span class="icon">💬</span>
         <span class="label">Suporte</span>
       </button>
     </nav>
@@ -360,3 +357,4 @@
     </div>
   </div>
 </div>
+

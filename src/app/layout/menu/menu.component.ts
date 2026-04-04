@@ -10,7 +10,7 @@ import { takeUntil } from 'rxjs/operators';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './menu.component.html',
-  styleUrl: './menu.component.css'
+  styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit, OnDestroy {
   isMobileMenuOpen = false;
@@ -25,19 +25,11 @@ export class MenuComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Se inscrever nas mudanças de autenticação
-    this.authService.isAuthenticated$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(isAuth => {
-      this.isAuthenticated = isAuth;
-    });
+    this.authService.isAuthenticated$.pipe(takeUntil(this.destroy$))
+      .subscribe(isAuth => this.isAuthenticated = isAuth);
 
-    // Se inscrever nas mudanças do usuário
-    this.authService.currentUser$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(user => {
-      this.currentUser = user;
-    });
+    this.authService.currentUser$.pipe(takeUntil(this.destroy$))
+      .subscribe(user => this.currentUser = user);
   }
 
   ngOnDestroy(): void {
@@ -45,12 +37,19 @@ export class MenuComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  // ================= MOBILE MENU =================
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
 
   closeMobileMenu() {
     this.isMobileMenuOpen = false;
+    this.activeDropdown = null;
+  }
+
+  // ================= DROPDOWN =================
+  toggleDropdown(dropdown: string) {
+    this.activeDropdown = this.activeDropdown === dropdown ? null : dropdown;
   }
 
   openDropdown(dropdown: string) {
@@ -63,13 +62,19 @@ export class MenuComponent implements OnInit, OnDestroy {
     }
   }
 
+  // ================= NAVIGATION =================
   goToLogin(): void {
     this.router.navigate(['/login']);
     this.closeMobileMenu();
   }
 
+  goToCadastro(): void {
+    this.router.navigate(['/cadastro']); // ajusta conforme sua rota de cadastro
+    this.closeMobileMenu();
+  }
+
   goToDashboard(): void {
-    this.router.navigate(['/cliente/dashboard']);
+    this.router.navigate(['/dashboard']);
     this.closeMobileMenu();
   }
 
@@ -78,5 +83,24 @@ export class MenuComponent implements OnInit, OnDestroy {
     this.router.navigate(['/']);
     this.closeMobileMenu();
   }
-}
 
+  goToPlanos(): void {
+    this.router.navigate(['/planos']);
+    this.closeMobileMenu();
+  }
+
+  goToPerfil(): void {
+    this.router.navigate(['/cliente/dashboard'], { fragment: 'perfil' });
+    this.closeMobileMenu();
+  }
+
+  goToSuporte(): void {
+    this.router.navigate(['/suporte/tecnico']);
+    this.closeMobileMenu();
+  }
+
+  // ================= UTILITÁRIO =================
+  isDropdownOpen(dropdown: string): boolean {
+    return this.activeDropdown === dropdown;
+  }
+}

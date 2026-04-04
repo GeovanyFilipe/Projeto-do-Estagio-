@@ -1,11 +1,13 @@
+<app-menu></app-menu>
+
 <div class="pagina-container">
   <section class="hero">
     <h1>Suporte Técnico</h1>
     <p>Resolvemos seus problemas técnicos rapidamente</p>
   </section>
 
-  <section class="suporte-container">
-    <div class="suporte-content">
+  <section class="suporte-container ">
+    <div class="suporte-content .m-plite">
       <div class="faq-section">
         <h2>Perguntas Frequentes</h2>
         <div class="faq-item">
@@ -26,8 +28,9 @@
         <h2>Entre em Contato</h2>
         <p>Email: suporte&#64;angolanovpn.ao</p>
         <p>Whatsapp: +244 931 234 567</p>
-        <button class="btn-chat">Chat ao Vivo 24/7</button>
+        <button class="btn-chat" (click)="abrirChatAoVivo()">Chat ao Vivo 24/7</button>
       </div>
     </div>
   </section>
 </div>
+<app-rodape></app-rodape>

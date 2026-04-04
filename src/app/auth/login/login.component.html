@@ -110,14 +110,6 @@
         />
       </div>
 
-      <div class="form-group">
-        <label for="plano">Plano</label>
-        <select id="plano" name="plano" [(ngModel)]="plano">
-          <option value="Plano YouTube sem Anúncios">Plano YouTube sem Anúncios (AOA 5.99/mês)</option>
-          <option value="Plano .GOV.AO">Plano .GOV.AO (AOA 9.99/mês)</option>
-        </select>
-      </div>
-
       <button type="submit" class="btn-submit" [disabled]="loading">
         <span *ngIf="!loading">Cadastrar</span>
         <span *ngIf="loading">Carregando...</span>
@@ -130,9 +122,9 @@
 
     <!-- Links úteis -->
     <div class="footer-links">
-      <a routerLink="/">Voltar para início</a>
+      <a href="/">Voltar para início</a>
       <span>•</span>
-      <a routerLink="/suporte/tecnico">Precisa de ajuda?</a>
+     <a href="/suporte/tecnico">Precisa de ajuda?</a>     
     </div>
   </div>
 </div>

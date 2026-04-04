@@ -14,6 +14,7 @@
   font-size: 48px;
   margin: 0 0 20px 0;
   font-weight: 700;
+  color: #fff;
 }
 
 .hero p {
@@ -76,8 +77,12 @@
 }
 
 .detalhes-imagem img {
-  width: 100%;
+  width: 500%;
+  max-width: 300px;
+  height: 70vh;
   border-radius: 12px;
+  display: block;
+  margin: 0 auto;
 }
 
 @media (max-width: 768px) {

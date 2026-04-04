@@ -4,11 +4,11 @@
     <div class="footer-content">
       <!-- Coluna 1: Logo e Descrição -->
       <div class="footer-section footer-brand">
-        <div class="footer-logo">
+        <div class="footer-logo"> 
           <img src="/imagens/logo.svg" alt="Angolan VPN">
           <h3>Angolan VPN</h3>
         </div>
-        <p>Sua privacidade é nossa prioridade. VPN segura, rápida e confiável.</p>
+        <p>Conectando o Mundo à Internet Angolana VPN segura, rápida e confiável.</p>
         <div class="social-links">
           <a href="#" class="social-icon" title="Facebook">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -39,7 +39,9 @@
         <ul class="footer-links">
           <li><a href="/">Início</a></li>
           <li><a href="/porque">Porquê Angolan VPN?</a></li>
-          <li><a href="/planos">Planos</a></li>
+          <li><a href="/planos">Nossos Planos</a></li>
+          <li><a href="/planos/youtube">Comprar Plano YouTube</a></li>
+          <li><a href="/planos/gobierno">Comprar Plano GOV.AO</a></li>
           <li><a href="/download">Download</a></li>
           <li><a href="/empresas">Para Empresas</a></li>
         </ul>
@@ -51,19 +53,17 @@
         <ul class="footer-links">
           <li><a href="/suporte/tecnico">Suporte Técnico</a></li>
           <li><a href="/suporte/comercial">Suporte Comercial</a></li>
-          <li><a href="#" onclick="openChat()">Chat ao Vivo</a></li>
-          <li><a href="#" onclick="openemail()">Email</a></li>
         </ul>
       </div>
 
       <!-- Coluna 4: Legal -->
       <div class="footer-section">
         <h4>Legal</h4>
-        <ul class="footer-links">
-          <li><a href="#">Termos e Condições</a></li>
-          <li><a href="#">Política de Privacidade</a></li>
-          <li><a href="#">Política de Cookies</a></li>
-          <li><a href="#">Proteção de Dados</a></li>
+        <ul class="footer-links legal-links">
+          <li><a [routerLink]="['/termos']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Termos e Condições</a></li>
+          <li><a [routerLink]="['/privacidade']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Política de Privacidade</a></li>
+          <li><a [routerLink]="['/cookies']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Política de Cookies</a></li>
+          <li><a [routerLink]="['/protecao']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Proteção de Dados</a></li>
         </ul>
       </div>
     </div>
@@ -72,10 +72,6 @@
     <div class="footer-bottom">
       <div class="footer-bottom-content">
         <p>&copy; 2026 Angolan VPN. Todos os direitos reservados.</p>
-        <p class="payment-methods">
-          <span class="method-label">Formas de Pagamento:</span>
-          💳 Cartão 📱 MobileMoneyAO 🏦 Transferência
-        </p>
       </div>
     </div>
   </div>

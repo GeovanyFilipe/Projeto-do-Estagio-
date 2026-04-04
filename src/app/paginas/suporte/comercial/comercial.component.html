@@ -1,3 +1,5 @@
+<app-menu></app-menu>
+
 <div class="pagina-container">
   <section class="hero">
     <h1>Suporte Comercial</h1>
@@ -21,13 +23,15 @@
 
       <div class="form-section">
         <h2>Fale Conosco</h2>
-        <form class="contact-form">
-          <input type="text" placeholder="Seu nome" required>
-          <input type="email" placeholder="Seu email" required>
-          <textarea placeholder="Sua mensagem" rows="5" required></textarea>
-          <button type="submit" class="btn-enviar">Enviar Mensagem</button>
+        <form class="contact-form" (ngSubmit)="enviarMensagem()" #form="ngForm">
+          <input type="text" placeholder="Seu nome" name="nome" required [(ngModel)]="nome">
+          <input type="email" placeholder="Seu email" name="email" required [(ngModel)]="email">
+          <textarea placeholder="Sua mensagem" rows="5" name="mensagem" required [(ngModel)]="mensagem"></textarea>
+          <button type="submit" class="btn-enviar" [disabled]="!form.form.valid">Enviar Mensagem</button>
         </form>
+        <p class="helper-text">As mensagens são armazenadas em localStorage e encaminhadas ao suporte comercial no próximo atendimento.</p>
       </div>
     </div>
   </section>
 </div>
+<app-rodape></app-rodape>

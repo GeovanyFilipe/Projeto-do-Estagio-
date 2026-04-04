@@ -24,6 +24,54 @@
       <button class="btn-secondary">Saiba Mais</button>
     </div>
   </div>
+  <div class="hero-carousel" uk-slideshow="animation: push; autoplay: true; autoplay-interval: 5000; pause-on-hover: true">
+    <ul class="uk-slideshow-items">
+      <li>
+        <img src="/imagens/luanda7.avif" alt="Pessoa negra usando telefone fora de Angola" uk-cover>
+      </li>
+      <li>
+        <img src="/imagens/luanda3.avif" alt="Pessoa negra trabalhando no computador fora de Angola" uk-cover>
+      </li>
+      <li>
+        <img src="/imagens/luanda11.avif" alt="Equipe negra usando dispositivos fora de Angola" uk-cover>
+      </li>
+      <li>
+        <img src="/imagens/luanda9.avif" alt="Mulher negra usando notebook fora de Angola" uk-cover>
+      </li>
+      <li>
+        <img src="/imagens/luanda8.png" alt="Jovem negro usando celular fora de Angola" uk-cover>
+      </li>
+    </ul>
+
+    <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
+    <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
+    <ul class="uk-slideshow-nav uk-dotnav uk-flex-center uk-margin"></ul>
+  </div>
+
+  <div class="hero-content">
+    <h1 class="hero-title">Conectando o Mundo à Internet Angolana</h1>
+    <p class="hero-subtitle">O AngolanVPN é uma VPN que melhora a conectividade à internet angolana, garantindo acesso seguro, eficiente e uma melhor experiência digital.</p>
+
+    <div class="hero-buttons">
+      <!-- Botão Experimente Grátis -->
+      <button class="btn-primary" (click)="goToCadastro()" *ngIf="!isAuthenticated">Experimente Grátis</button>
+
+      <!-- Botão Planos -->
+      <div class="btn-secondary" (click)="toggleDropdown('planos')">
+        Planos ▼
+        <div class="dropdown-menu" [class.show]="activeDropdown === 'planos'">
+          <a class="dropdown-item" (click)="goToPlano('youtube')">
+            <span class="icon">📺</span>
+            Plano YouTube sem Anúncios
+          </a>
+          <a class="dropdown-item" (click)="goToPlano('gov')">
+            <span class="icon">🏛️</span>
+            Plano .GOV.AO
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- Slider Component -->
@@ -33,19 +81,28 @@
 <section class="featured-section">
   <div class="featured-wrapper">
     <div class="featured-card">
-      <img src="/imagens/youtube.svg" alt="YouTube Premium">
-      <h3>YouTube sem Anúncios</h3>
-      <p>Acesse YouTube Premium com Angolan VPN</p>
+      <h3>Portais governamentais:</h3>
+      <p>Reduza o tempo de espera e evite falhas ao
+        acessar plataformas
+        como o Portal do
+        Cidadão ou sistemas de
+        pagamentos do estado.</p>
     </div>
     <div class="featured-card">
-      <img src="/imagens/angola-play.svg" alt="Angola Play">
-      <h3>Angola Play</h3>
-      <p>Conteúdo Premium de Angola</p>
+      <h3>Interações empresariais com o governo:</h3>
+      <p>Facilitando o envio de
+        documentos, submissão de
+        propostas e outras atividades
+        críticas.</p>
     </div>
     <div class="featured-card">
-      <img src="/imagens/governo.svg" alt="Governo">
-      <h3>Portais Governamentais</h3>
-      <p>Acesso a sites .GOV.AO</p>
+      <h3>Emissão de documentos oficiais:</h3>
+      <p>Como bilhete de
+          identidade,
+          passaporte, registos,
+          licenças, e outros
+          serviços essenciais.
+          </p>
     </div>
   </div>
 </section>
@@ -88,6 +145,12 @@
         <h3>Preços Justos</h3>
         <p>Acessibilidade para todos os orçamentos</p>
       </div>
+      <div class="beneficio-item"><div class="beneficio-icon">🔒</div><h3>Criptografia Forte</h3><p>Proteção de nível militar para seus dados com AES-256</p></div>
+      <div class="beneficio-item"><div class="beneficio-icon">⚡</div><h3>Velocidade Máxima</h3><p>Servidores otimizados para melhor desempenho</p></div>
+      <div class="beneficio-item"><div class="beneficio-icon">📱</div><h3>Todos os Dispositivos</h3><p>Windows, macOS, Linux, iOS e Android</p></div>
+      <div class="beneficio-item"><div class="beneficio-icon">🌍</div><h3>Múltiplos Servidores</h3><p>Conecte-se em vários países ao redor do mundo</p></div>
+      <div class="beneficio-item"><div class="beneficio-icon">💬</div><h3>Suporte 24/7</h3><p>Equipe dedicada em português pronta para ajudar</p></div>
+      <div class="beneficio-item"><div class="beneficio-icon">💰</div><h3>Preços Justos</h3><p>Acessibilidade para todos os orçamentos</p></div>
     </div>
   </div>
 </section>
@@ -95,9 +158,8 @@
 <!-- CTA Section -->
 <section class="cta-section">
   <div class="cta-content">
-    <h2>Pronto para Proteger sua Privacidade?</h2>
-    <p>Comece seu teste gratuito sem necessidade de cartão de crédito</p>
-    <button class="btn-large">Iniciar Teste Grátis</button>
+    <h2>Ver mapa dos servidores</h2>
+    <button class="btn-large" (click)="goToMapa()">ver mapa</button>
   </div>
 </section>
 
