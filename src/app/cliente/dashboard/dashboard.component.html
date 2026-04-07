@@ -56,6 +56,45 @@
     </div>
   </aside>
 
+  <!-- Navegação Mobile -->
+  <nav class="mobile-nav">
+    <button 
+      class="mobile-nav-item" 
+      [class.active]="activeTab === 'overview'"
+      (click)="selectTab('overview')"
+    >
+      Visão Geral
+    </button>
+    <button 
+      class="mobile-nav-item" 
+      [class.active]="activeTab === 'plano'"
+      (click)="selectTab('plano')"
+    >
+      Meu Plano
+    </button>
+    <button 
+      class="mobile-nav-item" 
+      [class.active]="activeTab === 'dispositivos'"
+      (click)="selectTab('dispositivos')"
+    >
+      Dispositivos
+    </button>
+    <button 
+      class="mobile-nav-item" 
+      [class.active]="activeTab === 'faturamento'"
+      (click)="selectTab('faturamento')"
+    >
+      Faturamento
+    </button>
+    <button 
+      class="mobile-nav-item" 
+      [class.active]="activeTab === 'suporte'"
+      (click)="selectTab('suporte')"
+    >
+      Suporte
+    </button>
+  </nav>
+
   <!-- Conteúdo Principal -->
   <main class="main-content">
     <!-- Header -->

@@ -9,7 +9,7 @@
     </div>
 
     <!-- Menu Hamburguês Mobile -->
-    <button class="mobile-toggle" (click)="toggleMobileMenu()" [class.active]="isMobileMenuOpen">
+    <button class="mobile-toggle" (click)="toggleMobileMenu()" [class.active]="isMobileMenuOpen" aria-label="Abrir menu" [attr.aria-expanded]="isMobileMenuOpen">
       <span></span>
       <span></span>
       <span></span>
@@ -23,8 +23,8 @@
         </li>
 
         <!-- Dropdown Planos -->
-        <li class="nav-item dropdown" (mouseenter)="openDropdown('planos')" (mouseleave)="closeDropdown('planos')">
-          <a href="#" class="nav-link dropdown-toggle">
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" (click)="toggleDropdown('planos')" [class.active]="activeDropdown === 'planos'" (mouseenter)="openDropdown('planos')" (mouseleave)="closeDropdown('planos')">
             Planos
             <svg class="dropdown-icon" width="12" height="8" viewBox="0 0 12 8" fill="none">
               <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -36,9 +36,9 @@
               Plano YouTube sem Anúncios
             </a>
             <a href="/planos/gobierno" class="dropdown-item" (click)="closeMobileMenu()">
-  <span class="icon">🏛️</span>
-  Plano .GOV.AO
-</a>
+              <span class="icon">🏛️</span>
+              Plano .GOV.AO
+            </a>
           </div>
         </li>
 
@@ -50,8 +50,8 @@
         </li>
 
         <!-- Dropdown Contacto -->
-        <li class="nav-item dropdown" (mouseenter)="openDropdown('contacto')" (mouseleave)="closeDropdown('contacto')">
-          <a href="#" class="nav-link dropdown-toggle">
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" (click)="toggleDropdown('contacto')" [class.active]="activeDropdown === 'contacto'" (mouseenter)="openDropdown('contacto')" (mouseleave)="closeDropdown('contacto')">
             Contacto
             <svg class="dropdown-icon" width="12" height="8" viewBox="0 0 12 8" fill="none">
               <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -87,8 +87,12 @@
             <p class="user-plan">{{ currentUser?.plano || 'Sem plano' }}</p>
           </div>
         </button>
+        <button class="btn-logout" (click)="logout()">Sair</button>
       </div>
     </div>
+
+    <!-- Overlay para fechar menu mobile -->
+    <div class="mobile-overlay" [class.show]="isMobileMenuOpen" (click)="closeMobileMenu()"></div>
   </div>
 </nav>
 
