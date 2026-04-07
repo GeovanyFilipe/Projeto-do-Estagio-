@@ -1,37 +1,6 @@
-/* ======================== NAVBAR CONTAINER ======================== */
-.navbar-container { background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%); box-shadow: 0 4px 20px rgba(0,0,0,0.1); position: sticky; top:0; z-index:1000; transition:all 0.3s ease;}
-.navbar-wrapper { max-width:1200px; margin:0 auto; padding:0 20px; display:flex; justify-content:space-between; align-items:center; height:70px; }
-
 /* ======================== HERO SECTION ======================== */
 .hero-section {
   position: relative;
-  height: 600px;
-  overflow: hidden;
-}
-
-.hero-slider {
-  position: absolute;
-  top:0; left:0;
-  width:100%;
-  height:100%;
-  z-index:0;
-}
-
-.hero-slider .slide {
-  position:absolute;
-  top:0; left:0;
-  width:100%;
-  height:100%;
-  opacity:0;
-  transition: opacity 1s ease-in-out;
-}
-
-.hero-slider .slide.active { opacity:1; }
-
-.hero-slider img {
-  width:100%;
-  height:100%;
-  object-fit:cover;
   color: white;
   min-height: 500px;
   padding: 40px 20px;
@@ -69,22 +38,6 @@
 
 .hero-content {
   position: relative;
-  z-index: 1;
-  text-align:center;
-  color: #fff;
-  padding-top:150px;
-}
-
-.hero-title { font-size:48px; font-weight:700; margin:0; }
-.hero-subtitle { font-size:18px; margin:10px 0 20px 0; }
-
-.hero-buttons button {
-  padding:12px 25px;
-  font-size:16px;
-  margin:0 5px;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
   z-index: 3;
   max-width: 760px;
   margin: 0 auto;
@@ -138,24 +91,12 @@
     color: #fff;
 }
 
-.btn-primary { background: #00d4ff; color:white; }
-.btn-secondary { background: rgba(255,255,255,0.3); color:white; }
-
-/* ======================== RESTANTE CSS (Navbar, Featured, Benefícios, CTA etc.) ======================== */
-/* Mantive todo o CSS que você me enviou antes (navbar, featured, benefícios, cta, mobile etc.) */
-/* Apenas ajuste o hero-section conforme acima */
-
-/* RESPONSIVE */
-@media (max-width:768px) {
-  .hero-content { padding-top:100px; }
-  .hero-title { font-size:32px; }
-  .hero-subtitle { font-size:14px; }
+.hero-subtitle {
+  font-size: 20px;
+  opacity: 0.95;
+  margin: 0;
 }
 
-@media (max-width:480px) {
-  .hero-content { padding-top:80px; }
-  .hero-title { font-size:24px; }
-  .hero-subtitle { font-size:12px; }
 .hero-buttons {
   display: flex;
   gap: 20px;
@@ -461,5 +402,4 @@
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
-}
 }
