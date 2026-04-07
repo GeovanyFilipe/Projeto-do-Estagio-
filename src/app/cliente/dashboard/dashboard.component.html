@@ -1,3 +1,5 @@
+<app-menu></app-menu>
+
 <div class="dashboard-container">
   <!-- Sidebar -->
   <aside class="sidebar">
@@ -11,7 +13,6 @@
         [class.active]="activeTab === 'overview'"
         (click)="selectTab('overview')"
       >
-        <span class="icon">📊</span>
         <span class="label">Visão Geral</span>
       </button>
 
@@ -20,7 +21,6 @@
         [class.active]="activeTab === 'plano'"
         (click)="selectTab('plano')"
       >
-        <span class="icon">🎯</span>
         <span class="label">Meu Plano</span>
       </button>
 
@@ -29,7 +29,6 @@
         [class.active]="activeTab === 'dispositivos'"
         (click)="selectTab('dispositivos')"
       >
-        <span class="icon">📱</span>
         <span class="label">Dispositivos</span>
       </button>
 
@@ -38,7 +37,6 @@
         [class.active]="activeTab === 'faturamento'"
         (click)="selectTab('faturamento')"
       >
-        <span class="icon">💳</span>
         <span class="label">Faturamento</span>
       </button>
 
@@ -47,18 +45,55 @@
         [class.active]="activeTab === 'suporte'"
         (click)="selectTab('suporte')"
       >
-        <span class="icon">💬</span>
         <span class="label">Suporte</span>
       </button>
     </nav>
 
     <div class="sidebar-footer">
       <button class="btn-logout" (click)="confirmLogout()">
-        <span class="icon">🚪</span>
         <span class="label">Sair</span>
       </button>
     </div>
   </aside>
+
+  <!-- Navegação Mobile -->
+  <nav class="mobile-nav">
+    <button 
+      class="mobile-nav-item" 
+      [class.active]="activeTab === 'overview'"
+      (click)="selectTab('overview')"
+    >
+      Visão Geral
+    </button>
+    <button 
+      class="mobile-nav-item" 
+      [class.active]="activeTab === 'plano'"
+      (click)="selectTab('plano')"
+    >
+      Meu Plano
+    </button>
+    <button 
+      class="mobile-nav-item" 
+      [class.active]="activeTab === 'dispositivos'"
+      (click)="selectTab('dispositivos')"
+    >
+      Dispositivos
+    </button>
+    <button 
+      class="mobile-nav-item" 
+      [class.active]="activeTab === 'faturamento'"
+      (click)="selectTab('faturamento')"
+    >
+      Faturamento
+    </button>
+    <button 
+      class="mobile-nav-item" 
+      [class.active]="activeTab === 'suporte'"
+      (click)="selectTab('suporte')"
+    >
+      Suporte
+    </button>
+  </nav>
 
   <!-- Conteúdo Principal -->
   <main class="main-content">
@@ -361,3 +396,4 @@
     </div>
   </div>
 </div>
+

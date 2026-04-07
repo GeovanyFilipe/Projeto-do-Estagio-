@@ -26,6 +26,7 @@ export const routes: Routes = [
     { path: 'planos/gobierno', loadComponent: () => import('./paginas/planos/gobierno/gobierno.component').then(m => m.GobiernoComponent) },
     { path: 'download', loadComponent: () => import('./paginas/download/download.component').then(m => m.DownloadComponent) },
     { path: 'empresas', loadComponent: () => import('./paginas/empresas/empresas.component').then(m => m.EmpresasComponent) },
+    { path: 'mapa', loadComponent: () => import('./paginas/mapa/mapa.component').then(m => m.MapaComponent) },
     // Suporte
     { path: 'suporte/tecnico', loadComponent: () => import('./paginas/suporte/tecnico/tecnico.component').then(m => m.TecnicoComponent) },
     { path: 'suporte/comercial', loadComponent: () => import('./paginas/suporte/comercial/comercial.component').then(m => m.ComercialComponent) },

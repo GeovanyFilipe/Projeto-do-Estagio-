@@ -1,0 +1,37 @@
+<app-menu></app-menu>
+<div class="vpn-app">
+  <main class="main-area">
+    <header class="top-bar">
+      <div>
+        <h1>Angolan Vpn</h1>
+        <p>Conexão rápida e segura para acesso local</p>
+      </div>
+     <button class="btn-primary" (click)="toggleConnection()">{{connectButtonLabel}}</button>
+    </header>
+
+    <section class="map-area">
+      <div #map class="map"></div>
+    </section>
+
+<section class="info-area" *ngIf="isConnected">
+  <div class="info-card">
+    <span>Status</span>
+    <strong [ngClass]="statusClass">{{statusText}}</strong>
+  </div>
+  <div class="info-card">
+    <span>País</span>
+    <strong>{{country}}</strong>
+  </div>
+  <div class="info-card">
+    <span>IP</span>
+    <strong>{{fakeIp}}</strong>
+  </div>
+  <div class="info-card">
+    <span>Provedor</span>
+    <strong>{{provider}}</strong>
+  </div>
+</section>
+  </main>
+  <app-rodape></app-rodape>
+
+</div>

@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService, User } from '../../services/auth.service';
+import { MenuComponent } from '../../layout/menu/menu.component';
+import { RodapeComponent } from '../../layout/rodape/rodape.component';
 
 @Component({
   selector: 'app-cliente-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MenuComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })

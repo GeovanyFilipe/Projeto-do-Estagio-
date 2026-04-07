@@ -84,6 +84,21 @@ export class MenuComponent implements OnInit, OnDestroy {
     this.closeMobileMenu();
   }
 
+  goToPlanos(): void {
+    this.router.navigate(['/planos']);
+    this.closeMobileMenu();
+  }
+
+  goToPerfil(): void {
+    this.router.navigate(['/cliente/dashboard'], { fragment: 'perfil' });
+    this.closeMobileMenu();
+  }
+
+  goToSuporte(): void {
+    this.router.navigate(['/suporte/tecnico']);
+    this.closeMobileMenu();
+  }
+
   // ================= UTILITÁRIO =================
   isDropdownOpen(dropdown: string): boolean {
     return this.activeDropdown === dropdown;
