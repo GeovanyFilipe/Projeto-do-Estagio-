@@ -15,8 +15,11 @@
         <button class="btn-download" (click)="downloadApp('windows')">Baixar para Windows</button>
       </div>
       <div class="download-card">
-        <div class="icon">🍎</div>
-        <h3>macOS</h3>
+        <!-- Ícone da Apple -->
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="black">
+  <path d="M19.665 13.12c-.011-2.61 2.138-3.86 2.233-3.92-1.215-1.78-3.097-2.02-3.765-2.05-1.598-.163-3.107.941-3.908.941-.805 0-2.045-.92-3.368-.898-1.732.021-3.33 1.014-4.21 2.577-1.798 3.115-.457 7.725 1.296 10.26.865 1.197 1.89 2.541 3.234 2.497 1.306-.045 1.797-.847 3.369-.847 1.566 0 2.02.847 3.38.82 1.371-.029 2.234-1.21 3.093-2.418 1.008-1.39 1.42-2.742 1.443-2.815-.032-.016-2.78-1.066-2.79-4.027zM16.332 4.333c.688-.831 1.152-1.997 1.024-3.154-.988.04-2.188.658-2.896 1.488-.63.736-1.182 1.895-1.032 3.006 1.094.085 2.205-.554 2.904-1.34z"/>
+</svg>
+        <h3>macOS/IOS</h3>
         <p>Versão compatível com macOS 10.15+</p>
         <button class="btn-download" (click)="downloadApp('macos')">Baixar para macOS</button>
       </div>
@@ -25,12 +28,6 @@
         <h3>Linux</h3>
         <p>Versão compatível com Ubuntu/Debian</p>
         <button class="btn-download" (click)="downloadApp('linux')">Baixar para Linux</button>
-      </div>
-      <div class="download-card">
-        <div class="icon">📱</div>
-        <h3>iOS</h3>
-        <p>Disponível na App Store</p>
-        <button class="btn-download" (click)="downloadApp('ios')">Baixar para iOS</button>
       </div>
       <div class="download-card">
         <div class="icon">🤖</div>
