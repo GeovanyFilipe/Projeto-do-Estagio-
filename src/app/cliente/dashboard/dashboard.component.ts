@@ -1,7 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
 import { AuthService, User } from '../../services/auth.service';
 import { MenuComponent } from '../../layout/menu/menu.component';
 import { RodapeComponent } from '../../layout/rodape/rodape.component';
@@ -13,12 +12,10 @@ import { RodapeComponent } from '../../layout/rodape/rodape.component';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class ClienteDashboardComponent implements OnInit, OnDestroy {
+export class ClienteDashboardComponent implements OnInit {
   currentUser: User | null = null;
   activeTab: string = 'overview';
   showLogoutConfirm: boolean = false;
-  
-  private destroy$ = new Subject<void>();
 
   devices = [
     { id: 1, nome: 'Notebook - Chrome', status: 'Ativo', ip: '192.168.1.100', ultimoAcesso: '2 min atrás' },
@@ -80,17 +77,12 @@ export class ClienteDashboardComponent implements OnInit, OnDestroy {
     this.showLogoutConfirm = true;
   }
 
-  cancelLogout(): void {
-    this.showLogoutConfirm = false;
-  }
-
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/']);
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+  cancelLogout(): void {
+    this.showLogoutConfirm = false;
   }
 }
