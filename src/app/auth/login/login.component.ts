@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService, LoginResponse } from '../../services/auth.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +13,7 @@ import { AuthService, LoginResponse } from '../../services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   email: string = '';
   password: string = '';
   nome: string = '';
@@ -20,6 +22,14 @@ export class LoginComponent implements OnInit {
   error: string = '';
   success: string = '';
   returnUrl: string = '';
+  selectedPlano: string = '';
+
+  private destroy$ = new Subject<void>();
+
+  planos = [
+    { id: 'youtube', nome: 'Plano YouTube sem Anúncios', preco: 'AOA 5.99/mês' },
+    { id: 'gov', nome: 'Plano .GOV.AO', preco: 'AOA 9.99/mês' }
+  ];
 
   constructor(
     private authService: AuthService,
@@ -28,16 +38,10 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Pega a URL de retorno da query ou padrão para o painel
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/cliente/dashboard';
-
-    // Verificar se deve iniciar no modo cadastro
     const mode = this.route.snapshot.queryParams['mode'];
-    if (mode === 'register') {
-      this.isRegister = true;
-    }
+    if (mode === 'register') this.isRegister = true;
 
-    // Se já estiver autenticado, redirecionar para returnUrl
     if (this.authService.isAuthenticated()) {
       this.router.navigate([this.returnUrl]);
     }
@@ -61,21 +65,19 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.error = '';
 
-    this.authService.login(this.email, this.password).subscribe({
-      next: (response: LoginResponse) => {
-        this.loading = false;
-        this.success = 'Login realizado com sucesso!';
-
-        setTimeout(() => {
-          // Redireciona para a página de onde o usuário veio
-          this.router.navigateByUrl(this.returnUrl);
-        }, 1500);
-      },
-      error: (err: any) => {
-        this.loading = false;
-        this.error = err.message || 'Erro ao fazer login. Tente novamente.';
-      }
-    });
+    this.authService.login(this.email, this.password)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response: LoginResponse) => {
+          this.loading = false;
+          this.success = 'Login realizado com sucesso!';
+          setTimeout(() => this.router.navigate([this.returnUrl]), 1500);
+        },
+        error: (err: any) => {
+          this.loading = false;
+          this.error = err.message || 'Erro ao fazer login. Tente novamente.';
+        }
+      });
   }
 
   register(): void {
@@ -92,28 +94,30 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.error = '';
 
-    // Cadastro sem plano - usuário escolherá depois
-    this.authService.register(this.email, this.password, this.nome, '').subscribe({
-      next: (response: LoginResponse) => {
-        this.loading = false;
-        this.success = 'Cadastro realizado com sucesso! Bem-vindo!';
-        setTimeout(() => {
-          // Redireciona para a página inicial ou outra página que desejar
-          this.router.navigate(['/']);
-        }, 1500);
-      },
-      error: (err: any) => {
-        this.loading = false;
-        this.error = err.message || 'Erro ao fazer cadastro. Tente novamente.';
-      }
-    });
+    const plano = this.selectedPlano || this.planos[0].id;
+
+    this.authService.register(this.email, this.password, this.nome, plano)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response: LoginResponse) => {
+          this.loading = false;
+          this.success = 'Cadastro realizado com sucesso! Bem-vindo!';
+          setTimeout(() => this.router.navigate([this.returnUrl]), 1500);
+        },
+        error: (err: any) => {
+          this.loading = false;
+          this.error = err.message || 'Erro ao fazer cadastro. Tente novamente.';
+        }
+      });
   }
 
   submit(): void {
-    if (this.isRegister) {
-      this.register();
-    } else {
-      this.login();
-    }
+    if (this.isRegister) this.register();
+    else this.login();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

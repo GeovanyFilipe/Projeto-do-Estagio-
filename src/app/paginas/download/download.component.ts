@@ -6,7 +6,7 @@ import { RodapeComponent } from '../../layout/rodape/rodape.component';
 @Component({
   selector: 'app-download',
   standalone: true,
-  imports: [CommonModule, MenuComponent,RodapeComponent],
+  imports: [CommonModule, MenuComponent, RodapeComponent],
   templateUrl: './download.component.html',
   styleUrl: './download.component.css'
 })
