@@ -38,6 +38,8 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   text-align: center;
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .download-card:hover {
@@ -45,9 +47,10 @@
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
 }
 
-.download-card .icon {
-  font-size: 48px;
-  margin-bottom: 15px;
+.download-card svg,
+.download-card img {
+  display: block;
+  margin: 0 auto 15px auto;
 }
 
 .download-card h3 {
@@ -73,6 +76,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   width: 100%;
+  margin-top: auto;
 }
 
 .btn-download:hover {
