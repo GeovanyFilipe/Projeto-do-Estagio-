@@ -65,6 +65,7 @@
 /* Social Links */
 .social-links {
   display: flex;
+  
   gap: 15px;
   list-style: none;
   padding: 0;
