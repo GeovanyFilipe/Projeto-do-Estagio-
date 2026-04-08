@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VPN Spinning Earth Logo</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #0f172a; /* Dark professional blue background */
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+  }
+  .logo-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .earth-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    height: 400px;
+  }
+  .earth {
+    width: 300px;
+    height: 300px;
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Solarsystemscope_texture_8k_earth_daymap.jpg/1024px-Solarsystemscope_texture_8k_earth_daymap.jpg');
+    background-size: cover;
+    border-radius: 50%;
+    /* 3D shadow effects */
+    box-shadow: inset -30px -30px 40px rgba(0,0,0,0.8), 
+                inset 10px 10px 20px rgba(255,255,255,0.2), 
+                0 0 20px rgba(56, 189, 248, 0.4);
+    animation: spin 10s linear infinite;
+  }
+  @keyframes spin {
+    0% { background-position: 0 0; }
+    100% { background-position: 1024px 0; }
+  }
+  /* Security / Connection Shield */
+  .shield-orbit {
+    position: absolute;
+    width: 360px;
+    height: 360px;
+    border: 3px dashed #38bdf8; /* Light blue tech color */
+    border-radius: 50%;
+    animation: spin-reverse 20s linear infinite;
+    opacity: 0.8;
+  }
+  .shield-orbit::before, .shield-orbit::after {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: #0284c7;
+    border-radius: 50%;
+    top: -9px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 10px #38bdf8;
+  }
+  .shield-orbit::after {
+    top: auto;
+    bottom: -9px;
+  }
+  @keyframes spin-reverse {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+  }
+  /* Connection Nodes */
+  .nodes-orbit {
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 50%;
+    animation: spin-slow 15s linear infinite;
+  }
+  .node {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #38bdf8;
+    border-radius: 50%;
+    box-shadow: 0 0 15px 3px rgba(56, 189, 248, 0.8);
+  }
+  .node-1 { top: 50%; left: -5px; transform: translateY(-50%); }
+  .node-2 { top: 15%; right: 15%; }
+  .node-3 { bottom: 15%; left: 15%; }
+  
+  @keyframes spin-slow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .text-wrapper {
+    margin-top: 40px;
+    text-align: center;
+  }
+  .logo-text {
+    color: #ffffff;
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+  }
+  .logo-subtext {
+    color: #94a3b8;
+    font-size: 1.2rem;
+    letter-spacing: 5px;
+    margin-top: 5px;
+  }
+</style>
+</head>
+<body>
+  <div class="logo-container">
+    <div class="earth-container">
+      <div class="nodes-orbit">
+        <div class="node node-1"></div>
+        <div class="node node-2"></div>
+        <div class="node node-3"></div>
+      </div>
+      <div class="shield-orbit"></div>
+      <div class="earth"></div>
+    </div>
+    <div class="text-wrapper">
+      <div class="logo-text">Global VPN</div>
+      <div class="logo-subtext">Secure Connection</div>
+    </div>
+  </div>
+</body>
+</html>
