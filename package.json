@@ -23,6 +23,7 @@
     "@angular/ssr": "^20.3.22",
     "@emailjs/browser": "^4.4.1",
     "express": "^4.18.2",
+    "gsap": "^3.14.2",
     "leaflet": "^1.9.4",
     "ngx-leaflet": "^0.0.16",
     "rxjs": "~7.8.0",

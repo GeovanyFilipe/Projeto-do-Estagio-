@@ -2,7 +2,7 @@
   <div class="navbar-wrapper">
     <!-- Logo -->
     <div class="navbar-logo">
-      <a href="/" class="logo-link">
+      <a routerLink="/" class="logo-link">
         <img src="/imagens/logo.svg" alt="Angolan VPN" class="logo-img">
         <span class="logo-text">Angolan VPN</span>
       </a>
@@ -19,23 +19,23 @@
     <div class="navbar-menu" [class.mobile-open]="isMobileMenuOpen">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a href="/" class="nav-link" (click)="closeMobileMenu()">Início</a>
+          <a routerLink="/" class="nav-link" (click)="closeMobileMenu()">Início</a>
         </li>
 
         <!-- Dropdown Planos -->
         <li class="nav-item dropdown">
-          <a href="#" class="nav-link dropdown-toggle" (click)="toggleDropdown('planos')" [class.active]="activeDropdown === 'planos'" (mouseenter)="openDropdown('planos')" (mouseleave)="closeDropdown('planos')">
+          <a href="#" class="nav-link dropdown-toggle" (click)="toggleDropdown('planos'); $event.preventDefault()" [class.active]="activeDropdown === 'planos'">
             Planos
             <svg class="dropdown-icon" width="12" height="8" viewBox="0 0 12 8" fill="none">
               <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             </svg>
           </a>
           <div class="dropdown-menu" [class.show]="activeDropdown === 'planos'">
-            <a href="/planos/youtube" class="dropdown-item" (click)="closeMobileMenu()">
+            <a routerLink="/planos/youtube" class="dropdown-item" (click)="closeMobileMenu()">
               <span class="icon">📺</span>
               Plano YouTube sem Anúncios
             </a>
-            <a href="/planos/gobierno" class="dropdown-item" (click)="closeMobileMenu()">
+            <a routerLink="/planos/gobierno" class="dropdown-item" (click)="closeMobileMenu()">
               <span class="icon">🏛️</span>
               Plano .GOV.AO
             </a>
@@ -43,15 +43,15 @@
         </li>
 
         <li class="nav-item">
-          <a href="/download" class="nav-link" (click)="closeMobileMenu()">Download</a>
+          <a routerLink="/download" class="nav-link" (click)="closeMobileMenu()">Download</a>
         </li>
         <li class="nav-item">
-          <a href="/empresas" class="nav-link" (click)="closeMobileMenu()">Empresas</a>
+          <a routerLink="/empresas" class="nav-link" (click)="closeMobileMenu()">Empresas</a>
         </li>
 
         <!-- Dropdown Contacto -->
         <li class="nav-item dropdown">
-          <a href="#" class="nav-link dropdown-toggle" (click)="toggleDropdown('contacto')" [class.active]="activeDropdown === 'contacto'" (mouseenter)="openDropdown('contacto')" (mouseleave)="closeDropdown('contacto')">
+          <a href="#" class="nav-link dropdown-toggle" (click)="toggleDropdown('contacto'); $event.preventDefault()" [class.active]="activeDropdown === 'contacto'">
             Contacto
             <svg class="dropdown-icon" width="12" height="8" viewBox="0 0 12 8" fill="none">
               <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -60,11 +60,11 @@
           <div class="dropdown-menu" [class.show]="activeDropdown === 'contacto'">
             <div class="dropdown-section">
               <p class="dropdown-label">Suporte</p>
-              <a href="/suporte/tecnico" class="dropdown-item sub-item" (click)="closeMobileMenu()">
+              <a routerLink="/suporte/tecnico" class="dropdown-item sub-item" (click)="closeMobileMenu()">
                 <span class="icon">🔧</span>
                 Técnico
               </a>
-              <a href="/suporte/comercial" class="dropdown-item sub-item" (click)="closeMobileMenu()">
+              <a routerLink="/suporte/comercial" class="dropdown-item sub-item" (click)="closeMobileMenu()">
                 <span class="icon">💼</span>
                 Comercial
               </a>

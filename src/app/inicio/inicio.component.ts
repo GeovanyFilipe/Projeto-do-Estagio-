@@ -26,7 +26,7 @@ export class InicioComponent implements OnInit {
   activeDropdown: string | null = null;
   isAuthenticated = false;
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit() {
     this.authService.isAuthenticated$.subscribe(isAuth => {

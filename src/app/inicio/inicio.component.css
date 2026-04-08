@@ -11,7 +11,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(30,58,95,0.62) 0%, rgba(45,90,140,0.56) 48%, rgba(0,212,255,0.32) 100%);
+  background: linear-gradient(135deg, rgba(30, 58, 95, 0.62) 0%, rgba(45, 90, 140, 0.56) 48%, rgba(0, 212, 255, 0.32) 100%);
   z-index: 2;
   pointer-events: none;
 }
@@ -88,7 +88,7 @@
   font-weight: 700;
   margin: 0;
   line-height: 1.2;
-    color: #fff;
+  color: #fff;
 }
 
 .hero-subtitle {
@@ -180,10 +180,10 @@
 }
 
 .featured-card h3 {
- font-size: 22px;
+  font-size: 22px;
   color: #1e3a5f;
   margin: 0 0 15px 0;
-  
+
 }
 
 .featured-card p {
@@ -333,7 +333,8 @@
   gap: 6px;
   cursor: pointer;
   user-select: none;
-  position: relative; /* necessário para posicionamento do menu */
+  position: relative;
+  /* necessário para posicionamento do menu */
 }
 
 .dropdown-icon {
@@ -391,7 +392,7 @@
 }
 
 /* Hover para desktop */
-.dropdown-toggle:hover > .dropdown-menu {
+.dropdown-toggle:hover>.dropdown-menu {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);

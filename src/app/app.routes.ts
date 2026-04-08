@@ -32,7 +32,7 @@ export const routes: Routes = [
     { path: 'suporte/comercial', loadComponent: () => import('./paginas/suporte/comercial/comercial.component').then(m => m.ComercialComponent) },
     // Admin
     { path: 'admin', loadComponent: () => import('./admin/painel/painel.component').then(m => m.PainelComponent) },
-    { path: 'login', component: LoginComponent },
+
     { path: 'termos', component: TermosComponent },
     { path: 'privacidade', component: PrivacidadeComponent },
     { path: 'cookies', component: CookiesComponent },

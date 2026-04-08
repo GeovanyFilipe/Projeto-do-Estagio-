@@ -185,14 +185,16 @@
 }
 
 /* Hover para desktop */
-.nav-item.dropdown:hover > .dropdown-menu {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+@media (min-width: 769px) {
+  .nav-item.dropdown:hover > .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
 }
 
 /* Mobile */
-.navbar-menu.mobile-open .dropdown-menu {
+.navbar-menu.mobile-open .dropdown-menu.show {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
