@@ -35,16 +35,24 @@ export class MenuComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    // Garante que o scroll fica restaurado se o componente for destruído com menu aberto
+    document.documentElement.classList.remove('menu-open');
   }
 
   // ================= MOBILE MENU =================
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
+    if (this.isMobileMenuOpen) {
+      document.documentElement.classList.add('menu-open');
+    } else {
+      document.documentElement.classList.remove('menu-open');
+    }
   }
 
   closeMobileMenu() {
     this.isMobileMenuOpen = false;
     this.activeDropdown = null;
+    document.documentElement.classList.remove('menu-open');
   }
 
   // ================= DROPDOWN =================

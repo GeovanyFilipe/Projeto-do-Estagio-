@@ -176,44 +176,49 @@
   transform: translateX(3px);
 }
 
-/* Navegação Mobile */
-.mobile-nav {
+/* ======================== MOBILE TABS (Bottom Nav) ======================== */
+/* Oculto por defeito no desktop */
+.mobile-tabs {
   display: none;
-  background: white;
-  border-bottom: 1px solid #e0e0e0;
-  padding: 15px;
-  overflow-x: auto;
-  white-space: nowrap;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  position: sticky;
-  top: 60px; /* Fica fixo abaixo do navbar principal em mobile */
-  z-index: 8;
 }
 
-.mobile-nav-item {
-  display: inline-block;
-  padding: 10px 18px;
-  margin-right: 10px;
-  background: #f5f7fa;
-  border: 1px solid rgba(30, 58, 95, 0.1);
-  border-radius: 25px;
-  color: #4a5568;
+.mobile-tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  flex: 1;
+  padding: 8px 4px;
+  background: none;
+  border: none;
   cursor: pointer;
-  font-size: 14px;
+  color: #9aa5b4;
+  font-size: 10px;
   font-weight: 600;
-  transition: all 0.3s ease;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+  border-top: 2px solid transparent;
 }
 
-.mobile-nav-item:hover {
-  background: rgba(30, 58, 95, 0.05);
+.mobile-tab-item svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  transition: all 0.2s ease;
+}
+
+.mobile-tab-item:hover {
   color: #1e3a5f;
 }
 
-.mobile-nav-item.active {
-  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%);
-  color: white;
-  border-color: transparent;
-  box-shadow: 0 4px 12px rgba(30, 58, 95, 0.2);
+.mobile-tab-item.active {
+  color: #1e3a5f;
+  border-top-color: #1e3a5f;
+}
+
+.mobile-tab-item.active svg {
+  stroke: #1e3a5f;
 }
 
 
@@ -758,55 +763,130 @@
   justify-content: flex-end;
 }
 
-/* Responsivo */
+/* ======================== RESPONSIVO MOBILE ======================== */
 @media (max-width: 768px) {
+  /* Container: sem grid, apenas coluna */
   .dashboard-container {
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
   }
 
+  /* Sidebar completamente oculto - o menu principal já tem sidebar mobile */
   .sidebar {
     display: none !important;
   }
 
-  .mobile-nav {
-    display: block;
+  /* Mostrar bottom tab bar */
+  .mobile-tabs {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border-top: 1px solid rgba(30, 58, 95, 0.1);
+    box-shadow: 0 -4px 20px rgba(30, 58, 95, 0.08);
+    z-index: 100;
+    padding: 0;
   }
 
+  /* Conteúdo principal ocupa largura total */
   .main-content {
     margin: 0;
-    padding: 20px;
+    padding: 16px 16px 90px 16px; /* bottom padding para não ficar atrás da tab bar */
     width: 100%;
     min-height: auto;
+    grid-column: 1;
+    box-sizing: border-box;
   }
 
+  /* Header do dashboard em coluna */
   .dashboard-header {
     flex-direction: column;
-    gap: 20px;
-    margin-bottom: 30px;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding: 20px;
   }
 
   .header-content h1 {
-    font-size: 24px;
+    font-size: 22px;
   }
 
+  .header-subtitle {
+    font-size: 13px;
+  }
+
+  /* Info do utilizador em linha */
   .user-info {
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 12px;
   }
 
   .user-details {
     text-align: left;
   }
 
-  .table-header,
-  .table-row {
-    grid-template-columns: 1fr;
+  .user-avatar {
+    width: 42px;
+    height: 42px;
+    font-size: 16px;
   }
 
+  /* Grids em coluna única */
   .overview-grid,
   .plans-grid,
   .support-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* Cards com min-height menor */
+  .info-card {
+    min-height: auto;
+  }
+
+  /* Tabelas: reorganizar em coluna */
+  .table-header {
+    display: none; /* Esconder cabeçalho da tabela em mobile */
+  }
+
+  .table-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+  }
+
+  .table-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+  }
+
+  /* Section title menor */
+  .section-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  /* FAQ padding menor */
+  .faq-section {
+    padding: 20px;
+  }
+
+  /* Suporte cards */
+  .support-card {
+    padding: 20px;
+  }
+
+  /* Modal */
+  .modal-content {
+    margin: 20px;
+    width: calc(100% - 40px);
+    max-width: none;
   }
 }
