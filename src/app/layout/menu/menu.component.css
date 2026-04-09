@@ -4,9 +4,9 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 9000; /* Alto o suficiente para ficar acima do carrossel e outros elementos */
   width: 100%;
-  overflow: hidden; /* Bloqueia fugas laterais */
+  /* overflow: hidden removido — bloqueava os dropdowns de aparecer */
 }
 
 .navbar-wrapper {
@@ -216,18 +216,10 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  position:absolute;
-  top:100%; left:0;
-  background:#fff;
-  border-radius:8px;
-  min-width:200px;
-  box-shadow:0 10px 20px rgba(0,0,0,0.15);
-  opacity:0;visibility:hidden;
-  max-height:0;
-  overflow:hidden;
   transition: all 0.3s ease;
   white-space: nowrap;
 }
+
 
 .btn-login {
   background: transparent;
