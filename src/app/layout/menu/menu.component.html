@@ -3,7 +3,7 @@
     <!-- Logo -->
     <div class="navbar-logo">
       <a href="/" class="logo-link">
-        <img src="/imagens/logo.svg" alt="Angolan VPN" class="logo-img">
+        <img src="imagens/logo.svg" alt="Angolan VPN" class="logo-img">
         <span class="logo-text">Angolan VPN</span>
       </a>
     </div>
@@ -25,7 +25,7 @@
 
         <!-- Dropdown Planos -->
         <li class="nav-item dropdown" (mouseenter)="openDropdown('planos')" (mouseleave)="closeDropdown('planos')">
-          <a href="#" class="nav-link dropdown-toggle">
+          <a (click)="toggleDropdown('planos')" class="nav-link dropdown-toggle">
             Planos
             <svg class="dropdown-icon" width="12" height="8" viewBox="0 0 12 8" fill="none">
               <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -52,7 +52,7 @@
 
         <!-- Dropdown Contacto -->
         <li class="nav-item dropdown" (mouseenter)="openDropdown('contacto')" (mouseleave)="closeDropdown('contacto')">
-          <a href="#" class="nav-link dropdown-toggle">
+          <a (click)="toggleDropdown('contacto')" class="nav-link dropdown-toggle">
             Contacto
             <svg class="dropdown-icon" width="12" height="8" viewBox="0 0 12 8" fill="none">
               <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>

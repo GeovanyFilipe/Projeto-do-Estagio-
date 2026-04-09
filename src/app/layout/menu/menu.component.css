@@ -3,9 +3,10 @@
   background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   position: sticky;
-  top:0;
-  z-index:1000;
-  box-shadow:0 4px 20px rgba(0,0,0,0.1);
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  overflow: hidden; /* Bloqueia fugas laterais */
 }
 
 .navbar-wrapper {
@@ -305,34 +306,159 @@
   margin: 0;
 }
 
-/* ======================== MOBILE TOGGLE ======================== */
+/* ======================== MOBILE TOGGLE (HAMBURGUER) ======================== */
 .mobile-toggle {
-  display:none;flex-direction:column;gap:5px;
-  background:none;border:none;cursor:pointer;
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1002;
 }
 
 .mobile-toggle span {
-  width: 25px;
+  width: 30px;
   height: 3px;
-  background: #ffffff;
-  border-radius: 2px;
-  transition: all 0.3s ease;
+  background: white;
+  border-radius: 10px;
+  transition: all 0.3s linear;
+  position: relative;
+  transform-origin: 1px;
 }
 
-/* RESPONSIVE */
-@media(max-width:768px){
-  .mobile-toggle {display:flex;}
-  .navbar-menu {
-    position:fixed;top:70px;left:0;right:0;bottom:0;
-    background:linear-gradient(135deg,#1e3a5f,#2d5a8c);
-    flex-direction:column;
-    padding:20px;
-    max-height:0;overflow:hidden;
-    transition:max-height 0.3s ease;
+/* Animação do Hamburguer */
+.mobile-toggle.active span:nth-child(1) { transform: rotate(45deg); }
+.mobile-toggle.active span:nth-child(2) { opacity: 0; transform: translateX(20px); }
+.mobile-toggle.active span:nth-child(3) { transform: rotate(-45deg); }
+
+/* ======================== RESPONSIVE ======================== */
+@media (max-width: 992px) {
+  .navbar-wrapper {
+    height: 60px;
   }
 
-  .dropdown-item.sub-item {
-    padding-left: 28px;
+  .mobile-toggle {
+    display: flex;
+  }
+
+  .navbar-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    max-width: 350px;
+    height: 100vh;
+    background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 80px 30px 40px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1001;
+    overflow-y: auto;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.2);
+    display: flex;
+    max-height: none; /* Override anterior */
+  }
+
+  .navbar-menu.mobile-open {
+    right: 0;
+  }
+
+  .navbar-nav {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    gap: 15px;
+  }
+
+  .nav-item {
+    width: 100%;
+  }
+
+  .nav-link {
+    font-size: 18px;
+    padding: 12px 0;
+    width: 100%;
+    border-radius: 0;
+  }
+
+  /* Dropdowns no Mobile */
+  .dropdown-menu {
+    position: static;
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: none;
+    opacity: 1;
+    visibility: visible;
+    max-height: 0;
+    margin-top: 0;
+    padding: 0;
+    width: 100%;
+    border-radius: 0;
+  }
+
+  .dropdown-menu.show {
+    max-height: 500px;
+    padding: 10px 0 10px 15px;
+  }
+
+  .dropdown-item {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 16px;
+    padding: 12px 0;
+  }
+
+  .dropdown-icon {
+    margin-left: auto;
+  }
+
+  /* Ações Auth no Mobile */
+  .navbar-actions, .navbar-actions-auth {
+    flex-direction: column;
+    width: 100%;
+    margin: 30px 0 0 0;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 15px;
+  }
+
+  .btn-login, .btn-logout, .user-profile {
+    width: 100%;
+    justify-content: center;
+    padding: 15px;
+  }
+
+  /* Overlay */
+  .mobile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+  }
+
+  .mobile-overlay.show {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-text {
+    display: none; /* Mostra apenas imagem no mobile muito pequeno */
+  }
+  
+  .navbar-menu {
+    width: 90%;
   }
 }
 
