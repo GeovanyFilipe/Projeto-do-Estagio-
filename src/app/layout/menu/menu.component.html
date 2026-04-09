@@ -4,12 +4,14 @@
     <div class="navbar-logo">
       <a routerLink="/" class="logo-link">
         <img src="/imagens/logo.svg" alt="Angolan VPN" class="logo-img">
+      <a href="/" class="logo-link">
+        <img src="imagens/logo.svg" alt="Angolan VPN" class="logo-img">
         <span class="logo-text">Angolan VPN</span>
       </a>
     </div>
 
     <!-- Menu Hamburguês Mobile -->
-    <button class="mobile-toggle" (click)="toggleMobileMenu()" [class.active]="isMobileMenuOpen" aria-label="Abrir menu" [attr.aria-expanded]="isMobileMenuOpen">
+    <button class="mobile-toggle" (click)="toggleMobileMenu()" [class.active]="isMobileMenuOpen">
       <span></span>
       <span></span>
       <span></span>
@@ -21,10 +23,13 @@
         <li class="nav-item">
           <a routerLink="/" class="nav-link" (click)="closeMobileMenu()">Início</a>
         </li>
+       
 
         <!-- Dropdown Planos -->
         <li class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" (click)="toggleDropdown('planos'); $event.preventDefault()" [class.active]="activeDropdown === 'planos'">
+        <li class="nav-item dropdown" (mouseenter)="openDropdown('planos')" (mouseleave)="closeDropdown('planos')">
+          <a (click)="toggleDropdown('planos')" class="nav-link dropdown-toggle">
             Planos
             <svg class="dropdown-icon" width="12" height="8" viewBox="0 0 12 8" fill="none">
               <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -39,8 +44,13 @@
               <span class="icon">🏛️</span>
               Plano .GOV.AO
             </a>
-          </div>
-        </li>
+            <a href="/planos/gobierno" class="dropdown-item" (click)="closeMobileMenu()">
+  <span class="icon">🏛️</span>
+  Plano .GOV.AO
+</a>
+</div>
+</li>
+        <ul>
 
         <li class="nav-item">
           <a routerLink="/download" class="nav-link" (click)="closeMobileMenu()">Download</a>
@@ -52,6 +62,8 @@
         <!-- Dropdown Contacto -->
         <li class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" (click)="toggleDropdown('contacto'); $event.preventDefault()" [class.active]="activeDropdown === 'contacto'">
+        <li class="nav-item dropdown" (mouseenter)="openDropdown('contacto')" (mouseleave)="closeDropdown('contacto')">
+          <a (click)="toggleDropdown('contacto')" class="nav-link dropdown-toggle">
             Contacto
             <svg class="dropdown-icon" width="12" height="8" viewBox="0 0 12 8" fill="none">
               <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
