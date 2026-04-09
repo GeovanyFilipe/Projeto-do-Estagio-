@@ -8,48 +8,43 @@
 
 
   <section class="downloads-container">
-   <div class="downloads-grid">
-  <!-- Windows -->
-  <div class="download-card">
-    <div class="icon">
-      <img src="/imagens/windows.png" alt="Windows">
+    <div class="downloads-grid">
+      <div class="download-card">
+        <!-- Ícone do Windows -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="#0078D4">
+          <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.951-1.801"/>
+        </svg>
+        <h3>Windows</h3>
+        <p>Versão compatível com Windows 10+</p>
+        <button class="btn-download" (click)="downloadApp('windows')">Baixar para Windows</button>
+      </div>
+      <div class="download-card">
+        <!-- Ícone da Apple -->
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="black">
+  <path d="M19.665 13.12c-.011-2.61 2.138-3.86 2.233-3.92-1.215-1.78-3.097-2.02-3.765-2.05-1.598-.163-3.107.941-3.908.941-.805 0-2.045-.92-3.368-.898-1.732.021-3.33 1.014-4.21 2.577-1.798 3.115-.457 7.725 1.296 10.26.865 1.197 1.89 2.541 3.234 2.497 1.306-.045 1.797-.847 3.369-.847 1.566 0 2.02.847 3.38.82 1.371-.029 2.234-1.21 3.093-2.418 1.008-1.39 1.42-2.742 1.443-2.815-.032-.016-2.78-1.066-2.79-4.027zM16.332 4.333c.688-.831 1.152-1.997 1.024-3.154-.988.04-2.188.658-2.896 1.488-.63.736-1.182 1.895-1.032 3.006 1.094.085 2.205-.554 2.904-1.34z"/>
+</svg>
+        <h3>macOS/IOS</h3>
+        <p>Versão compatível com macOS 10.15+</p>
+        <button class="btn-download" (click)="downloadApp('macos')">Baixar para macOS</button>
+      </div>
+      <div class="download-card">
+        <!-- Ícone verdadeiro do Linux (Tux) -->
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg" alt="Linux Tux" width="40" height="40" style="margin-bottom: 20px;">
+        <h3>Linux</h3>
+        <p>Versão compatível com Ubuntu/Debian</p>
+        <button class="btn-download" (click)="downloadApp('linux')">Baixar para Linux</button>
+      </div>
+      <div class="download-card">
+        <!-- Ícone do Android -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="#3DDC84">
+          <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4483-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.242 13.8533 7.8546 12 7.8546c-1.8533 0-3.5902.3874-5.1367 1.0954L4.841 5.447a.4173.4173 0 00-.5677-.1521.4152.4152 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.1185-9.44z"/>
+        </svg>
+        <h3>Android</h3>
+        <p>Disponível no Google Play</p>
+        <button class="btn-download" (click)="downloadApp('android')">Baixar para Android</button>
+      </div>
     </div>
-    <h3>Windows</h3>
-    <p>Versão compatível com Windows 10+</p>
-    <button class="btn-download" (click)="downloadApp('windows')">Baixar para Windows</button>
-  </div>
-
-  <!-- macOS/IOS -->
-  <div class="download-card">
-    <div class="icon">
-<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="black"> <path d="M19.665 13.12c-.011-2.61 2.138-3.86 2.233-3.92-1.215-1.78-3.097-2.02-3.765-2.05-1.598-.163-3.107.941-3.908.941-.805 0-2.045-.92-3.368-.898-1.732.021-3.33 1.014-4.21 2.577-1.798 3.115-.457 7.725 1.296 10.26.865 1.197 1.89 2.541 3.234 2.497 1.306-.045 1.797-.847 3.369-.847 1.566 0 2.02.847 3.38.82 1.371-.029 2.234-1.21 3.093-2.418 1.008-1.39 1.42-2.742 1.443-2.815-.032-.016-2.78-1.066-2.79-4.027zM16.332 4.333c.688-.831 1.152-1.997 1.024-3.154-.988.04-2.188.658-2.896 1.488-.63.736-1.182 1.895-1.032 3.006 1.094.085 2.205-.554 2.904-1.34z"/> </svg>    </div>
-    <h3>macOS/IOS</h3>
-    <p>Versão compatível com macOS 10.15+</p>
-    <button class="btn-download" (click)="downloadApp('macos')">Baixar para macOS</button>
-  </div>
-
-  <!-- Linux -->
-  <div class="download-card">
-    <div class="icon">
-      <img src="/imagens/linuxux.png" alt="Linux">
-    </div>
-    <h3>Linux</h3>
-    <p>Versão compatível com Ubuntu/Debian</p>
-    <button class="btn-download" (click)="downloadApp('linux')">Baixar para Linux</button>
-  </div>
-
-  <!-- Android -->
-  <div class="download-card">
-    <div class="icon">
-      <img src="/imagens/android.png" alt="Android">
-    </div>
-    <h3>Android</h3>
-    <p>Disponível no Google Play</p>
-    <button class="btn-download" (click)="downloadApp('android')">Baixar para Android</button>
-  </div>
-</div>
   </section>
   <app-rodape></app-rodape>
 
 </div>
-
