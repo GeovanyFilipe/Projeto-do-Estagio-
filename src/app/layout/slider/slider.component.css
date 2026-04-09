@@ -1,13 +1,94 @@
-.uk-button-secondary{
-    background-color: gold !important;
-    color: black !important;
+/* ======================== SLIDER SECTION ======================== */
+.slider-section {
+  padding: 80px 20px;
+  background: #ffffff;
+  overflow: hidden;
 }
 
-.uk-button-secondary:hover{
-    background-color: rgb(228, 194, 0) !important;
-    color: #fff !important;
-    transition: all 0.5s ease-in-out;
+.slider-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
 }
-.uk-text-left .a{
-    
+
+/* ======================== TEXTO ESQUERDO ======================== */
+.slider-text {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.slider-text h1 {
+  font-size: 48px;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1.15;
+  position: relative;
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.slider-text p {
+  font-size: 17px;
+  color: #555e68;
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* ======================== IMAGEM DIREITA ======================== */
+.slider-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slider-image img {
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(30, 58, 95, 0.15);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.slider-image img:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 70px rgba(30, 58, 95, 0.22);
+}
+
+/* ======================== RESPONSIVE ======================== */
+@media (max-width: 900px) {
+  .slider-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .slider-text h1 {
+    font-size: 34px;
+  }
+
+  /* Imagem vem primeiro no mobile */
+  .slider-image {
+    order: -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .slider-section {
+    padding: 50px 16px;
+  }
+
+  .slider-text h1 {
+    font-size: 28px;
+  }
+
+  .slider-text p {
+    font-size: 15px;
+  }
 }
