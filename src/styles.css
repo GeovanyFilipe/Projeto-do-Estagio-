@@ -1,5 +1,20 @@
-body {
+* {
+  box-sizing: border-box;
+}
+
+html, body {
   font-family: 'Ubuntu', sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Bloqueia o scroll da página quando o menu mobile está aberto */
+html.menu-open,
+html.menu-open body {
+  overflow: hidden !important;
+  height: 100%;
 }
 
 h1, h2, h3, h4, h5, h6, p, a, li, span, div {

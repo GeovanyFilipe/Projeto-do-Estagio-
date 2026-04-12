@@ -1,38 +1,54 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
-  <!-- Grade de fundo -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
   <defs>
-    <linearGradient id="gradientBg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#1e3a5f;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#2d5a8c;stop-opacity:1" />
+    <!-- Dark deep space gradient for the shield interior to contrast the 'A' -->
+    <linearGradient id="darkBg" x1="0" y1="0" x2="400" y2="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0a192f" />
+      <stop offset="100%" stop-color="#112240" />
     </linearGradient>
-    <linearGradient id="gradientAccent" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#0099ff;stop-opacity:1" />
+
+    <!-- Glowing Cyan VPN line -->
+    <linearGradient id="shieldBorder" x1="0" y1="0" x2="400" y2="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00f2fe" />
+      <stop offset="100%" stop-color="#4facfe" />
     </linearGradient>
+
+    <!-- Metallic/Bright A Gradient -->
+    <linearGradient id="aGrad" x1="0" y1="400" x2="400" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#f0f8ff" />
+    </linearGradient>
+
+    <!-- Glow Filter -->
+    <filter id="neonGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
   </defs>
 
-  <!-- Fundo circular -->
-  <circle cx="100" cy="100" r="95" fill="url(#gradientBg)" stroke="url(#gradientAccent)" stroke-width="3"/>
-
-  <!-- Lock/Shield principal -->
-  <g transform="translate(100, 100)">
-    <!-- Escudo externo -->
-    <path d="M -35 -25 L -35 -10 C -35 -35 0 -50 0 -50 C 0 -50 35 -35 35 -10 L 35 -25 Z" 
-          fill="none" stroke="url(#gradientAccent)" stroke-width="2.5" stroke-linejoin="round"/>
-    
-    <!-- Cadeado interno -->
-    <rect x="-18" y="-10" width="36" height="28" rx="4" 
-          fill="none" stroke="white" stroke-width="2"/>
-    
-    <!-- Haste do cadeado -->
-    <path d="M -15 -10 Q -15 -25 0 -25 Q 15 -25 15 -10" 
-          fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>
-    
-    <!-- Buraco do cadeado -->
-    <circle cx="0" cy="5" r="3" fill="white"/>
+  <!-- Network Cyber Rings (Animated) -->
+  <g opacity="0.6" stroke="#4facfe" fill="none" stroke-width="2">
+    <circle cx="200" cy="200" r="180" stroke-dasharray="10 20">
+      <animateTransform attributeName="transform" type="rotate" from="0 200 200" to="360 200 200" dur="40s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="200" cy="200" r="170" stroke-dasharray="60 30" opacity="0.3">
+      <animateTransform attributeName="transform" type="rotate" from="360 200 200" to="0 200 200" dur="25s" repeatCount="indefinite" />
+    </circle>
   </g>
 
-  <!-- Texto "VPN" -->
-  <text x="100" y="165" font-family="Arial, sans-serif" font-size="18" font-weight="bold" 
-        fill="white" text-anchor="middle">ANGOLAN VPN</text>
+  <!-- Dark Shield Base -->
+  <path d="M200 40 L60 90 L60 220 C60 300 140 370 200 390 C260 370 340 300 340 220 L340 90 Z" fill="url(#darkBg)" />
+
+  <!-- Neon Shield Border -->
+  <path d="M200 40 L60 90 L60 220 C60 300 140 370 200 390 C260 370 340 300 340 220 L340 90 Z" fill="none" stroke="url(#shieldBorder)" stroke-width="12" stroke-linejoin="round" filter="url(#neonGlow)"/>
+
+  <!-- Futuristic Letter 'A' -->
+  <path d="M200 110 L110 280 L160 280 L180 230 L220 230 L240 280 L290 280 Z M200 160 L190 205 L210 205 Z" fill="url(#aGrad)" fill-rule="evenodd" filter="url(#neonGlow)"/>
+
+  <!-- Cyber Node Accents -->
+  <circle cx="200" cy="40" r="10" fill="#ffffff" filter="url(#neonGlow)"/>
+  <circle cx="60" cy="90" r="8" fill="#00f2fe" />
+  <circle cx="340" cy="90" r="8" fill="#00f2fe" />
 </svg>

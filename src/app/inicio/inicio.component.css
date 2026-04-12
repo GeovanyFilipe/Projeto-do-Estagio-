@@ -1,39 +1,8 @@
-/* ======================== NAVBAR CONTAINER ======================== */
-.navbar-container { background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%); box-shadow: 0 4px 20px rgba(0,0,0,0.1); position: sticky; top:0; z-index:1000; transition:all 0.3s ease;}
-.navbar-wrapper { max-width:1200px; margin:0 auto; padding:0 20px; display:flex; justify-content:space-between; align-items:center; height:70px; }
-
 /* ======================== HERO SECTION ======================== */
 .hero-section {
   position: relative;
-  height: 600px;
-  overflow: hidden;
-}
-
-.hero-slider {
-  position: absolute;
-  top:0; left:0;
-  width:100%;
-  height:100%;
-  z-index:0;
-}
-
-.hero-slider .slide {
-  position:absolute;
-  top:0; left:0;
-  width:100%;
-  height:100%;
-  opacity:0;
-  transition: opacity 1s ease-in-out;
-}
-
-.hero-slider .slide.active { opacity:1; }
-
-.hero-slider img {
-  width:100%;
-  height:100%;
-  object-fit:cover;
   color: white;
-  min-height: 500px;
+  min-height: 650px;
   padding: 40px 20px;
   overflow: hidden;
 }
@@ -42,10 +11,11 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(30,58,95,0.62) 0%, rgba(45,90,140,0.56) 48%, rgba(0,212,255,0.32) 100%);
+  background: linear-gradient(135deg, rgba(30, 58, 95, 0.62) 0%, rgba(45, 90, 140, 0.56) 48%, rgba(0, 212, 255, 0.32) 100%);
   z-index: 2;
   pointer-events: none;
 }
+
 
 .hero-carousel {
   position: absolute;
@@ -69,22 +39,6 @@
 
 .hero-content {
   position: relative;
-  z-index: 1;
-  text-align:center;
-  color: #fff;
-  padding-top:150px;
-}
-
-.hero-title { font-size:48px; font-weight:700; margin:0; }
-.hero-subtitle { font-size:18px; margin:10px 0 20px 0; }
-
-.hero-buttons button {
-  padding:12px 25px;
-  font-size:16px;
-  margin:0 5px;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
   z-index: 3;
   max-width: 760px;
   margin: 0 auto;
@@ -95,31 +49,7 @@
   gap: 20px;
   align-items: center;
   justify-content: center;
-  min-height: 500px;
-}
-
-.hero-title {
-  font-size: 56px;
-  font-weight: 700;
-  margin: 0;
-  line-height: 1.2;
-  color: #ffffff;
-  color: #fff;
-}
-
-.hero-carousel .uk-slideshow-items,
-.hero-carousel .uk-slideshow-items li {
-  height: 100%;
-}
-
-.hero-carousel .uk-slideshow-items img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.hero-carousel .uk-position-small {
-  color: #ffffff;
+  min-height: 650px;
 }
 
 .hero-title {
@@ -135,27 +65,15 @@
   font-weight: 700;
   margin: 0;
   line-height: 1.2;
-    color: #fff;
+  color: #fff;
 }
 
-.btn-primary { background: #00d4ff; color:white; }
-.btn-secondary { background: rgba(255,255,255,0.3); color:white; }
-
-/* ======================== RESTANTE CSS (Navbar, Featured, Benefícios, CTA etc.) ======================== */
-/* Mantive todo o CSS que você me enviou antes (navbar, featured, benefícios, cta, mobile etc.) */
-/* Apenas ajuste o hero-section conforme acima */
-
-/* RESPONSIVE */
-@media (max-width:768px) {
-  .hero-content { padding-top:100px; }
-  .hero-title { font-size:32px; }
-  .hero-subtitle { font-size:14px; }
+ .hero-subtitle {
+  font-size: 20px;
+  opacity: 0.95;
+  margin: 0;
 }
 
-@media (max-width:480px) {
-  .hero-content { padding-top:80px; }
-  .hero-title { font-size:24px; }
-  .hero-subtitle { font-size:12px; }
 .hero-buttons {
   display: flex;
   gap: 20px;
@@ -239,10 +157,10 @@
 }
 
 .featured-card h3 {
- font-size: 22px;
+  font-size: 22px;
   color: #1e3a5f;
   margin: 0 0 15px 0;
-  
+
 }
 
 .featured-card p {
@@ -347,31 +265,64 @@
 }
 
 /* ======================== RESPONSIVE ======================== */
+@media (max-width: 1024px) {
+  .hero-title {
+    font-size: 48px;
+  }
+}
+
 @media (max-width: 768px) {
   .hero-section {
-    min-height: 520px;
+    min-height: 650px;
     padding: 20px;
   }
 
+  .hero-content {
+    padding: 40px 10px;
+    min-height: auto;
+  }
+
   .hero-title {
-    font-size: 36px;
+    font-size: 32px;
+    line-height: 1.1;
   }
 
   .hero-subtitle {
     font-size: 16px;
+    max-width: 100%;
   }
 
   .hero-buttons {
     flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    padding: 12px 20px;
   }
 
   .beneficios-wrapper h2,
   .cta-section h2 {
-    font-size: 32px;
+    font-size: 28px;
+    margin-bottom: 30px;
   }
 
   .beneficios-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .featured-wrapper {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .featured-card,
+  .beneficio-item {
+    padding: 25px;
   }
 }
 
@@ -380,8 +331,8 @@
     font-size: 28px;
   }
 
-  .featured-wrapper {
-    grid-template-columns: 1fr;
+  .cta-content h2 {
+    font-size: 24px;
   }
 }
 
@@ -392,7 +343,8 @@
   gap: 6px;
   cursor: pointer;
   user-select: none;
-  position: relative; /* necessário para posicionamento do menu */
+  position: relative;
+  /* necessário para posicionamento do menu */
 }
 
 .dropdown-icon {
@@ -450,7 +402,7 @@
 }
 
 /* Hover para desktop */
-.dropdown-toggle:hover > .dropdown-menu {
+.dropdown-toggle:hover>.dropdown-menu {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
@@ -461,5 +413,4 @@
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
-}
 }
