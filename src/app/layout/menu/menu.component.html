@@ -20,7 +20,7 @@
 
       <!-- Cabeçalho do Sidebar Mobile (só logo, sem X — o X são as 3 barras) -->
       <div class="mobile-sidebar-header">
-        <a routerLink="/" class="mobile-logo-link" (click)="closeMobileMenu()">
+        <a  href="" class="mobile-logo-link" (click)="closeMobileMenu()">
           <img src="imagens/logo.svg" alt="Angolan VPN" class="mobile-logo-img">
           <span class="mobile-logo-text">Angolan VPN</span>
         </a>
@@ -34,33 +34,11 @@
           </a>
         </li>
 
-        <!-- Dropdown Planos -->
-        <li class="nav-item dropdown">
-          <a href="#" class="nav-link dropdown-toggle"
-            (click)="toggleDropdown('planos'); $event.preventDefault()"
-            [class.open]="activeDropdown === 'planos'">
+        <li class="nav-item">
+          <a routerLink="/planos" class="nav-link" (click)="closeMobileMenu()">
             <svg class="nav-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
             Planos
-            <svg class="dropdown-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-              <polyline points="6 9 12 15 18 9"/>
-            </svg>
           </a>
-          <div class="dropdown-menu" [class.show]="activeDropdown === 'planos'">
-            <a routerLink="/planos/youtube" class="dropdown-item" (click)="closeMobileMenu()">
-              <span class="dropdown-item-icon">📺</span>
-              <div class="dropdown-item-content">
-                <span class="dropdown-item-title">YouTube sem Anúncios</span>
-                <span class="dropdown-item-desc">AOA 5.99/mês</span>
-              </div>
-            </a>
-            <a routerLink="/planos/gobierno" class="dropdown-item" (click)="closeMobileMenu()">
-              <span class="dropdown-item-icon">🏛️</span>
-              <div class="dropdown-item-content">
-                <span class="dropdown-item-title">Plano .GOV.AO</span>
-                <span class="dropdown-item-desc">AOA 9.99/mês</span>
-              </div>
-            </a>
-          </div>
         </li>
 
         <li class="nav-item">

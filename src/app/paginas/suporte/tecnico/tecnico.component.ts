@@ -12,8 +12,9 @@ import { RodapeComponent } from '../../../layout/rodape/rodape.component';
 })
 export class TecnicoComponent {
   abrirChatAoVivo() {
-    const whatsappUrl = 'https://wa.me/244931234567';
+    const whatsappUrl = 'https://wa.me/244937754502';
     window.open(whatsappUrl, '_blank');
   }
 }
+
 

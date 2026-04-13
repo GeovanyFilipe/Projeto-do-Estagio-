@@ -34,19 +34,9 @@
       <button class="btn-primary" (click)="goToCadastro()" *ngIf="!isAuthenticated">Experimente Grátis</button>
 
       <!-- Botão Planos -->
-      <div class="btn-secondary" (click)="toggleDropdown('planos')">
-        Planos ▼
-        <div class="dropdown-menu" [class.show]="activeDropdown === 'planos'">
-          <a class="dropdown-item" (click)="goToPlano('youtube')">
-            <span class="icon">📺</span>
-            Plano YouTube sem Anúncios
-          </a>
-          <a class="dropdown-item" (click)="goToPlano('gov')">
-            <span class="icon">🏛️</span>
-            Plano .GOV.AO
-          </a>
-        </div>
-      </div>
+      <button class="btn-secondary" (click)="goToPlano('todos')">
+        Ver Planos
+      </button>
     </div>
   </div>
 </section>

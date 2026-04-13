@@ -202,69 +202,7 @@
         <h2 class="section-title">Planos Disponíveis</h2>
         
         <div class="plans-grid">
-          <!-- Plano YouTube -->
-          <div class="plan-card" [class.current]="currentUser?.plano === 'Plano YouTube sem Anúncios'">
-            <div class="plan-header">
-              <h3>YouTube sem Anúncios</h3>
-              <span *ngIf="currentUser?.plano === 'Plano YouTube sem Anúncios'" class="badge badge-current">Plano Atual</span>
-            </div>
-            <div class="plan-price">
-              <span class="price">AOA 5.99</span>
-              <span class="period">/mês</span>
-            </div>
-            <div class="plan-features">
-              <p>✓ Assistir YouTube sem anúncios</p>
-              <p>✓ Download de vídeos</p>
-              <p>✓ Qualidade até 1080p</p>
-              <p>✓ Suporte 24/7</p>
-            </div>
-            <button 
-              class="btn btn-primary"
-              *ngIf="currentUser?.plano !== 'Plano YouTube sem Anúncios'"
-              (click)="changePlan('Plano YouTube sem Anúncios')"
-            >
-              Selecionar Plano
-            </button>
-            <button 
-              class="btn btn-disabled"
-              *ngIf="currentUser?.plano === 'Plano YouTube sem Anúncios'"
-              disabled
-            >
-              Plano Ativo
-            </button>
-          </div>
-
-          <!-- Plano GOV.AO -->
-          <div class="plan-card" [class.current]="currentUser?.plano === 'Plano .GOV.AO'">
-            <div class="plan-header">
-              <h3>Plano .GOV.AO</h3>
-              <span *ngIf="currentUser?.plano === 'Plano .GOV.AO'" class="badge badge-current">Plano Atual</span>
-            </div>
-            <div class="plan-price">
-              <span class="price">AOA 9.99</span>
-              <span class="period">/mês</span>
-            </div>
-            <div class="plan-features">
-              <p>✓ Acesso a plataforma .GOV.AO</p>
-              <p>✓ Documentos seguros e encriptados</p>
-              <p>✓ Suporte prioritário</p>
-              <p>✓ Múltiplos dispositivos</p>
-            </div>
-            <button 
-              class="btn btn-primary"
-              *ngIf="currentUser?.plano !== 'Plano .GOV.AO'"
-              (click)="changePlan('Plano .GOV.AO')"
-            >
-              Selecionar Plano
-            </button>
-            <button 
-              class="btn btn-disabled"
-              *ngIf="currentUser?.plano === 'Plano .GOV.AO'"
-              disabled
-            >
-              Plano Ativo
-            </button>
-          </div>
+          <!-- Nenhum plano local exibido (removido) -->
         </div>
       </section>
 
