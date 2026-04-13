@@ -12,11 +12,11 @@ import { RodapeComponent } from '../../../layout/rodape/rodape.component';
 })
 export class NegocioComponent {
       specs = [
-    { icon: '💻', titulo: 'Dispositivos', descricao: '1 dispositivo por conta' },
-    { icon: '⚡', titulo: 'Desempenho', descricao: 'Velocidade máxima disponível' },
-    { icon: '🌐', titulo: 'CDNs Locais', descricao: 'Acesso otimizado a CDNs angolanas' },
+    { icon: '💻', titulo: 'Dispositivos', descricao: '5 dispositivos simultâneos' },
+    { icon: '⚡', titulo: 'Desempenho', descricao: 'Velocidade mais rápida e estável' },
+    { icon: '🌐', titulo: 'CDNs Locais', descricao: 'Acesso otimizado a plataformas empresariais como ERP e CRM' },
     { icon: '🛡️', titulo: 'Estabilidade', descricao: 'Conexão estável para uso diário' },
-    { icon: '🔒', titulo: 'Segurança', descricao: 'Criptografia AES-256' },
-    { icon: '🎯', titulo: 'Suporte', descricao: 'Suporte por email e chat' },
+    { icon: '🔒', titulo: 'Segurança', descricao: 'Criptografia avançada' },
+    { icon: '🎯', titulo: 'Suporte', descricao: 'Suporte prioritário básico' },
   ];
  }
