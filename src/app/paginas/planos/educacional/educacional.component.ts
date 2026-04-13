@@ -12,12 +12,13 @@ import { RodapeComponent } from '../../../layout/rodape/rodape.component';
   styleUrl: './educacional.component.css'
 })
 export class EducacionalComponent {
-  specs = [
-    { icon: '💻', titulo: 'Dispositivos', descricao: '10+ dispositivos (expansível)' },
-    { icon: '⚡', titulo: 'Desempenho', descricao: 'Alta velocidade + baixa latência garantida' },
-    { icon: '🌐', titulo: 'CDNs Locais', descricao: 'Acesso otimizado a CDNs angolanas' },
-    { icon: '🛡️', titulo: 'Estabilidade', descricao: 'Estabilidade para sistemas críticos' },
-    { icon: '🔒', titulo: 'Segurança', descricao: 'Criptografia de nível empresarial' },
-    { icon: '🎯', titulo: 'Suporte', descricao: 'Suporte prioritário 24/7' },
-  ];
+    specs = [
+    { icon: '👨‍💻', titulo: 'Dispositivos', descricao: 'Até 10 dispositivos simultâneos' },
+    { icon: '⚡', titulo: 'Velocidade', descricao: 'Velocidade estável para múltiplos usuários' },
+    { icon: '🌐', titulo: 'Plataformas Educacionais', descricao: 'Acesso seguro a plataformas de ensino' },
+    { icon: '🛡️', titulo: 'Proteção', descricao: 'Proteção contra phishing e ameaças online' },
+    { icon: '🔒', titulo: 'Controle de Conteúdo', descricao: 'Filtro de sites impróprios' },
+    { icon: '📊', titulo: 'Gestão de Uso', descricao: 'Controle de utilização da internet' },
+    { icon: '🎧', titulo: 'Suporte', descricao: 'Suporte técnico dedicado' },
+    ];
 }

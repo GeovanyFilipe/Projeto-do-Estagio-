@@ -15,7 +15,7 @@ export class PlanosComponent {
   planos = [
     {
       titulo: '🏢 Plano Empresarial',
-      preco: 'Sob consulta',
+      preco: '60.000,00 Kz',
       descricao: 'Ideal para empresas médias e grandes',
       features: [
         '10+ dispositivos (expansível)',
@@ -31,7 +31,7 @@ export class PlanosComponent {
     },
     {
       titulo: '🏢 Plano Individual',
-      preco: 'Sob consulta',
+      preco: '6.000,00 kz',
       descricao: 'Ideal para empresas médias e grandes',
       features: [
         'Até 2 dispositivos simultâneos',
@@ -44,6 +44,39 @@ export class PlanosComponent {
       cta: 'Assinar agora',
       rota: '/planos/individual',
       destaque: true
-    }
+    },
+    {
+      titulo: '🏢 Plano Educacional',
+      preco: '10.000,00 kz',
+      descricao: 'Ideal para empresas médias e grandes',
+      features: [
+        'Até 10 dispositivos simultâneos',
+        'Filtro de conteúdo (bloqueio de sites impróprios)',
+        'Proteção contra phishing e ameaças',
+        'Acesso seguro a plataformas educacionais',
+        'Velocidade estável para múltiplos usuários',
+        'Controle de uso da internet',
+        'Suporte técnico dedicado',
+      ],
+      cta: 'Assinar agora',
+      rota: '/planos/educacional',
+      destaque: true
+    },
+    {
+      titulo: '🏢 Plano Negócio',
+      preco: '15.000,00 kz',
+      descricao: 'Ideal para empresas médias e grandes',
+      features: [
+        'Até 5 dispositivos simultâneos',
+        'Velocidade mais rápida e estável',
+        'Baixa latência para sistemas locais',
+        'Acesso otimizado a plataformas (ERP, CRM, etc.)',
+        'Criptografia avançada',
+        'Suporte prioritário básico',
+      ],
+      cta: 'Assinar agora',
+      rota: '/planos/negocio',
+      destaque: true
+    },
   ];
 }
