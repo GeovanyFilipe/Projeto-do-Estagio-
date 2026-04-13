@@ -31,7 +31,9 @@
         <h2>Pronto para transformar a sua instituição de ensino?</h2>
         <p>Fale connosco e descubra a melhor solução de conectividade para alunos e professores.</p>
         <div class="cta-buttons">
-          <a routerLink="/suporte/comercial" class="btn-primary">Assinar agora</a>
+          <a [routerLink]="['/compra', 'educacional']" class="btn-primary">
+            Assinar agora
+          </a>
           <a routerLink="/suporte/tecnico" class="btn-secondary">Falar com um Técnico</a>
         </div>
       </div>

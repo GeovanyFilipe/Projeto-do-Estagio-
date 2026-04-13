@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { MenuComponent } from '../../../layout/menu/menu.component';
 import { RodapeComponent } from '../../../layout/rodape/rodape.component';
 
 @Component({
     selector: 'app-negocio',
     standalone: true,
-    imports: [CommonModule, MenuComponent, RodapeComponent],
+    imports: [CommonModule,RouterModule, MenuComponent, RodapeComponent],
     templateUrl: './negocio.component.html',
     styleUrl: './negocio.component.css'
 })

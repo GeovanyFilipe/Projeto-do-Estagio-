@@ -31,7 +31,9 @@
         <h2>Pronto para melhorar a sua conexão?</h2>
         <p>Adira ao plano individual e tenha uma navegação mais segura e estável no seu dia a dia.</p>
         <div class="cta-buttons">
-          <a routerLink="/suporte/comercial" class="btn-primary">Assinar agora</a>
+        <a [routerLink]="['/compra', 'individual']" class="btn-primary">
+            Assinar agora
+         </a>
           <a routerLink="/suporte/tecnico" class="btn-secondary">Falar com um Técnico</a>
         </div>
       </div>

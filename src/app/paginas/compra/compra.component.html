@@ -1,0 +1,62 @@
+<app-menu></app-menu>
+
+<div class="pagina-container">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">🛒 Finalizar Compra</div>
+    <h1>{{ plano.nome }}</h1>
+    <p>{{ plano.descricao }}</p>
+  </section>
+
+  <!-- CONTEÚDO -->
+  <section class="compra-section">
+    <div class="compra-container">
+
+      <!-- RESUMO -->
+      <div class="resumo">
+        <h2>Resumo do Plano</h2>
+        <div class="resumo-card">
+          <h3>{{ plano.nome }}</h3>
+          <p>{{ plano.descricao }}</p>
+          <span class="preco">{{ plano.preco }}/mês</span>
+        </div>
+      </div>
+
+      <!-- FORMULÁRIO -->
+      <div class="formulario">
+        <h2>Seus Dados</h2>
+
+        <form (ngSubmit)="finalizarCompra()">
+          <div class="input-group">
+            <label>Nome</label>
+            <input type="text" [(ngModel)]="formData.nome" name="nome" required>
+          </div>
+
+          <div class="input-group">
+            <label>Email</label>
+            <input type="email" [(ngModel)]="formData.email" name="email" required>
+          </div>
+
+          <div class="input-group">
+            <label>Telefone</label>
+            <input type="text" [(ngModel)]="formData.telefone" name="telefone" required>
+          </div>
+
+          <div class="input-group">
+            <label>Empresa</label>
+            <input type="text" [(ngModel)]="formData.empresa" name="empresa">
+          </div>
+
+          <button type="submit" class="btn-finalizar">
+            Finalizar Pedido
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<app-rodape></app-rodape>

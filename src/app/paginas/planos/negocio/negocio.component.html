@@ -31,7 +31,9 @@
         <h2>Pronto para escalar o seu Negócio?</h2>
         <p>Fale connosco e receba uma proposta personalizada para as suas necessidades.</p>
         <div class="cta-buttons">
-          <a routerLink="/suporte/comercial" class="btn-primary">Assinar agora</a>
+          <a [routerLink]="['/compra', 'negocio']" class="btn-primary">
+            Assinar agora
+          </a>
           <a routerLink="/suporte/tecnico" class="btn-secondary">Falar com um Técnico</a>
         </div>
       </div>
