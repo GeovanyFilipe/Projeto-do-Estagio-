@@ -37,13 +37,21 @@
       <div class="btn-secondary" (click)="toggleDropdown('planos')">
         Planos ▼
         <div class="dropdown-menu" [class.show]="activeDropdown === 'planos'">
-          <a class="dropdown-item" (click)="goToPlano('youtube')">
-            <span class="icon">📺</span>
-            Plano YouTube sem Anúncios
+          <a routerLink="/planos/educacional" class="dropdown-item" (click)="goToPlano('educacional')">
+            <span class="icon">🎓</span>
+            Plano Educacional
           </a>
-          <a class="dropdown-item" (click)="goToPlano('gov')">
+          <a routerLink="/planos/empresarial" class="dropdown-item" (click)="goToPlano('empresarial')">
             <span class="icon">🏛️</span>
-            Plano .GOV.AO
+            Plano Empresarial
+          </a>
+          <a routerLink="/planos/negocio" class="dropdown-item" (click)="goToPlano('negocio')">
+            <span class="icon">🏛️</span>
+            Plano de Negócio
+          </a>
+          <a routerLink="/planos/individual" class="dropdown-item" (click)="goToPlano('individual')">
+            <span class="icon">🏛️</span>
+            Plano Individual
           </a>
         </div>
       </div>

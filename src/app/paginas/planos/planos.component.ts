@@ -14,20 +14,35 @@ import { RodapeComponent } from '../../layout/rodape/rodape.component';
 export class PlanosComponent {
   planos = [
     {
-      titulo: 'Plano YouTube sem Anúncios',
-      preco: 5.99,
-      descricao: 'Acesse YouTube sem interrupções',
-      features: ['Acesso YouTube', 'Sem anúncios', 'HD 1080p', 'Suporte básico'],
-      cta: 'Contratar Plano',
-      rota: '/planos/youtube'
+      titulo: '🏢 Plano Empresarial',
+      preco: 'Sob consulta',
+      descricao: 'Ideal para empresas médias e grandes',
+      features: [
+        '10+ dispositivos (expansível)',
+        'Alta velocidade + baixa latência garantida',
+        'Acesso otimizado a CDNs angolanas',
+        'Estabilidade para sistemas críticos',
+        'Criptografia de nível empresarial',
+        'Suporte prioritário 24/7'
+      ],
+      cta: 'Assinar Agora',
+      rota: '/planos/empresarial',
+      destaque: true
     },
     {
-      titulo: 'Plano .GOV.AO',
-      preco: 9.99,
-      descricao: 'Acesso privilegiado a recursos governamentais',
-      features: ['Acesso .GOV.AO', 'Prioridade', 'IP Premium', 'Suporte prioritário'],
-      cta: 'Contratar Plano',
-      rota: '/planos/gobierno',
+      titulo: '🏢 Plano Individual',
+      preco: 'Sob consulta',
+      descricao: 'Ideal para empresas médias e grandes',
+      features: [
+        'Até 2 dispositivos simultâneos',
+        'Conexão com servidores em Angola',
+        'Velocidade padrão (estável para navegação diária)',
+        ' Acesso a serviços angolanos (portais, bancos, etc.)',
+        'Criptografia básica de dados',
+        'Suporte padrão (email ou chat)',
+      ],
+      cta: 'Assinar agora',
+      rota: '/planos/individual',
       destaque: true
     }
   ];
