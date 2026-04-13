@@ -11,7 +11,7 @@
       <li>
         <img src="imagens/ex2.jpg" alt="Pessoa negra trabalhando no computador fora de Angola" uk-cover>
         <img src="imagens/slide-principal.jpg" alt="Pessoa negra usando telefone fora de Angola" uk-cover>
-      </li>
+      </li>p
       <li>
         <img src="imagens/telefone7.jpg" alt="Equipe negra usando dispositivos fora de Angola" uk-cover>
       </li>
@@ -37,21 +37,21 @@
       <div class="btn-secondary" (click)="toggleDropdown('planos')">
         Planos ▼
         <div class="dropdown-menu" [class.show]="activeDropdown === 'planos'">
+          <a routerLink="/planos/empresarial" class="dropdown-item" (click)="goToPlano('empresarial')">
+            <span class="icon">🏢</span>
+            Plano Empresarial
+          </a>
+          <a routerLink="/planos/individual" class="dropdown-item" (click)="goToPlano('individual')">
+            <span class="icon">👤</span>
+            Plano Individual
+          </a>
+          <a routerLink="/planos/negocio" class="dropdown-item" (click)="goToPlano('negocio')">
+            <span class="icon">📈</span>
+            Plano de Negócio
+          </a>
           <a routerLink="/planos/educacional" class="dropdown-item" (click)="goToPlano('educacional')">
             <span class="icon">🎓</span>
             Plano Educacional
-          </a>
-          <a routerLink="/planos/empresarial" class="dropdown-item" (click)="goToPlano('empresarial')">
-            <span class="icon">🏛️</span>
-            Plano Empresarial
-          </a>
-          <a routerLink="/planos/negocio" class="dropdown-item" (click)="goToPlano('negocio')">
-            <span class="icon">🏛️</span>
-            Plano de Negócio
-          </a>
-          <a routerLink="/planos/individual" class="dropdown-item" (click)="goToPlano('individual')">
-            <span class="icon">🏛️</span>
-            Plano Individual
           </a>
         </div>
       </div>

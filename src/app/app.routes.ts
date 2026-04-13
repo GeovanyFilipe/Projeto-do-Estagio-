@@ -29,6 +29,11 @@ export const routes: Routes = [
     { path: 'download', loadComponent: () => import('./paginas/download/download.component').then(m => m.DownloadComponent) },
     { path: 'empresas', loadComponent: () => import('./paginas/empresas/empresas.component').then(m => m.EmpresasComponent) },
     { path: 'mapa', loadComponent: () => import('./paginas/mapa/mapa.component').then(m => m.MapaComponent) },
+    {
+    path: 'compra/:plano',
+    loadComponent: () =>
+        import('./paginas/compra/compra.component').then(m => m.CompraComponent)
+    },
     // Suporte
     { path: 'suporte/tecnico', loadComponent: () => import('./paginas/suporte/tecnico/tecnico.component').then(m => m.TecnicoComponent) },
     { path: 'suporte/comercial', loadComponent: () => import('./paginas/suporte/comercial/comercial.component').then(m => m.ComercialComponent) },

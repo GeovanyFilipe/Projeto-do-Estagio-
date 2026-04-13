@@ -31,14 +31,17 @@
         <h2>Pronto para escalar a sua empresa?</h2>
         <p>Fale connosco e receba uma proposta personalizada para as suas necessidades.</p>
         <div class="cta-buttons">
-          <a routerLink="/suporte/comercial" class="btn-primary">Assinar agora</a>
+         <a [routerLink]="['/compra', 'empresarial']" class="btn-primary">
+            Assinar agora
+         </a>
           <a routerLink="/suporte/tecnico" class="btn-secondary">Falar com um Técnico</a>
         </div>
       </div>
       <div class="cta-badge">
         <div class="badge-inner">
           <span class="badge-label">Preço</span>
-          <span class="badge-value">60.000,00</span>
+          <span class="badge-value">60.000,00 kz</span>
+          <span class="badge-sub">Mensal</span>
         </div>
       </div>
     </div>
