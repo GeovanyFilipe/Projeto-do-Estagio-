@@ -33,45 +33,132 @@
   margin-bottom: 20px; 
 }
 
-/* CONTAINER */
-.compra-container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 60px 20px;
+/* WRAPPER CENTRAL */
+.compra-wrapper {
+  max-width: 800px;
+  margin: 20px auto 40px;
+  padding: 0 20px;
+}
+
+/* RESUMO DO PLANO */
+.plano-resumo {
+  background: linear-gradient(135deg, #00d4ff, #0099ff);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 25px;
   display: flex;
-  gap: 40px;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  color: #fff;
 }
 
-/* RESUMO */
-.resumo {
-  flex: 1;
-  min-width: 280px;
+.plano-info {
+  display: flex;
+  gap: 15px;
+  align-items: center;
 }
 
-.resumo-card {
+.plano-icon {
+  font-size: 30px;
+}
+
+.plano-info h3 {
+  font-size: 22px;
+  margin: 0;
+  font-weight: 700;
+  color: #fff;
+}
+
+.plano-info p {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.plano-preco {
+  text-align: right;
+}
+
+.plano-preco strong {
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+}
+
+/* PAGAMENTO */
+.pagamento-box {
   background: white;
-  padding: 24px;
+  padding: 25px;
   border-radius: 12px;
   box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  border-top: 4px solid #0099ff;
 }
 
-.preco {
-  display: block;
-  font-size: 24px;
-  font-weight: bold;
-  color: #0099ff;
-  margin-top: 10px;
+.pagamento-box h2 {
+  margin-bottom: 20px;
+  color: #1e3a5f;
+}
+
+/* MÉTODOS DE PAGAMENTO */
+.metodos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.metodo {
+  display: flex;
+  align-items: center;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.metodo:hover {
+  background: rgba(0, 153, 255, 0.08);
+}
+
+.metodo.ativo {
+  border: 2px solid #0099ff;
+  background: rgba(0, 153, 255, 0.05);
+}
+
+.metodo input {
+  margin-right: 10px;
+}
+
+.metodo-conteudo {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.icons img {
+  height: 22px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.9;
+  transition: 0.2s ease;
+}
+
+.icons img:hover {
+  opacity: 1;
+  transform: scale(1.05);
 }
 
 /* FORM */
-.formulario {
-  flex: 1;
-  min-width: 280px;
+.form-pagamento {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .input-group {
-  margin-bottom: 18px;
   display: flex;
   flex-direction: column;
 }
@@ -86,8 +173,27 @@
   padding: 12px;
   border-radius: 6px;
   border: 1px solid #ccc;
+  transition: all 0.2s ease;
 }
 
+/* FOCUS (UX PRO) */
+.input-group input:focus {
+  outline: none;
+  border: 1px solid #0099ff;
+  box-shadow: 0 0 0 2px rgba(0,153,255,0.15);
+}
+
+/* LINHA */
+.linha {
+  display: flex;
+  gap: 15px;
+}
+
+.linha .input-group {
+  flex: 1;
+}
+
+/* BOTÃO */
 .btn-finalizar {
   width: 100%;
   padding: 14px;
@@ -99,15 +205,31 @@
   border-radius: 8px;
   cursor: pointer;
   margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
 
 .btn-finalizar:hover {
-  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,153,255,0.3);
+}
+
+/* EKWANZA */
+.ekwanza-box {
+  padding: 20px;
+  background: #f5f7fa;
+  border-radius: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
 }
 
 /* RESPONSIVO */
 @media (max-width: 768px) {
-  .compra-container {
+  .linha {
     flex-direction: column;
   }
 }

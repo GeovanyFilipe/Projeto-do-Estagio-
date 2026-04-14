@@ -14,30 +14,9 @@ import { RodapeComponent } from '../../layout/rodape/rodape.component';
 })
 export class CompraComponent {
 
-  planoSelecionado: string = '';
+  metodoPagamento: string = 'cartao';
 
-  planos: any = {
-    individual: {
-      nome: 'Plano Individual',
-      preco: '6.000 Kz',
-      descricao: 'Conectividade para uso pessoal'
-    },
-    negocio: {
-      nome: 'Plano de Negócio',
-      preco: '15.000 Kz',
-      descricao: 'Ideal para pequenas empresas e startups'
-    },
-    empresarial: {
-      nome: 'Plano Empresarial',
-      preco: '60.000 Kz',
-      descricao: 'Solução corporativa avançada'
-    },
-    educacional: {
-      nome: 'Plano Educacional',
-      preco: '10.000 Kz',
-      descricao: 'Solução corporativa avançada'
-    }
-  };
+  planoSelecionadoKey: string = '';
 
   plano: any = {
     nome: '',
@@ -45,24 +24,48 @@ export class CompraComponent {
     descricao: ''
   };
 
-  formData = {
-    nome: '',
-    email: '',
-    telefone: '',
-    empresa: ''
+  planos: any = {
+    individual: {
+      nome: 'Plano Individual',
+      preco: '6.000 Kz',
+      descricao: 'Navegar em serviços angolanos com rapidez e segurança'
+    },
+    negocio: {
+      nome: 'Plano de Negócio',
+      preco: '15.000 Kz',
+      descricao: 'Melhor desempenho para trabalhar com sistemas angolanos sem falhas'
+    },
+    empresarial: {
+      nome: 'Plano Empresarial',
+      preco: '60.000 Kz',
+      descricao: 'Operações empresariais rápidas, seguras e sem interrupções'
+    },
+    educacional: {
+      nome: 'Plano Educacional',
+      preco: '10.000 Kz',
+      descricao: 'Ambiente online seguro e controlado para estudantes e membros'
+    }
   };
 
   constructor(private route: ActivatedRoute) {
     this.route.params.subscribe(params => {
-      this.planoSelecionado = params['plano'];
+      this.planoSelecionadoKey = params['plano'];
 
-      this.plano = this.planos[this.planoSelecionado] || this.planos['individual'];
+      this.plano =
+        this.planos[this.planoSelecionadoKey] ||
+        this.planos['individual'];
     });
   }
 
   finalizarCompra() {
-    console.log('Plano:', this.planoSelecionado);
-    console.log('Dados:', this.formData);
+    console.log('Plano:', this.planoSelecionadoKey);
+    console.log('Detalhes:', this.plano);
     alert('Pedido enviado com sucesso!');
+  }
+
+  formatarCartao(event: any) {
+    let valor = event.target.value.replace(/\D/g, '');
+    valor = valor.replace(/(.{4})/g, '$1 ').trim();
+    event.target.value = valor;
   }
 }

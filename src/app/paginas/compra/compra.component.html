@@ -1,62 +1,112 @@
 <app-menu></app-menu>
 
-<div class="pagina-container">
+<div class="compra-wrapper">
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-badge">🛒 Finalizar Compra</div>
-    <h1>{{ plano.nome }}</h1>
-    <p>{{ plano.descricao }}</p>
-  </section>
+  <!-- RESUMO DO PLANO -->
+  <div class="plano-resumo" *ngIf="plano">
+    <div class="plano-info">
+      <div class="plano-icon">📦</div>
 
-  <!-- CONTEÚDO -->
-  <section class="compra-section">
-    <div class="compra-container">
+      <div>
+        <h3>{{ plano.nome }}</h3>
+        <p>{{ plano.descricao }}</p>
+      </div>
+    </div>
 
-      <!-- RESUMO -->
-      <div class="resumo">
-        <h2>Resumo do Plano</h2>
-        <div class="resumo-card">
-          <h3>{{ plano.nome }}</h3>
-          <p>{{ plano.descricao }}</p>
-          <span class="preco">{{ plano.preco }}/mês</span>
+    <div class="plano-preco">
+      <strong>{{ plano.preco }}</strong>
+    </div>
+  </div>
+
+  <!-- PAGAMENTO -->
+  <div class="pagamento-box">
+    <h2>Forma de pagamento</h2>
+
+    <div class="metodos">
+
+      <!-- CARTÃO -->
+      <label class="metodo" [class.ativo]="metodoPagamento === 'cartao'">
+        <input 
+          type="radio" 
+          name="pagamento" 
+          value="cartao"
+          [(ngModel)]="metodoPagamento"
+        >
+
+        <div class="metodo-conteudo">
+          <span>Cartão de crédito ou débito</span>
+
+          <div class="icons">
+            <img src="/public/imagens/visa.png" alt="visa">
+            <img src="/public/imagens/MasterCard.png" alt="mastercard">
+          </div>
+        </div>
+      </label>
+
+      <!-- EKWANZA -->
+      <label class="metodo" [class.ativo]="metodoPagamento === 'ekwanza'">
+        <input 
+          type="radio" 
+          name="pagamento" 
+          value="ekwanza"
+          [(ngModel)]="metodoPagamento"
+        >
+
+        <div class="metodo-conteudo">
+          <span>E-Kwanza</span>
+
+          <div class="icons">
+            <img src="/public/imagens/ekwanza.png" alt="ekwanza">
+          </div>
+        </div>
+      </label>
+
+    </div>
+
+    <!-- FORM CARTÃO -->
+    <form *ngIf="metodoPagamento === 'cartao'" (ngSubmit)="finalizarCompra()" class="form-pagamento">
+
+      <div class="input-group">
+        <label>Número do cartão</label>
+        <input 
+          type="text"
+          placeholder="0000 0000 0000 0000"
+          (input)="formatarCartao($event)"
+        >
+      </div>
+
+      <div class="linha">
+        <div class="input-group">
+          <label>Data de validade</label>
+          <input type="text" placeholder="MM/AA">
+        </div>
+
+        <div class="input-group">
+          <label>CVV</label>
+          <input type="text" placeholder="***">
         </div>
       </div>
 
-      <!-- FORMULÁRIO -->
-      <div class="formulario">
-        <h2>Seus Dados</h2>
+      <button type="submit" class="btn-finalizar">
+        Confirmar pagamento
+      </button>
 
-        <form (ngSubmit)="finalizarCompra()">
-          <div class="input-group">
-            <label>Nome</label>
-            <input type="text" [(ngModel)]="formData.nome" name="nome" required>
-          </div>
+    </form>
 
-          <div class="input-group">
-            <label>Email</label>
-            <input type="email" [(ngModel)]="formData.email" name="email" required>
-          </div>
+    <!-- EKWANZA -->
+    <div *ngIf="metodoPagamento === 'ekwanza'" class="ekwanza-box">
 
-          <div class="input-group">
-            <label>Telefone</label>
-            <input type="text" [(ngModel)]="formData.telefone" name="telefone" required>
-          </div>
+      <p>
+        Receberá uma notificação no seu telemóvel para confirmar o pagamento via E-Kwanza.
+      </p>
 
-          <div class="input-group">
-            <label>Empresa</label>
-            <input type="text" [(ngModel)]="formData.empresa" name="empresa">
-          </div>
-
-          <button type="submit" class="btn-finalizar">
-            Finalizar Pedido
-          </button>
-        </form>
-      </div>
+      <button class="btn-finalizar" (click)="finalizarCompra()">
+        Pagar com E-Kwanza
+      </button>
 
     </div>
-  </section>
 
+  </div>
 </div>
 
 <app-rodape></app-rodape>
