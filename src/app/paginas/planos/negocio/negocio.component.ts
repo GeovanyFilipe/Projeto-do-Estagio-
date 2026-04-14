@@ -20,4 +20,4 @@ export class NegocioComponent {
   { icon: '🔒', titulo: 'Segurança', descricao: 'Criptografia avançada de dados' },
   { icon: '🎧', titulo: 'Suporte', descricao: 'Suporte prioritário básico' },
 ];
- }
+}

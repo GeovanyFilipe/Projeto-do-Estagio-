@@ -46,11 +46,7 @@ export class InicioComponent implements OnInit {
 
   // Navegar para cada plano
   goToPlano(plano: string) {
-    if (plano === 'youtube') {
-      this.router.navigate(['/planos/youtube']);
-    } else if (plano === 'gov') {
-      this.router.navigate(['/planos/gobierno']);
-    }
+    this.router.navigate(['/planos']);
   }
 
   // Navegar para mapa dos servidores

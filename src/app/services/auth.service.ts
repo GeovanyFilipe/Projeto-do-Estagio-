@@ -63,7 +63,7 @@ export class AuthService {
             id: this.generateId(),
             email: email,
             nome: email.split('@')[0],
-            plano: 'Plano YouTube sem Anúncios',
+            plano: 'Sem plano',
             dataCadastro: new Date().toISOString(),
             ativo: true
           };
@@ -97,7 +97,7 @@ export class AuthService {
             id: this.generateId(),
             email,
             nome,
-            plano: plano || 'Plano YouTube sem Anúncios',
+            plano: plano || 'Sem plano',
             dataCadastro: new Date().toISOString(),
             ativo: true
           };

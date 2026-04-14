@@ -1,6 +1,8 @@
 <app-menu></app-menu>
 
 <div class="pagina-container">
+
+  <!-- HERO -->
   <section class="hero">
     <div class="hero-badge">🏢 Solução Corporativa</div>
     <h1>Plano Empresarial</h1>
@@ -10,33 +12,23 @@
     </div>
   </section>
 
-  <section class="specs-section">
-    <div class="specs-container">
-      <h2 class="section-title">O que está incluído</h2>
-      <div class="specs-grid">
-        <div class="spec-card" *ngFor="let spec of specs">
-          <div class="spec-icon">{{ spec.icon }}</div>
-          <div class="spec-info">
-            <h3>{{ spec.titulo }}</h3>
-            <p>{{ spec.descricao }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
+  <!-- ✅ CTA AGORA VEM PRIMEIRO -->
   <section class="cta-section">
     <div class="cta-container">
       <div class="cta-content">
         <h2>Pronto para escalar a sua empresa?</h2>
         <p>Fale connosco e receba uma proposta personalizada para as suas necessidades.</p>
+
         <div class="cta-buttons">
-         <a [routerLink]="['/compra', 'empresarial']" class="btn-primary">
+          <a [routerLink]="['/compra', 'empresarial']" class="btn-primary">
             Assinar agora
-         </a>
-          <a routerLink="/suporte/tecnico" class="btn-secondary">Falar com um Técnico</a>
+          </a>
+          <a routerLink="/suporte/tecnico" class="btn-secondary">
+            Falar com um Técnico
+          </a>
         </div>
       </div>
+
       <div class="cta-badge">
         <div class="badge-inner">
           <span class="badge-label">Preço</span>
@@ -46,6 +38,25 @@
       </div>
     </div>
   </section>
+
+  <!-- ✅ SPECS AGORA VEM DEPOIS -->
+  <section class="specs-section">
+    <div class="specs-container">
+      <h2 class="section-title">O que está incluído</h2>
+
+      <div class="specs-grid">
+        <div class="spec-card" *ngFor="let spec of specs">
+          <div class="spec-icon">{{ spec.icon }}</div>
+
+          <div class="spec-info">
+            <h3>{{ spec.titulo }}</h3>
+            <p>{{ spec.descricao }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </div>
 
-<app-rodape></app-rodape> 
+<app-rodape></app-rodape>
