@@ -1,42 +1,37 @@
 <app-menu></app-menu>
 
 <div class="pagina-container">
-   <section class="hero">
+
+  <!-- HERO -->
+  <section class="hero">
     <div class="hero-badge">🎓 Solução Educacional</div>
     <h1>Plano Educacional</h1>
     <p>Conectividade segura e de alto desempenho para instituições de ensino</p>
+
     <div class="hero-tags">
       <span class="tag">Ideal para escolas, universidades e centros de formação</span>
     </div>
   </section>
 
-  <section class="specs-section">
-    <div class="specs-container">
-      <h2 class="section-title">O que está incluído</h2>
-      <div class="specs-grid">
-        <div class="spec-card" *ngFor="let spec of specs">
-          <div class="spec-icon">{{ spec.icon }}</div>
-          <div class="spec-info">
-            <h3>{{ spec.titulo }}</h3>
-            <p>{{ spec.descricao }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
+  <!-- CTA PRIMEIRO -->
   <section class="cta-section">
     <div class="cta-container">
+
       <div class="cta-content">
-        <h2>Pronto para transformar a sua instituição de ensino?</h2>
-        <p>Fale connosco e descubra a melhor solução de conectividade para alunos e professores.</p>
+        <h2>Pronto para escalar a sua instituição?</h2>
+        <p>Fale connosco e receba uma proposta personalizada para as suas necessidades.</p>
+
         <div class="cta-buttons">
           <a [routerLink]="['/compra', 'educacional']" class="btn-primary">
             Assinar agora
           </a>
-          <a routerLink="/suporte/tecnico" class="btn-secondary">Falar com um Técnico</a>
+          <a routerLink="/suporte/tecnico" class="btn-secondary">
+            Falar com um Técnico
+          </a>
         </div>
       </div>
+
+      <!-- ✅ PREÇO CORRIGIDO -->
       <div class="cta-badge">
         <div class="badge-inner">
           <span class="badge-label">Preço</span>
@@ -44,8 +39,30 @@
           <span class="badge-sub">Mensal</span>
         </div>
       </div>
+
     </div>
   </section>
+
+  <!-- SPECS DEPOIS -->
+  <section class="specs-section">
+    <div class="specs-container">
+
+      <h2 class="section-title">O que está incluído</h2>
+
+      <div class="specs-grid">
+        <div class="spec-card" *ngFor="let spec of specs">
+          <div class="spec-icon">{{ spec.icon }}</div>
+
+          <div class="spec-info">
+            <h3>{{ spec.titulo }}</h3>
+            <p>{{ spec.descricao }}</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
 </div>
 
 <app-rodape></app-rodape>
