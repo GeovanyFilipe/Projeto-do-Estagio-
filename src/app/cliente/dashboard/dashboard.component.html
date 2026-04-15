@@ -132,7 +132,9 @@
           <div class="info-card card-status">
             <div class="card-header">
               <h3>Status da Assinatura</h3>
-              <span class="badge badge-active">Ativo</span>
+              <span class="badge" [class.badge-active]="hasPlan" [class.badge-inactive]="!hasPlan">
+                {{ hasPlan ? 'Ativo' : 'Inativo' }}
+              </span>
             </div>
             <div class="card-body">
               <p class="status-info">
@@ -141,10 +143,15 @@
               <p class="status-info">
                 <strong>Membro desde:</strong> {{ currentUser?.dataCadastro | date: 'shortDate' }}
               </p>
-              <p class="status-info">
+              <p class="status-info" *ngIf="hasPlan">
                 <strong>Próximo pagamento:</strong> 30/04/2026
               </p>
-              <button class="btn btn-secondary" (click)="selectTab('plano')">Gerenciar Plano</button>
+              <p class="status-info" *ngIf="!hasPlan">
+                <strong>Próximo pagamento:</strong> N/A
+              </p>
+              <button class="btn btn-secondary" (click)="router.navigate(['/planos'])">
+                {{ hasPlan ? 'Gerenciar Plano' : 'Adquirir Plano' }}
+              </button>
             </div>
           </div>
 
@@ -153,12 +160,15 @@
             <div class="card-header">
               <h3>Uso de Largura de Banda</h3>
             </div>
-            <div class="card-body">
+            <div class="card-body" *ngIf="hasPlan">
               <div class="usage-bar">
                 <div class="usage-fill" style="width: 65%"></div>
               </div>
               <p class="usage-text">6.5 GB de 10 GB utilizados</p>
               <p class="usage-percentage">65%</p>
+            </div>
+            <div class="card-body" *ngIf="!hasPlan">
+              <p class="no-data-text">Adquira um plano para ver seu uso.</p>
             </div>
           </div>
 
@@ -167,7 +177,7 @@
             <div class="card-header">
               <h3>Dispositivos Conectados</h3>
             </div>
-            <div class="card-body">
+            <div class="card-body" *ngIf="hasPlan">
               <p class="device-count">2 de 5 dispositivos</p>
               <ul class="device-list">
                 <li class="device-item active">
@@ -180,6 +190,10 @@
                 </li>
               </ul>
               <button class="btn btn-secondary" (click)="selectTab('dispositivos')">Ver Mais</button>
+            </div>
+            <div class="card-body" *ngIf="!hasPlan">
+              <p class="no-data-text">Nenhum dispositivo conectado.</p>
+              <button class="btn btn-secondary" (click)="router.navigate(['/planos'])">Ativar VPN</button>
             </div>
           </div>
 
@@ -211,7 +225,7 @@
         <h2 class="section-title">Meus Dispositivos</h2>
         
         <div class="devices-table">
-          <div class="table-header">
+          <div class="table-header" *ngIf="hasPlan">
             <div class="table-cell">Dispositivo</div>
             <div class="table-cell">Status</div>
             <div class="table-cell">IP</div>
@@ -219,26 +233,33 @@
             <div class="table-cell">Ação</div>
           </div>
 
-          <div *ngFor="let device of devices" class="table-row">
-            <div class="table-cell">
-              <strong>{{ device.nome }}</strong>
-            </div>
-            <div class="table-cell">
-              <span class="status-badge" [class.active]="device.status === 'Ativo'">
-                {{ device.status }}
-              </span>
-            </div>
-            <div class="table-cell">{{ device.ip }}</div>
-            <div class="table-cell">{{ device.ultimoAcesso }}</div>
-            <div class="table-cell">
-              <button 
-                class="btn btn-small btn-danger"
-                (click)="disconnectDevice(device.id)"
-              >
-                Desconectar
-              </button>
-            </div>
+          <div *ngIf="!hasPlan || devices.length === 0" class="no-faturas">
+            <p>Nenhum dispositivo conectado. Adquira um plano para começar a usar.</p>
+            <button class="btn btn-primary" (click)="router.navigate(['/planos'])" style="margin-top: 15px;">Ver Planos</button>
           </div>
+
+          <ng-container *ngIf="hasPlan">
+            <div *ngFor="let device of devices" class="table-row">
+              <div class="table-cell">
+                <strong>{{ device.nome }}</strong>
+              </div>
+              <div class="table-cell">
+                <span class="status-badge" [class.active]="device.status === 'Ativo'">
+                  {{ device.status }}
+                </span>
+              </div>
+              <div class="table-cell">{{ device.ip }}</div>
+              <div class="table-cell">{{ device.ultimoAcesso }}</div>
+              <div class="table-cell">
+                <button 
+                  class="btn btn-small btn-danger"
+                  (click)="disconnectDevice(device.id)"
+                >
+                  Desconectar
+                </button>
+              </div>
+            </div>
+          </ng-container>
         </div>
       </section>
 
@@ -255,7 +276,12 @@
             <div class="table-cell">Ação</div>
           </div>
 
-          <div *ngFor="let invoice of invoices" class="table-row">
+          <div *ngIf="!hasPlan || invoices.length === 0" class="no-faturas">
+            <p>Nenhuma fatura encontrada.</p>
+          </div>
+
+          <ng-container *ngIf="hasPlan">
+            <div *ngFor="let invoice of invoices" class="table-row">
             <div class="table-cell">{{ invoice.data }}</div>
             <div class="table-cell"><strong>{{ invoice.valor }}</strong></div>
             <div class="table-cell">
@@ -271,8 +297,9 @@
               </button>
             </div>
           </div>
-        </div>
-      </section>
+        </ng-container>
+      </div>
+    </section>
 
       <!-- TAB: Suporte -->
       <section *ngIf="activeTab === 'suporte'" class="tab-pane active">
@@ -345,3 +372,4 @@
   </div>
 </div>
 
+<app-rodape></app-rodape>

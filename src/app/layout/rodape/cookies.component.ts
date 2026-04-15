@@ -127,4 +127,4 @@ import { RodapeComponent } from './rodape.component';
     }
   `]
 })
-export class CookiesComponent {}
+export class CookiesComponent { }

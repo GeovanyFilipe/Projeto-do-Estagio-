@@ -158,4 +158,4 @@ import { MenuComponent } from '../menu/menu.component';
     }
   `]
 })
-export class TermosComponent {}
+export class TermosComponent { }
