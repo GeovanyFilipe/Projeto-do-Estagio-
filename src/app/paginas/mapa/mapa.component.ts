@@ -1,5 +1,7 @@
-import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import * as L from 'leaflet';
 import { MenuComponent } from "../../layout/menu/menu.component";
 import { RodapeComponent } from '../../layout/rodape/rodape.component';
@@ -13,10 +15,11 @@ import { Router } from '@angular/router'; // 🔹 Importa Router
   templateUrl: './mapa.component.html',
   styleUrls: ['./mapa.component.css']
 })
-export class MapaComponent implements AfterViewInit {
+export class MapaComponent implements AfterViewInit, OnDestroy {
   @ViewChild('map', { static: true }) mapElement!: ElementRef;
   private map!: L.Map;
   private serverMarker!: L.Marker;
+  private destroy$ = new Subject<void>();
 
   isConnected = false;
   statusText = 'Desprotegido';
@@ -70,7 +73,14 @@ export class MapaComponent implements AfterViewInit {
 
     // Subscribes para atualizar usuário logado
     this.currentUser = this.authService.getCurrentUser();
-    this.authService.currentUser$.subscribe(user => this.currentUser = user);
+    this.authService.currentUser$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(user => this.currentUser = user);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   createCenterMarker() {
