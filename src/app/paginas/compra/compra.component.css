@@ -146,11 +146,11 @@
 
 /* BASE (TODOS OS ÍCONES) */
 .icons img {
-  height: 22px;
-  width: auto;
+  height: 32px;
+  width: 50px;
   object-fit: contain;
-  opacity: 0.9;
-  transition: 0.2s ease;
+  opacity: 1;
+  transition: all 0.3s ease;
 }
 
 /* VISA AUMENTADO PARA IGUALAR MASTERCARD */
@@ -203,6 +203,38 @@
   outline: none;
   border: 1px solid #0099ff;
   box-shadow: 0 0 0 2px rgba(0,153,255,0.15);
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding-right: 55px;
+}
+
+.card-brand-view {
+  position: absolute;
+  right: 12px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.card-brand-view img {
+  height: 24px;
+  width: 40px;
+  object-fit: contain;
+  animation: cardIn 0.3s ease-out;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateX(10px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
 /* LINHA */

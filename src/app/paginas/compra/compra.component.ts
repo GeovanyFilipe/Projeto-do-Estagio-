@@ -15,6 +15,7 @@ import { RodapeComponent } from '../../layout/rodape/rodape.component';
 export class CompraComponent {
 
   metodoPagamento: string = 'cartao';
+  tipoCartao: string = '';
 
   planoSelecionadoKey: string = '';
 
@@ -65,7 +66,34 @@ export class CompraComponent {
 
   formatarCartao(event: any) {
     let valor = event.target.value.replace(/\D/g, '');
+
+    // Detecção da bandeira
+    if (valor.startsWith('4')) {
+      this.tipoCartao = 'visa';
+    } else if (valor.startsWith('5') || valor.startsWith('2')) {
+      // Simplificando: Mastercard geralmente começa com 5 ou 2 (série 2221-2720)
+      this.tipoCartao = 'mastercard';
+    } else {
+      this.tipoCartao = '';
+    }
+
+    // Formatação 0000 0000 0000 0000
     valor = valor.replace(/(.{4})/g, '$1 ').trim();
+    event.target.value = valor.substring(0, 19);
+  }
+
+  formatarValidade(event: any) {
+    let valor = event.target.value.replace(/\D/g, '');
+    if (valor.length > 2) {
+      valor = valor.substring(0, 2) + '/' + valor.substring(2, 4);
+    } else {
+      valor = valor.substring(0, 2);
+    }
     event.target.value = valor;
+  }
+
+  formatarCVV(event: any) {
+    let valor = event.target.value.replace(/\D/g, '');
+    event.target.value = valor.substring(0, 3);
   }
 }

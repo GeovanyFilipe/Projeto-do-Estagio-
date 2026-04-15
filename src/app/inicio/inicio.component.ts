@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from '../layout/menu/menu.component';
@@ -6,6 +6,8 @@ import { SliderComponent } from '../layout/slider/slider.component';
 import { SpecsComponent } from '../layout/specs/specs.component';
 import { RodapeComponent } from '../layout/rodape/rodape.component';
 import { AuthService } from '../services/auth.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-inicio',
@@ -21,17 +23,25 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.css']
 })
-export class InicioComponent implements OnInit {
+export class InicioComponent implements OnInit, OnDestroy {
   // Para controlar o dropdown de "Planos" no Hero
   activeDropdown: string | null = null;
   isAuthenticated = false;
+  private destroy$ = new Subject<void>();
 
   constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit() {
-    this.authService.isAuthenticated$.subscribe(isAuth => {
+    this.authService.isAuthenticated$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(isAuth => {
       this.isAuthenticated = isAuth;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   // Alterna dropdown
