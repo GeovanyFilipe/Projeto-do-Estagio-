@@ -8,7 +8,7 @@ import { RodapeComponent } from '../../layout/rodape/rodape.component';
 @Component({
   selector: 'app-cliente-dashboard',
   standalone: true,
-  imports: [CommonModule, MenuComponent],
+  imports: [CommonModule, MenuComponent, RodapeComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -22,6 +22,10 @@ export class ClienteDashboardComponent implements OnInit {
     { id: 2, nome: 'Celular - Android', status: 'Ativo', ip: '192.168.1.101', ultimoAcesso: '15 min atrás' },
     { id: 3, nome: 'Tablet - iPad', status: 'Inativo', ip: '192.168.1.102', ultimoAcesso: '2 dias atrás' }
   ];
+
+  get hasPlan(): boolean {
+    return !!this.currentUser && this.currentUser.plano !== 'Nenhum plano' && this.currentUser.plano !== '';
+  }
 
   invoices = [
     { id: 1, data: '31/03/2026', valor: 'AOA 5.99', status: 'Pago', metodo: 'Cartão' },

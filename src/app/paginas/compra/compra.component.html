@@ -5,8 +5,6 @@
   <!-- RESUMO DO PLANO -->
   <div class="plano-resumo" *ngIf="plano">
     <div class="plano-info">
-      <div class="plano-icon">📦</div>
-
       <div>
         <h3>{{ plano.nome }}</h3>
         <p>{{ plano.descricao }}</p>
@@ -37,8 +35,12 @@
           <span>Cartão de crédito ou débito</span>
 
           <div class="icons">
+
             <img src="/imagens/visa-removebg-preview.png" alt="Visa" class="payment-icon visa-icon">
             <img src="/imagens/MasterCard.png" alt="Mastercard" class="payment-icon mastercard-icon">
+
+            <img *ngIf="!tipoCartao || tipoCartao === 'visa'" src="/imagens/visa-removebg-preview.png" alt="Visa" class="payment-icon">
+            <img *ngIf="!tipoCartao || tipoCartao === 'mastercard'" src="/imagens/MasterCard.png" alt="Mastercard" class="payment-icon">
           </div>
         </div>
       </label>
@@ -66,24 +68,41 @@
     <!-- FORM CARTÃO -->
     <form *ngIf="metodoPagamento === 'cartao'" (ngSubmit)="finalizarCompra()" class="form-pagamento">
 
-      <div class="input-group">
+      <div class="input-group input-com-icon">
         <label>Número do cartão</label>
-        <input 
-          type="text"
-          placeholder="0000 0000 0000 0000"
-          (input)="formatarCartao($event)"
-        >
+        <div class="input-wrapper">
+          <input 
+            type="text"
+            placeholder="0000 0000 0000 0000"
+            name="numeroCartao"
+            (input)="formatarCartao($event)"
+            autocomplete="off"
+          >
+          <div class="card-brand-view" *ngIf="tipoCartao">
+            <img [src]="tipoCartao === 'visa' ? '/imagens/visa-removebg-preview.png' : '/imagens/MasterCard.png'" [alt]="tipoCartao">
+          </div>
+        </div>
       </div>
 
       <div class="linha">
         <div class="input-group">
           <label>Data de validade</label>
-          <input type="text" placeholder="MM/AA">
+          <input 
+            type="text" 
+            placeholder="MM/AA" 
+            (input)="formatarValidade($event)"
+            maxlength="5"
+          >
         </div>
 
         <div class="input-group">
           <label>CVV</label>
-          <input type="text" placeholder="***">
+          <input 
+            type="text" 
+            placeholder="***" 
+            (input)="formatarCVV($event)"
+            maxlength="3"
+          >
         </div>
       </div>
 

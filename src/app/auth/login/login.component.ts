@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService, LoginResponse } from '../../services/auth.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +13,7 @@ import { AuthService, LoginResponse } from '../../services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   email: string = '';
   password: string = '';
   nome: string = '';
@@ -20,6 +22,8 @@ export class LoginComponent implements OnInit {
   error: string = '';
   success: string = '';
   returnUrl: string = '';
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private authService: AuthService,
@@ -61,7 +65,9 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.error = '';
 
-    this.authService.login(this.email, this.password).subscribe({
+    this.authService.login(this.email, this.password)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
       next: (response: LoginResponse) => {
         this.loading = false;
         this.success = 'Login realizado com sucesso!';
@@ -93,7 +99,9 @@ export class LoginComponent implements OnInit {
     this.error = '';
 
     // Cadastro sem plano - usuário escolherá depois
-    this.authService.register(this.email, this.password, this.nome, '').subscribe({
+    this.authService.register(this.email, this.password, this.nome, '')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
       next: (response: LoginResponse) => {
         this.loading = false;
         this.success = 'Cadastro realizado com sucesso! Bem-vindo!';
@@ -115,5 +123,10 @@ export class LoginComponent implements OnInit {
     } else {
       this.login();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

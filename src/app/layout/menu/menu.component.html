@@ -103,7 +103,6 @@
             </svg>
           </a>
           <div class="dropdown-menu" [class.show]="activeDropdown === 'contacto'">
-            <p class="dropdown-group-label">Suporte</p>
             <a routerLink="/suporte/tecnico" class="dropdown-item" (click)="closeMobileMenu()">
               <span class="dropdown-item-icon">🔧</span>
               <div class="dropdown-item-content">
@@ -127,7 +126,6 @@
 
       <!-- Botões de Ação - Não Autenticado -->
       <div class="navbar-actions" *ngIf="!isAuthenticated">
-        <p class="mobile-section-label">Conta</p>
         <button class="btn-login" (click)="goToLogin()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
           Entrar na Conta
@@ -136,12 +134,11 @@
 
       <!-- Botões de Ação - Autenticado -->
       <div class="navbar-actions-auth" *ngIf="isAuthenticated">
-        <p class="mobile-section-label">Minha Conta</p>
         <button class="user-profile" (click)="goToPerfil()">
           <div class="user-avatar">{{ (currentUser?.nome || 'U').charAt(0).toUpperCase() }}</div>
           <div class="user-info">
             <p class="user-name">{{ currentUser?.nome }}</p>
-            <p class="user-plan">{{ currentUser?.plano || 'Sem plano' }}</p>
+            <p class="user-plan">{{ currentUser?.plano || 'Nenhum plano' }}</p>
           </div>
           <svg class="user-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
         </button>

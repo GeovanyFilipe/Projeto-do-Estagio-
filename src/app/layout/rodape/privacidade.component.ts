@@ -145,4 +145,4 @@ import { RodapeComponent } from './rodape.component';
     }
   `]
 })
-export class PrivacidadeComponent {}
+export class PrivacidadeComponent { }
