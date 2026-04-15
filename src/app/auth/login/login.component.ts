@@ -98,8 +98,8 @@ export class LoginComponent implements OnInit {
         this.loading = false;
         this.success = 'Cadastro realizado com sucesso! Bem-vindo!';
         setTimeout(() => {
-          // Redireciona para a página inicial ou outra página que desejar
-          this.router.navigate(['/']);
+          // Redireciona para a página de onde o usuário veio
+          this.router.navigateByUrl(this.returnUrl);
         }, 1500);
       },
       error: (err: any) => {

@@ -26,7 +26,7 @@ export class PlanosComponent {
         'Suporte prioritário 24/7'
       ],
       cta: 'Assinar Agora',
-      rota: '/planos/empresarial',
+      rota: '/compra/empresarial',
       destaque: true
     },
     {
@@ -42,7 +42,7 @@ export class PlanosComponent {
         'Suporte padrão (email ou chat)',
       ],
       cta: 'Assinar agora',
-      rota: '/planos/individual',
+      rota: '/compra/individual',
       destaque: true
     },
     {
@@ -59,7 +59,7 @@ export class PlanosComponent {
         'Suporte técnico dedicado',
       ],
       cta: 'Assinar agora',
-      rota: '/planos/educacional',
+      rota: '/compra/educacional',
       destaque: true
     },
     {
@@ -75,7 +75,7 @@ export class PlanosComponent {
         'Suporte prioritário básico',
       ],
       cta: 'Assinar agora',
-      rota: '/planos/negocio',
+      rota: '/compra/negocio',
       destaque: true
     },
   ];
