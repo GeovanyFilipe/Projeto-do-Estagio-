@@ -49,3 +49,5 @@ export class PorqueComponent {
     this.router.navigate(['/login'], { queryParams: { mode: 'register' } });
   }
 }
+
+

@@ -138,12 +138,26 @@
   align-items: center;
 }
 
+.icons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
 .icons img {
   height: 22px;
   width: auto;
   object-fit: contain;
   opacity: 0.9;
   transition: 0.2s ease;
+}
+
+.icons img.ekwanza-icon {
+  height: 75px; /* Aumento agressivo para compensar imagens originais com muita margem transparente */
+  width: auto; 
+  object-fit: contain;
+  margin-top: -26px; /* Evita que o botão expanda */
+  margin-bottom: -26px;
 }
 
 .icons img:hover {
