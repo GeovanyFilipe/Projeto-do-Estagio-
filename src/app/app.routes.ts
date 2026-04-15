@@ -32,7 +32,8 @@ export const routes: Routes = [
     {
     path: 'compra/:plano',
     loadComponent: () =>
-        import('./paginas/compra/compra.component').then(m => m.CompraComponent)
+        import('./paginas/compra/compra.component').then(m => m.CompraComponent),
+        canActivate: [AuthGuard]
     },
     // Suporte
     { path: 'suporte/tecnico', loadComponent: () => import('./paginas/suporte/tecnico/tecnico.component').then(m => m.TecnicoComponent) },
