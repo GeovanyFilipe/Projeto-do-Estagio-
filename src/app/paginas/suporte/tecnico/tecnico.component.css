@@ -98,6 +98,56 @@
   margin-bottom: 20px;
 }
 
+.contact-buttons-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.btn-contact {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 25px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  border: none;
+  width: 100%;
+}
+
+.btn-contact:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.1);
+}
+
+.btn-email {
+  background: #f1f5f9;
+  color: #1e3a5f;
+  border: 1px solid #e2e8f0;
+}
+
+.btn-whatsapp {
+  background: #25d366;
+  color: white;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+}
+
+.btn-chat {
+  background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+}
+
+.btn-contact .icon {
+  font-size: 20px;
+}
+
 @media (max-width: 768px) {
   .suporte-content {
     grid-template-columns: 1fr;

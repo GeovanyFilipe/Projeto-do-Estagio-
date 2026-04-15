@@ -14,8 +14,14 @@ import { RodapeComponent } from '../../layout/rodape/rodape.component';
 })
 export class CompraComponent {
 
-  metodoPagamento: string = 'cartao';
+  metodoPagamento: 'cartao' | 'ekwanza' = 'cartao';
   tipoCartao: string = '';
+
+  // Campos do formulário para validação
+  numeroCartao: string = '';
+  dataValidade: string = '';
+  cvv: string = '';
+  telefoneEkwanza: string = '';
 
   planoSelecionadoKey: string = '';
 
@@ -59,9 +65,23 @@ export class CompraComponent {
   }
 
   finalizarCompra() {
+    if (this.metodoPagamento === 'cartao') {
+      if (!this.numeroCartao || !this.dataValidade || !this.cvv) {
+        alert('Por favor, preencha todos os dados do cartão.');
+        return;
+      }
+    } else if (this.metodoPagamento === 'ekwanza') {
+      if (!this.telefoneEkwanza) {
+        alert('Por favor, introduza o número de telefone para o pagamento via E-Kwanza.');
+        return;
+      }
+    }
+
+    console.log('Método:', this.metodoPagamento);
     console.log('Plano:', this.planoSelecionadoKey);
     console.log('Detalhes:', this.plano);
-    alert('Pedido enviado com sucesso!');
+    
+    alert('Pagamento processado com sucesso! Verifique o seu dispositivo para confirmação.');
   }
 
   formatarCartao(event: any) {

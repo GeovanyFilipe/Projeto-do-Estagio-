@@ -24,9 +24,26 @@
       <div class="form-section">
         <h2>Fale Conosco</h2>
         <form class="contact-form" (ngSubmit)="enviarMensagem()" #form="ngForm">
-          <input type="text" placeholder="Seu nome" name="nome" required [(ngModel)]="nome">
-          <input type="email" placeholder="Seu email" name="email" required [(ngModel)]="email">
-          <textarea placeholder="Sua mensagem" rows="5" name="mensagem" required [(ngModel)]="mensagem"></textarea>
+          <div class="form-group">
+            <input type="text" placeholder="Seu nome" name="nome" required [(ngModel)]="nome" #nomeModel="ngModel" [class.invalid]="nomeModel.invalid && nomeModel.touched">
+            <span class="error-msg" *ngIf="nomeModel.invalid && nomeModel.touched">Nome é obrigatório</span>
+          </div>
+          
+          <div class="form-group">
+            <input type="email" placeholder="Seu email" name="email" required email [(ngModel)]="email" #emailModel="ngModel" [class.invalid]="emailModel.invalid && emailModel.touched">
+            <span class="error-msg" *ngIf="emailModel.invalid && emailModel.touched">E-mail válido é obrigatório</span>
+          </div>
+
+          <div class="form-group">
+            <input type="tel" placeholder="Seu telefone (Ex: +244 9xx...)" name="telefone" required pattern="^\+?[0-9\s-]{9,}$" [(ngModel)]="telefone" #telModel="ngModel" [class.invalid]="telModel.invalid && telModel.touched">
+            <span class="error-msg" *ngIf="telModel.invalid && telModel.touched">Telefone válido é obrigatório</span>
+          </div>
+          
+          <div class="form-group">
+            <textarea placeholder="Sua mensagem" rows="5" name="mensagem" required minlength="10" [(ngModel)]="mensagem" #msgModel="ngModel" [class.invalid]="msgModel.invalid && msgModel.touched"></textarea>
+            <span class="error-msg" *ngIf="msgModel.invalid && msgModel.touched">A mensagem deve ter pelo menos 10 caracteres</span>
+          </div>
+
           <button type="submit" class="btn-enviar" [disabled]="!form.form.valid">Enviar Mensagem</button>
         </form>
         <p class="helper-text">As mensagens são armazenadas em localStorage e encaminhadas ao suporte comercial no próximo atendimento.</p>

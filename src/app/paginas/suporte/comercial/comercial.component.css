@@ -60,7 +60,13 @@
 .contact-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .contact-form input,
@@ -71,6 +77,21 @@
   font-size: 14px;
   font-family: inherit;
   transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.contact-form input.invalid,
+.contact-form textarea.invalid {
+  border-color: #ff4d4d;
+  background: #fff5f5;
+}
+
+.error-msg {
+  color: #ff4d4d;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 2px;
 }
 
 .contact-form input:focus,
@@ -93,9 +114,11 @@
   margin-top: 10px;
 }
 
-.btn-enviar:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 153, 255, 0.3);
+.btn-enviar:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 @media (max-width: 768px) {
