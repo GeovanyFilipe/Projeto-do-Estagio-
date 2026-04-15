@@ -25,17 +25,19 @@
   </div>
 
   <div class="hero-content">
-    <h1 class="hero-title">Conectando o Mundo à Internet Angolana</h1>
-    <p class="hero-subtitle">O AngolanVPN é uma VPN que melhora a conectividade à internet angolana, garantindo acesso
-      seguro, eficiente e uma melhor experiência digital.</p>
+    <h1 class="hero-title">Acesso rápido e sem bloqueios aos serviços do Estado angolano a partir de qualquer parte do mundo.</h1>
+    <p class="hero-subtitle">O AngolanVPN conecta você directamente à servidores, tornando o acesso a sistemas públicos mais rápido e eficiente. Ideal para aceder sistemas como o Portal do Cidadão, Portal do Contribuinte (AGT), SIGFE e outros serviços essenciais.</p>
 
     <div class="hero-buttons">
       <!-- Botão Experimente Grátis -->
       <button class="btn-primary" (click)="goToCadastro()" *ngIf="!isAuthenticated">Experimente Grátis</button>
 
       <!-- Botão Planos -->
-      <div class="btn-secondary" (click)="toggleDropdown('planos')" (mousedown)="$event.stopPropagation()">
-        Planos ▼
+      <div class="btn-secondary dropdown-toggle" (click)="toggleDropdown('planos'); $event.stopPropagation()" [class.open]="activeDropdown === 'planos'">
+        Planos
+        <svg class="dropdown-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
         <div class="dropdown-menu" [class.show]="activeDropdown === 'planos'">
           <a routerLink="/planos/empresarial" class="dropdown-item" (click)="goToPlano('empresarial')">
             <span class="icon">🏢</span>
@@ -66,7 +68,7 @@
 <section class="featured-section">
   <div class="featured-wrapper">
     <div class="featured-card">
-      <h3>Portais governamentais:</h3>
+      <h3>Portais governamentais</h3>
       <p>Reduza o tempo de espera e evite falhas ao
         acessar plataformas
         como o Portal do
@@ -74,14 +76,14 @@
         pagamentos do estado.</p>
     </div>
     <div class="featured-card">
-      <h3>Interações empresariais com o governo:</h3>
+      <h3>Interações empresariais com o governo</h3>
       <p>Facilitando o envio de
         documentos, submissão de
         propostas e outras atividades
         críticas.</p>
     </div>
     <div class="featured-card">
-      <h3>Emissão de documentos oficiais:</h3>
+      <h3>Emissão de documentos oficiais</h3>
       <p>Como bilhete de
         identidade,
         passaporte, registos,

@@ -53,19 +53,12 @@
 }
 
 .hero-title {
-  font-size: 56px;
-  font-weight: 700;
+  font-size: 42px;
+  font-weight: 800;
   margin: 0;
   line-height: 1.2;
   color: #fff;
-}
-
-.hero-title {
-  font-size: 56px;
-  font-weight: 700;
-  margin: 0;
-  line-height: 1.2;
-  color: #fff;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
  .hero-subtitle {
@@ -82,38 +75,39 @@
 
 .btn-primary {
   padding: 15px 40px;
-  background: white;
-  color: #1e3a5f;
+  background: linear-gradient(135deg, #00d4ff, #0099ff);
+  color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 153, 255, 0.4);
 }
 
 .btn-primary:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 28px rgba(0, 153, 255, 0.5);
 }
 
 .btn-secondary {
   padding: 15px 40px;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.1);
   color: white;
-  border: 2px solid white;
-  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  position: relative; /* Added for dropdown positioning */
-  user-select: none;   /* Avoid text selection on click/drag */
+  position: relative;
+  user-select: none;
+  backdrop-filter: blur(4px);
 }
 
 .btn-secondary:hover {
-  background: white;
-  color: #1e3a5f;
+  background: rgba(255, 255, 255, 0.2);
   transform: translateY(-3px);
 }
 
@@ -351,25 +345,32 @@
 
 .dropdown-icon {
   transition: transform 0.3s ease;
-  margin-left: 4px;
+  margin-left: 8px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Roda o icone quando esta aberto */
+.dropdown-toggle.open .dropdown-icon {
+  transform: rotate(180deg);
 }
 
 /* Dropdown container */
 .dropdown-menu {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 12px);
   left: 0;
   background: white;
   border-radius: 12px;
   min-width: 280px;
-  margin-top: 8px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 8px;
   z-index: 1001;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 /* Mostra quando ativo */

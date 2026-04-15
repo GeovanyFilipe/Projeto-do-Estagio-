@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterModule } from '@angular/router';
 import { AuthService, User } from '../../services/auth.service';
@@ -21,7 +21,8 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private elementRef: ElementRef
   ) {}
 
   ngOnInit(): void {
@@ -107,8 +108,15 @@ export class MenuComponent implements OnInit, OnDestroy {
     this.closeMobileMenu();
   }
 
-  // ================= UTILITÁRIO =================
   isDropdownOpen(dropdown: string): boolean {
     return this.activeDropdown === dropdown;
+  }
+
+  // Fechar dropdowns ao clicar fora do componente
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: Event) {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.activeDropdown = null;
+    }
   }
 }

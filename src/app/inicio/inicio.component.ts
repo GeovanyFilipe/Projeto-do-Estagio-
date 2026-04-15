@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ElementRef } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from '../layout/menu/menu.component';
@@ -29,7 +29,11 @@ export class InicioComponent implements OnInit, OnDestroy {
   isAuthenticated = false;
   private destroy$ = new Subject<void>();
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private elementRef: ElementRef
+  ) { }
 
   ngOnInit() {
     this.authService.isAuthenticated$
@@ -62,5 +66,13 @@ export class InicioComponent implements OnInit, OnDestroy {
   // Navegar para mapa dos servidores
   goToMapa() {
     this.router.navigate(['/mapa']);
+  }
+
+  // Fechar dropdown ao clicar fora
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: Event) {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.activeDropdown = null;
+    }
   }
 }
