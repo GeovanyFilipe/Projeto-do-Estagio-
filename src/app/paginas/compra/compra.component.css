@@ -138,6 +138,13 @@
   align-items: center;
 }
 
+.icons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* BASE (TODOS OS ÍCONES) */
 .icons img {
   height: 22px;
   width: auto;
@@ -146,6 +153,21 @@
   transition: 0.2s ease;
 }
 
+/* VISA AUMENTADO PARA IGUALAR MASTERCARD */
+.icons img.visa-icon {
+  transform: scale(1.2);
+}
+
+/* E-KWANZA MANTIDO COMO ESTÁ */
+.icons img.ekwanza-icon {
+  height: 75px;
+  width: auto; 
+  object-fit: contain;
+  margin-top: -26px;
+  margin-bottom: -26px;
+}
+
+/* HOVER */
 .icons img:hover {
   opacity: 1;
   transform: scale(1.05);
@@ -176,7 +198,7 @@
   transition: all 0.2s ease;
 }
 
-/* FOCUS (UX PRO) */
+/* FOCUS */
 .input-group input:focus {
   outline: none;
   border: 1px solid #0099ff;
@@ -218,7 +240,7 @@
   box-shadow: 0 8px 20px rgba(0,153,255,0.3);
 }
 
-/* EKWANZA */
+/* EKWANZA BOX */
 .ekwanza-box {
   padding: 20px;
   background: #f5f7fa;
