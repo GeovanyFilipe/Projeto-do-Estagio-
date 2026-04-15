@@ -24,38 +24,30 @@
 
       <!-- CARTÃO -->
       <label class="metodo" [class.ativo]="metodoPagamento === 'cartao'">
-        <input 
-          type="radio" 
-          name="pagamento" 
-          value="cartao"
-          [(ngModel)]="metodoPagamento"
-        >
+        <input type="radio" name="pagamento" value="cartao" [(ngModel)]="metodoPagamento">
 
         <div class="metodo-conteudo">
           <span>Cartão de crédito ou débito</span>
 
           <div class="icons">
-            <img *ngIf="!tipoCartao || tipoCartao === 'visa'" src="/imagens/visa-removebg-preview.png" alt="Visa" class="payment-icon">
-            <img *ngIf="!tipoCartao || tipoCartao === 'mastercard'" src="/imagens/MasterCard.png" alt="Mastercard" class="payment-icon">
+            <img *ngIf="!tipoCartao || tipoCartao === 'visa'" src="/imagens/visa-removebg-preview.png" alt="Visa"
+              class="payment-icon">
+            <img *ngIf="!tipoCartao || tipoCartao === 'mastercard'" src="/imagens/MasterCard.png" alt="Mastercard"
+              class="payment-icon">
           </div>
         </div>
       </label>
 
       <!-- EKWANZA -->
       <label class="metodo" [class.ativo]="metodoPagamento === 'ekwanza'">
-        <input 
-          type="radio" 
-          name="pagamento" 
-          value="ekwanza"
-          [(ngModel)]="metodoPagamento"
-        >
+        <input type="radio" name="pagamento" value="ekwanza" [(ngModel)]="metodoPagamento">
 
         <div class="metodo-conteudo">
           <span>E-Kwanza</span>
 
-        <div class="icons">
-          <img src="/imagens/ekwanza.png" alt="E-Kwanza" class="payment-icon ekwanza-icon">
-        </div>
+          <div class="icons">
+            <img src="/imagens/ekwanza.png" alt="E-Kwanza" class="payment-icon ekwanza-icon">
+          </div>
         </div>
       </label>
 
@@ -65,40 +57,27 @@
     <form *ngIf="metodoPagamento === 'cartao'" (ngSubmit)="finalizarCompra()" class="form-pagamento">
 
       <div class="input-group input-com-icon">
-        <label>Número do cartão</label>
+        <label for="numeroCartao">Número do cartão</label>
         <div class="input-wrapper">
-          <input 
-            type="text"
-            placeholder="0000 0000 0000 0000"
-            name="numeroCartao"
-            (input)="formatarCartao($event)"
-            autocomplete="off"
-          >
+          <input type="text" id="numeroCartao" placeholder="0000 0000 0000 0000" name="numeroCartao"
+            (input)="formatarCartao($event)" autocomplete="off">
           <div class="card-brand-view" *ngIf="tipoCartao">
-            <img [src]="tipoCartao === 'visa' ? '/imagens/visa-removebg-preview.png' : '/imagens/MasterCard.png'" [alt]="tipoCartao">
+            <img [src]="tipoCartao === 'visa' ? '/imagens/visa-removebg-preview.png' : '/imagens/MasterCard.png'"
+              [alt]="tipoCartao">
           </div>
         </div>
       </div>
 
       <div class="linha">
         <div class="input-group">
-          <label>Data de validade</label>
-          <input 
-            type="text" 
-            placeholder="MM/AA" 
-            (input)="formatarValidade($event)"
-            maxlength="5"
-          >
+          <label for="dataValidade">Data de validade</label>
+          <input type="text" id="dataValidade" name="dataValidade" placeholder="MM/AA"
+            (input)="formatarValidade($event)" maxlength="5">
         </div>
 
         <div class="input-group">
-          <label>CVV</label>
-          <input 
-            type="text" 
-            placeholder="***" 
-            (input)="formatarCVV($event)"
-            maxlength="3"
-          >
+          <label for="cvv">CVV</label>
+          <input type="text" id="cvv" name="cvv" placeholder="***" (input)="formatarCVV($event)" maxlength="3">
         </div>
       </div>
 
