@@ -63,7 +63,7 @@ export class PlanosComponent {
       destaque: true
     },
     {
-      titulo: '🏢 Plano Negócio',
+      titulo: '🏢 Pequenos Negócios',
       preco: '15.000,00 kz',
       descricao: 'Ideal para empresas médias e grandes',
       features: [

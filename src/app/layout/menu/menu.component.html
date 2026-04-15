@@ -134,18 +134,33 @@
 
       <!-- Botões de Ação - Autenticado -->
       <div class="navbar-actions-auth" *ngIf="isAuthenticated">
-        <button class="user-profile" (click)="goToPerfil()">
-          <div class="user-avatar">{{ (currentUser?.nome || 'U').charAt(0).toUpperCase() }}</div>
-          <div class="user-info">
-            <p class="user-name">{{ currentUser?.nome }}</p>
-            <p class="user-plan">{{ currentUser?.plano || 'Nenhum plano' }}</p>
+        <div class="user-profile-container">
+          <button class="user-profile" (click)="toggleDropdown('perfil')">
+            <div class="user-avatar">{{ (currentUser?.nome || 'U').charAt(0).toUpperCase() }}</div>
+            <div class="user-info">
+              <p class="user-name">{{ currentUser?.nome }}</p>
+              <p class="user-plan">{{ currentUser?.plano || 'Nenhum plano' }}</p>
+            </div>
+            <svg class="user-arrow" [class.open]="activeDropdown === 'perfil'" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          
+          <div class="dropdown-menu user-dropdown" [class.show]="activeDropdown === 'perfil'">
+            <a (click)="goToDashboard()" class="dropdown-item">
+              <span class="dropdown-item-icon">📊</span>
+              <div class="dropdown-item-content">
+                <span class="dropdown-item-title">Painel Administrativo</span>
+                <span class="dropdown-item-desc">Aceder aos seus serviços</span>
+              </div>
+            </a>
+            <a (click)="logout()" class="dropdown-item logout-item">
+              <span class="dropdown-item-icon">🚪</span>
+              <div class="dropdown-item-content">
+                <span class="dropdown-item-title">Terminar Sessão</span>
+                <span class="dropdown-item-desc">Sair da conta com segurança</span>
+              </div>
+            </a>
           </div>
-          <svg class="user-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-        <button class="btn-logout" (click)="logout()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          Terminar Sessão
-        </button>
+        </div>
       </div>
     </div>
 

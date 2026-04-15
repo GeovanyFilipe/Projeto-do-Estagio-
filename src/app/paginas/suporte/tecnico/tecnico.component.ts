@@ -15,6 +15,10 @@ export class TecnicoComponent {
     const whatsappUrl = 'https://wa.me/244937754502';
     window.open(whatsappUrl, '_blank');
   }
+
+  enviarEmail() {
+    window.location.href = 'mailto:geral@fluxodigital.com?subject=Suporte Técnico Angolan VPN';
+  }
 }
 
 

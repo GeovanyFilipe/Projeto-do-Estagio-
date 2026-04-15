@@ -105,7 +105,7 @@
 }
 
 .nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.12);
   color: #00d4ff;
 }
 
@@ -129,7 +129,8 @@
 }
 
 /* Roda o icone quando esta aberto */
-.dropdown-toggle.open .dropdown-icon {
+.dropdown-toggle.open .dropdown-icon,
+.nav-item.dropdown:hover .dropdown-icon {
   transform: rotate(180deg);
 }
 
@@ -140,16 +141,37 @@
   left: 0;
   background: white;
   border-radius: 12px;
+
   min-width: 280px;
+
+  min-width: 300px;
+
   margin-top: 12px;
   box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-10px);
+  transform: translateY(-12px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
   padding: 8px;
   z-index: 1001;
   border: 1px solid rgba(0, 0, 0, 0.05);
+
+  padding: 10px;
+  z-index: 9002;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Pseudo-elemento para manter o menu aberto ao mover o mouse para o dropdown */
+.dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: 0;
+  width: 100%;
+  height: 15px;
+  background: transparent;
+
 }
 
 .dropdown-menu.show {
@@ -252,52 +274,10 @@
 }
 
 /* ======================== BOTOES ======================== */
-.btn-login {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  border: 2px solid rgba(255, 255, 255, 0.8);
-  border-radius: 8px;
-  background: transparent;
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap;
+.user-profile-container {
+  position: relative;
 }
 
-.btn-login:hover {
-  background: #ffffff;
-  color: #1e3a5f;
-  border-color: #ffffff;
-  transform: translateY(-2px);
-}
-
-.btn-logout {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  background: rgba(255, 255, 255, 0.12);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-}
-
-.btn-logout:hover {
-  background: rgba(255, 255, 255, 0.22);
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: translateY(-2px);
-}
-
-/* ======================== USER PROFILE ======================== */
 .user-profile {
   display: flex;
   align-items: center;

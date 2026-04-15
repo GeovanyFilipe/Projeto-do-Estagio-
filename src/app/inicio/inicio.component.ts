@@ -30,9 +30,9 @@ export class InicioComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(
-    private router: Router,
+    private router: Router, 
     private authService: AuthService,
-    private elementRef: ElementRef
+    private el: ElementRef
   ) { }
 
   ngOnInit() {
@@ -53,6 +53,14 @@ export class InicioComponent implements OnInit, OnDestroy {
     this.activeDropdown = this.activeDropdown === dropdown ? null : dropdown;
   }
 
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: Event) {
+    const dropdownTrigger = this.el.nativeElement.querySelector('.btn-secondary');
+    if (dropdownTrigger && !dropdownTrigger.contains(event.target)) {
+      this.activeDropdown = null;
+    }
+  }
+
   // Navegar para cadastro/teste grátis
   goToCadastro() {
     this.router.navigate(['/login'], { queryParams: { mode: 'register' } });
@@ -66,13 +74,5 @@ export class InicioComponent implements OnInit, OnDestroy {
   // Navegar para mapa dos servidores
   goToMapa() {
     this.router.navigate(['/mapa']);
-  }
-
-  // Fechar dropdown ao clicar fora
-  @HostListener('document:click', ['$event'])
-  onClickOutside(event: Event) {
-    if (!this.elementRef.nativeElement.contains(event.target)) {
-      this.activeDropdown = null;
-    }
   }
 }
