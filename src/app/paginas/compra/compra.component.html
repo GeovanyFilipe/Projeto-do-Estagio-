@@ -20,85 +20,104 @@
   <div class="pagamento-box">
     <h2>Forma de pagamento</h2>
 
-    <div class="metodos">
+    <form #purchaseForm="ngForm">
+      <div class="metodos">
 
-      <!-- CARTÃO -->
-      <label class="metodo" [class.ativo]="metodoPagamento === 'cartao'">
-        <input type="radio" name="pagamento" value="cartao" [(ngModel)]="metodoPagamento">
+        <!-- CARTÃO -->
+        <label class="metodo" [class.ativo]="metodoPagamento === 'cartao'">
+          <input type="radio" name="pagamento" value="cartao" [(ngModel)]="metodoPagamento">
 
-        <div class="metodo-conteudo">
-          <span>Cartão de crédito ou débito</span>
+          <div class="metodo-conteudo">
+            <span>Cartão de crédito ou débito</span>
 
-          <div class="icons">
-            <img *ngIf="!tipoCartao || tipoCartao === 'visa'" src="/imagens/visa-removebg-preview.png" alt="Visa"
-              class="payment-icon">
-            <img *ngIf="!tipoCartao || tipoCartao === 'mastercard'" src="/imagens/MasterCard.png" alt="Mastercard"
-              class="payment-icon">
+            <div class="icons">
+              <img *ngIf="!tipoCartao || tipoCartao === 'visa'" src="/imagens/visa-removebg-preview.png" alt="Visa"
+                class="payment-icon">
+              <img *ngIf="!tipoCartao || tipoCartao === 'mastercard'" src="/imagens/MasterCard.png" alt="Mastercard"
+                class="payment-icon">
+            </div>
+          </div>
+        </label>
+
+        <!-- EKWANZA -->
+        <label class="metodo" [class.ativo]="metodoPagamento === 'ekwanza'">
+          <input type="radio" name="pagamento" value="ekwanza" [(ngModel)]="metodoPagamento">
+
+          <div class="metodo-conteudo">
+            <span>E-Kwanza</span>
+
+            <div class="icons">
+              <img src="/imagens/ekwanza.png" alt="E-Kwanza" class="payment-icon ekwanza-icon">
+            </div>
+          </div>
+        </label>
+
+      </div>
+
+      <!-- FORM CARTÃO -->
+      <div *ngIf="metodoPagamento === 'cartao'" class="form-pagamento">
+
+        <div class="input-group">
+          <label for="numeroCartao">Número do cartão</label>
+          <div class="input-wrapper">
+            <input type="text" id="numeroCartao" placeholder="0000 0000 0000 0000" name="numeroCartao"
+              required pattern="^[0-9\s]{19}$" [(ngModel)]="numeroCartao" #cardModel="ngModel"
+              [class.invalid]="cardModel.invalid && cardModel.touched"
+              (input)="formatarCartao($event)" autocomplete="off">
+            <div class="card-brand-view" *ngIf="tipoCartao">
+              <img [src]="tipoCartao === 'visa' ? '/imagens/visa-removebg-preview.png' : '/imagens/MasterCard.png'"
+                [alt]="tipoCartao">
+            </div>
+          </div>
+          <span class="error-msg" *ngIf="cardModel.invalid && cardModel.touched">Número de cartão inválido</span>
+        </div>
+
+        <div class="linha">
+          <div class="input-group">
+            <label for="dataValidade">Data de validade</label>
+            <input type="text" id="dataValidade" name="dataValidade" placeholder="MM/AA"
+              required pattern="^[0-9]{2}/[0-9]{2}$" [(ngModel)]="dataValidade" #dateModel="ngModel"
+              [class.invalid]="dateModel.invalid && dateModel.touched"
+              (input)="formatarValidade($event)" maxlength="5">
+            <span class="error-msg" *ngIf="dateModel.invalid && dateModel.touched">Data inválida</span>
+          </div>
+
+          <div class="input-group">
+            <label for="cvv">CVV</label>
+            <input type="text" id="cvv" name="cvv" placeholder="***" 
+              required pattern="^[0-9]{3}$" [(ngModel)]="cvv" #cvvModel="ngModel"
+              [class.invalid]="cvvModel.invalid && cvvModel.touched"
+              (input)="formatarCVV($event)" maxlength="3">
+            <span class="error-msg" *ngIf="cvvModel.invalid && cvvModel.touched">CVV inválido</span>
           </div>
         </div>
-      </label>
+
+        <button type="button" class="btn-finalizar" [disabled]="!purchaseForm.form.valid" (click)="finalizarCompra()">
+          Confirmar pagamento
+        </button>
+
+      </div>
 
       <!-- EKWANZA -->
-      <label class="metodo" [class.ativo]="metodoPagamento === 'ekwanza'">
-        <input type="radio" name="pagamento" value="ekwanza" [(ngModel)]="metodoPagamento">
+      <div *ngIf="metodoPagamento === 'ekwanza'" class="ekwanza-box">
 
-        <div class="metodo-conteudo">
-          <span>E-Kwanza</span>
+        <p>
+          Introduza o seu número de telefone e receberá uma notificação no seu telemóvel para confirmar o pagamento via E-Kwanza.
+        </p>
 
-          <div class="icons">
-            <img src="/imagens/ekwanza.png" alt="E-Kwanza" class="payment-icon ekwanza-icon">
-          </div>
+        <div class="input-group" style="margin-bottom: 20px; text-align: left;">
+          <input type="tel" placeholder="Seu telefone (Ex: +244 9xx...)" name="telefoneEkwanza" 
+            required pattern="^\+?[0-9\s-]{9,}$" [(ngModel)]="telefoneEkwanza" #telEkwanzaModel="ngModel" 
+            [class.invalid]="telEkwanzaModel.invalid && telEkwanzaModel.touched">
+          <span class="error-msg" *ngIf="telEkwanzaModel.invalid && telEkwanzaModel.touched">O número de telefone é obrigatório</span>
         </div>
-      </label>
 
-    </div>
+        <button type="button" class="btn-finalizar" [disabled]="!purchaseForm.form.valid" (click)="finalizarCompra()">
+          Pagar com E-Kwanza
+        </button>
 
-    <!-- FORM CARTÃO -->
-    <form *ngIf="metodoPagamento === 'cartao'" (ngSubmit)="finalizarCompra()" class="form-pagamento">
-
-      <div class="input-group input-com-icon">
-        <label for="numeroCartao">Número do cartão</label>
-        <div class="input-wrapper">
-          <input type="text" id="numeroCartao" placeholder="0000 0000 0000 0000" name="numeroCartao"
-            (input)="formatarCartao($event)" autocomplete="off">
-          <div class="card-brand-view" *ngIf="tipoCartao">
-            <img [src]="tipoCartao === 'visa' ? '/imagens/visa-removebg-preview.png' : '/imagens/MasterCard.png'"
-              [alt]="tipoCartao">
-          </div>
-        </div>
       </div>
-
-      <div class="linha">
-        <div class="input-group">
-          <label for="dataValidade">Data de validade</label>
-          <input type="text" id="dataValidade" name="dataValidade" placeholder="MM/AA"
-            (input)="formatarValidade($event)" maxlength="5">
-        </div>
-
-        <div class="input-group">
-          <label for="cvv">CVV</label>
-          <input type="text" id="cvv" name="cvv" placeholder="***" (input)="formatarCVV($event)" maxlength="3">
-        </div>
-      </div>
-
-      <button type="submit" class="btn-finalizar">
-        Confirmar pagamento
-      </button>
-
     </form>
-
-    <!-- EKWANZA -->
-    <div *ngIf="metodoPagamento === 'ekwanza'" class="ekwanza-box">
-
-      <p>
-        Receberá uma notificação no seu telemóvel para confirmar o pagamento via E-Kwanza.
-      </p>
-
-      <button class="btn-finalizar" (click)="finalizarCompra()">
-        Pagar com E-Kwanza
-      </button>
-
-    </div>
 
   </div>
 </div>

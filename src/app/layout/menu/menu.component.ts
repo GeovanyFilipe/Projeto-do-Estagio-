@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterModule } from '@angular/router';
 import { AuthService, User } from '../../services/auth.service';
@@ -21,7 +21,8 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private el: ElementRef
   ) {}
 
   ngOnInit(): void {
@@ -53,6 +54,14 @@ export class MenuComponent implements OnInit, OnDestroy {
     this.isMobileMenuOpen = false;
     this.activeDropdown = null;
     document.documentElement.classList.remove('menu-open');
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: Event) {
+    const navbar = this.el.nativeElement.querySelector('.navbar-container');
+    if (navbar && !navbar.contains(event.target)) {
+      this.activeDropdown = null;
+    }
   }
 
   // ================= DROPDOWN =================

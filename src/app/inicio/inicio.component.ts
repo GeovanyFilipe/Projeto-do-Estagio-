@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ElementRef } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from '../layout/menu/menu.component';
@@ -29,7 +29,11 @@ export class InicioComponent implements OnInit, OnDestroy {
   isAuthenticated = false;
   private destroy$ = new Subject<void>();
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(
+    private router: Router, 
+    private authService: AuthService,
+    private el: ElementRef
+  ) { }
 
   ngOnInit() {
     this.authService.isAuthenticated$
@@ -47,6 +51,14 @@ export class InicioComponent implements OnInit, OnDestroy {
   // Alterna dropdown
   toggleDropdown(dropdown: string) {
     this.activeDropdown = this.activeDropdown === dropdown ? null : dropdown;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: Event) {
+    const dropdownTrigger = this.el.nativeElement.querySelector('.btn-secondary');
+    if (dropdownTrigger && !dropdownTrigger.contains(event.target)) {
+      this.activeDropdown = null;
+    }
   }
 
   // Navegar para cadastro/teste grátis
