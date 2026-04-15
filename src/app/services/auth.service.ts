@@ -63,7 +63,7 @@ export class AuthService {
             id: this.generateId(),
             email: email,
             nome: email.split('@')[0],
-            plano: 'Sem plano',
+            plano: 'Nenhum plano',
             dataCadastro: new Date().toISOString(),
             ativo: true
           };
@@ -97,7 +97,7 @@ export class AuthService {
             id: this.generateId(),
             email,
             nome,
-            plano: plano || 'Sem plano',
+            plano: plano || 'Nenhum plano',
             dataCadastro: new Date().toISOString(),
             ativo: true
           };

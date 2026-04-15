@@ -107,6 +107,8 @@
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative; /* Added for dropdown positioning */
+  user-select: none;   /* Avoid text selection on click/drag */
 }
 
 .btn-secondary:hover {
@@ -402,7 +404,8 @@
 }
 
 /* Hover para desktop */
-.dropdown-toggle:hover>.dropdown-menu {
+.dropdown-toggle:hover > .dropdown-menu,
+.btn-secondary:hover .dropdown-menu {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
