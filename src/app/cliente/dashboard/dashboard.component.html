@@ -141,7 +141,7 @@
                 <strong>Plano:</strong> {{ currentUser?.plano }}
               </p>
               <p class="status-info">
-                <strong>Membro desde:</strong> {{ currentUser?.dataCadastro | date: 'shortDate' }}
+                <strong>Membro desde:</strong> {{ currentUser?.dataCadastro | date: 'dd/MM/yyyy' }}
               </p>
               <p class="status-info" *ngIf="hasPlan">
                 <strong>Próximo pagamento:</strong> 30/04/2026
