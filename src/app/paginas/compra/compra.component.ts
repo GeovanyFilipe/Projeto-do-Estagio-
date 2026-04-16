@@ -116,4 +116,10 @@ export class CompraComponent {
     let valor = event.target.value.replace(/\D/g, '');
     event.target.value = valor.substring(0, 3);
   }
+
+  formatarTelefone(event: any) {
+    let valor = event.target.value.replace(/\D/g, ''); // Remove tudo que não é dígito
+    this.telefoneEkwanza = valor.substring(0, 9); // Limita a 9 dígitos
+    event.target.value = this.telefoneEkwanza;
+  }
 }

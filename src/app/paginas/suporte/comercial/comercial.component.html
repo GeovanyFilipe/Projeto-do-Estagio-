@@ -35,8 +35,10 @@
           </div>
 
           <div class="form-group">
-            <input type="tel" placeholder="Seu telefone (Ex: +244 9xx...)" name="telefone" required pattern="^\+?[0-9\s-]{9,}$" [(ngModel)]="telefone" #telModel="ngModel" [class.invalid]="telModel.invalid && telModel.touched">
-            <span class="error-msg" *ngIf="telModel.invalid && telModel.touched">Telefone válido é obrigatório</span>
+            <input type="tel" placeholder="Seu telefone (Ex: 9xxxxxxx)" name="telefone" required 
+              pattern="^[0-9]{9}$" maxlength="9" [(ngModel)]="telefone" #telModel="ngModel" 
+              [class.invalid]="telModel.invalid && telModel.touched" (input)="formatarTelefone($event)">
+            <span class="error-msg" *ngIf="telModel.invalid && telModel.touched">Telefone deve ter exatamente 9 dígitos</span>
           </div>
           
           <div class="form-group">
