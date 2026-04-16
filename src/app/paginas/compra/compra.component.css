@@ -144,7 +144,7 @@
   align-items: center;
 }
 
-/* BASE (TODOS OS ÍCONES) */
+/* BASE PADRÃO (VISA como referência) */
 .icons img {
   height: 32px;
   width: 50px;
@@ -153,15 +153,17 @@
   transition: all 0.3s ease;
 }
 
-/* VISA AUMENTADO PARA IGUALAR MASTERCARD */
-.icons img.visa-icon {
-  transform: scale(1.2);
+/* MASTERCARD IGUAL AO VISA */
+.icons img.mastercard-icon {
+  height: 22px;
+  width: auto;
+  object-fit: contain;
 }
 
 /* E-KWANZA MANTIDO COMO ESTÁ */
 .icons img.ekwanza-icon {
   height: 75px;
-  width: auto; 
+  width: auto;
   object-fit: contain;
   margin-top: -26px;
   margin-bottom: -26px;
@@ -285,6 +287,8 @@
 }
 
 
+/* EKWANZA BOX */
+
 .btn-finalizar:disabled {
   background: #ccc;
   cursor: not-allowed;
@@ -292,6 +296,7 @@
   box-shadow: none;
 }
 
+/* EKWANZA */
 
 .ekwanza-box {
   padding: 20px;

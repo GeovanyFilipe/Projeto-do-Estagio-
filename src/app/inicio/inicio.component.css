@@ -4,7 +4,6 @@
   color: white;
   min-height: 650px;
   padding: 40px 20px;
-  overflow: hidden;
 }
 
 .hero-section::before {
