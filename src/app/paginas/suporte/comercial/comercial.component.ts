@@ -17,6 +17,12 @@ export class ComercialComponent {
   email = '';
   mensagem = '';
   telefone = '';  
+  
+  formatarTelefone(event: any) {
+    let valor = event.target.value.replace(/\D/g, ''); // Remove tudo que não é dígito
+    this.telefone = valor.substring(0, 9); // Limita a 9 dígitos
+    event.target.value = this.telefone;
+  }
 
   enviarMensagem() {
     if (!this.nome || !this.email || !this.mensagem) {

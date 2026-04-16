@@ -30,6 +30,8 @@
 
 
 
+
+
             <div class="icons">
               <img *ngIf="!tipoCartao || tipoCartao === 'visa'" src="/imagens/visa-removebg-preview.png" alt="Visa" class="payment-icon">
               <img *ngIf="!tipoCartao || tipoCartao === 'mastercard'" src="/imagens/MasterCard.png" alt="Mastercard" class="payment-icon">
@@ -98,10 +100,10 @@
         </p>
 
         <div class="input-group" style="margin-bottom: 20px; text-align: left;">
-          <input type="tel" placeholder="Seu telefone (Ex: +244 9xx...)" name="telefoneEkwanza" 
-            required pattern="^\+?[0-9\s-]{9,}$" [(ngModel)]="telefoneEkwanza" #telEkwanzaModel="ngModel" 
-            [class.invalid]="telEkwanzaModel.invalid && telEkwanzaModel.touched">
-          <span class="error-msg" *ngIf="telEkwanzaModel.invalid && telEkwanzaModel.touched">O número de telefone é obrigatório</span>
+          <input type="tel" placeholder="Seu telefone (Ex: 9xxxxxxx)" name="telefoneEkwanza" 
+            required pattern="^[0-9]{9}$" maxlength="9" [(ngModel)]="telefoneEkwanza" #telEkwanzaModel="ngModel" 
+            [class.invalid]="telEkwanzaModel.invalid && telEkwanzaModel.touched" (input)="formatarTelefone($event)">
+          <span class="error-msg" *ngIf="telEkwanzaModel.invalid && telEkwanzaModel.touched">O telefone deve ter exatamente 9 dígitos</span>
         </div>
 
         <button type="button" class="btn-finalizar" [disabled]="!purchaseForm.form.valid" (click)="finalizarCompra()">
