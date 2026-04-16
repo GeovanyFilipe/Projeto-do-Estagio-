@@ -274,6 +274,38 @@
 }
 
 /* ======================== BOTOES ======================== */
+.btn-login {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(6px);
+}
+
+.btn-login:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+  color: #00d4ff;
+}
+
+.btn-login svg {
+  color: inherit;
+  transition: transform 0.3s ease;
+}
+
+.btn-login:hover svg {
+  transform: translateX(2px);
+}
+
 .user-profile-container {
   position: relative;
 }
