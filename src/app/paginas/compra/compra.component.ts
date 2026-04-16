@@ -14,7 +14,7 @@ import { RodapeComponent } from '../../layout/rodape/rodape.component';
 })
 export class CompraComponent {
 
-  metodoPagamento: string = 'cartao';
+  metodoPagamento: 'cartao' | 'ekwanza' = 'cartao';
   tipoCartao: string = '';
 
   // Campos do formulário para validação

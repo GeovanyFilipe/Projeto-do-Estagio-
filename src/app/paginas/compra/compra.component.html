@@ -1,8 +1,8 @@
 <app-menu></app-menu>
 
 <div class="compra-wrapper">
-
-  <!-- RESUMO DO PLANO -->
+  
+  <!-- Resumo do plano -->
   <div class="plano-resumo" *ngIf="plano">
     <div class="plano-info">
       <div>
@@ -10,53 +10,44 @@
         <p>{{ plano.descricao }}</p>
       </div>
     </div>
-
     <div class="plano-preco">
       <strong>{{ plano.preco }}</strong>
     </div>
   </div>
 
-  <!-- PAGAMENTO -->
+  <!-- Caixa de pagamento -->
   <div class="pagamento-box">
     <h2>Forma de pagamento</h2>
 
     <form #purchaseForm="ngForm">
       <div class="metodos">
-
-        <!-- CARTÃO -->
+        
+        <!-- Opção: Cartão -->
         <label class="metodo" [class.ativo]="metodoPagamento === 'cartao'">
           <input type="radio" name="pagamento" value="cartao" [(ngModel)]="metodoPagamento">
-
           <div class="metodo-conteudo">
             <span>Cartão de crédito ou débito</span>
-
             <div class="icons">
-              <img *ngIf="!tipoCartao || tipoCartao === 'visa'" src="/imagens/visa-removebg-preview.png" alt="Visa"
-                class="payment-icon">
-              <img *ngIf="!tipoCartao || tipoCartao === 'mastercard'" src="/imagens/MasterCard.png" alt="Mastercard"
-                class="payment-icon">
+              <img *ngIf="!tipoCartao || tipoCartao === 'visa'" src="/imagens/visa-removebg-preview.png" alt="Visa" class="payment-icon">
+              <img *ngIf="!tipoCartao || tipoCartao === 'mastercard'" src="/imagens/MasterCard.png" alt="Mastercard" class="payment-icon">
             </div>
           </div>
         </label>
 
-        <!-- EKWANZA -->
+        <!-- Opção: E-Kwanza -->
         <label class="metodo" [class.ativo]="metodoPagamento === 'ekwanza'">
           <input type="radio" name="pagamento" value="ekwanza" [(ngModel)]="metodoPagamento">
-
           <div class="metodo-conteudo">
             <span>E-Kwanza</span>
-
             <div class="icons">
               <img src="/imagens/ekwanza.png" alt="E-Kwanza" class="payment-icon ekwanza-icon">
             </div>
           </div>
         </label>
-
       </div>
 
-      <!-- FORM CARTÃO -->
+      <!-- Formulário: Cartão -->
       <div *ngIf="metodoPagamento === 'cartao'" class="form-pagamento">
-
         <div class="input-group">
           <label for="numeroCartao">Número do cartão</label>
           <div class="input-wrapper">
@@ -95,12 +86,10 @@
         <button type="button" class="btn-finalizar" [disabled]="!purchaseForm.form.valid" (click)="finalizarCompra()">
           Confirmar pagamento
         </button>
-
       </div>
 
-      <!-- EKWANZA -->
+      <!-- Formulário: E-Kwanza -->
       <div *ngIf="metodoPagamento === 'ekwanza'" class="ekwanza-box">
-
         <p>
           Introduza o seu número de telefone e receberá uma notificação no seu telemóvel para confirmar o pagamento via E-Kwanza.
         </p>
@@ -115,10 +104,8 @@
         <button type="button" class="btn-finalizar" [disabled]="!purchaseForm.form.valid" (click)="finalizarCompra()">
           Pagar com E-Kwanza
         </button>
-
       </div>
     </form>
-
   </div>
 </div>
 
