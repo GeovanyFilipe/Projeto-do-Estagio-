@@ -15,6 +15,7 @@ export const routes: Routes = [
 
     // Autenticação
     { path: 'login', component: LoginComponent },
+    { path: 'registro', loadComponent: () => import('./auth/register/register.component').then(m => m.RegisterComponent) },
 
     // Área do Cliente (protegida)
     { path: 'cliente/dashboard', component: ClienteDashboardComponent, canActivate: [AuthGuard] },

@@ -155,20 +155,16 @@
             </div>
           </div>
 
-          <!-- Card de Uso -->
-          <div class="info-card card-usage">
+          <div class="info-card card-usage" *ngIf="hasPlan">
             <div class="card-header">
               <h3>Uso de Largura de Banda</h3>
             </div>
-            <div class="card-body" *ngIf="hasPlan">
+            <div class="card-body">
               <div class="usage-bar">
-                <div class="usage-fill" style="width: 65%"></div>
+                <div class="usage-fill" style="width: 0%"></div>
               </div>
-              <p class="usage-text">6.5 GB de 10 GB utilizados</p>
-              <p class="usage-percentage">65%</p>
-            </div>
-            <div class="card-body" *ngIf="!hasPlan">
-              <p class="no-data-text">Adquira um plano para ver seu uso.</p>
+              <p class="usage-text">0 GB de 10 GB utilizados</p>
+              <p class="usage-percentage">0%</p>
             </div>
           </div>
 
@@ -177,23 +173,21 @@
             <div class="card-header">
               <h3>Dispositivos Conectados</h3>
             </div>
-            <div class="card-body" *ngIf="hasPlan">
-              <p class="device-count">2 de 5 dispositivos</p>
+            <div class="card-body" *ngIf="hasPlan && devices.length > 0">
+              <p class="device-count">{{ devices.length }} dispositivos conectados</p>
               <ul class="device-list">
-                <li class="device-item active">
-                  <span class="device-name">Notebook</span>
-                  <span class="device-status">Ativo agora</span>
-                </li>
-                <li class="device-item active">
-                  <span class="device-name">Celular</span>
+                <li *ngFor="let device of devices" class="device-item active">
+                  <span class="device-name">{{ device.nome }}</span>
                   <span class="device-status">Ativo agora</span>
                 </li>
               </ul>
               <button class="btn btn-secondary" (click)="selectTab('dispositivos')">Ver Mais</button>
             </div>
-            <div class="card-body" *ngIf="!hasPlan">
+            <div class="card-body" *ngIf="!hasPlan || devices.length === 0">
               <p class="no-data-text">Nenhum dispositivo conectado.</p>
-              <button class="btn btn-secondary" (click)="router.navigate(['/planos'])">Ativar VPN</button>
+              <button class="btn btn-secondary" (click)="hasPlan ? selectTab('dispositivos') : router.navigate(['/planos'])">
+                {{ hasPlan ? 'Gerenciar Dispositivos' : 'Ativar VPN' }}
+              </button>
             </div>
           </div>
 

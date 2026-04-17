@@ -80,18 +80,18 @@ export class MenuComponent implements OnInit, OnDestroy {
   }
 
   goToCadastro() {
-    this.router.navigate(['/cadastro']);
+    this.router.navigate(['/registro']);
     this.closeMobileMenu();
   }
 
   goToDashboard() {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/cliente/dashboard']);
     this.closeMobileMenu();
   }
 
-  logout() {
-    this.authService.logout();
-    this.router.navigate(['/']);
+  async logout() {
+    await this.authService.logout();
+    this.router.navigate(['/login']);
     this.closeMobileMenu();
   }
 

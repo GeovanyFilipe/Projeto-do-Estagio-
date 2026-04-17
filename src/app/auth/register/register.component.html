@@ -1,0 +1,68 @@
+<div class="login-container">
+  <div class="login-box">
+    <!-- Logo -->
+    <div class="login-logo">
+      <svg width="80" height="80" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="100" fill="#1e3a5f" rx="20" />
+        <path d="M50 20 L70 30 L70 50 C70 65 50 80 50 80 C50 80 30 65 30 50 L30 30 Z" fill="#00d4ff" stroke="#fff"
+          stroke-width="2" />
+        <path d="M50 40 L58 48 L52 48 L52 58 L48 58 L48 48 L42 48 Z" fill="#fff" />
+      </svg>
+      <h1>VPN Angola</h1>
+    </div>
+
+    <div class="header-text">
+        <h2>Criar sua conta</h2>
+        <p>Junte-se a nós e navegue com total segurança</p>
+    </div>
+
+    <!-- Mensagens de erro e sucesso -->
+    <div *ngIf="error" class="alert alert-error">
+      <span>{{ error }}</span>
+    </div>
+    <div *ngIf="success" class="alert alert-success">
+      <span>{{ success }}</span>
+    </div>
+
+    <!-- Formulário Cadastro -->
+    <form (ngSubmit)="register()" class="form">
+      <div class="form-group">
+        <label for="nome">Nome Completo</label>
+        <div class="input-wrapper">
+            <input type="text" id="nome" name="nome" [(ngModel)]="nome" placeholder="Ex: João Silva" required />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <div class="input-wrapper">
+            <input type="email" id="email" name="email" [(ngModel)]="email" placeholder="seu@email.com" required />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <div class="input-wrapper">
+            <input type="password" id="password" name="password" [(ngModel)]="password" placeholder="Mínimo 6 caracteres"
+          required />
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit" [disabled]="loading">
+        <span *ngIf="!loading">Cadastrar</span>
+        <span *ngIf="loading">Aguarde...</span>
+      </button>
+
+      <p class="help-text">
+        Já tem uma conta? <a routerLink="/login">Faça login agora</a>
+      </p>
+    </form>
+
+    <!-- Links úteis -->
+    <div class="footer-links">
+      <a routerLink="/">Voltar para início</a>
+      <span>•</span>
+      <a routerLink="/suporte/tecnico">Precisa de ajuda?</a>
+    </div>
+  </div>
+</div>

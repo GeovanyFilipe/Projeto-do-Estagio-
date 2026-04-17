@@ -8,6 +8,7 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 // Firebase imports
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAnalytics, provideAnalytics, ScreenTrackingService, UserTrackingService } from '@angular/fire/analytics';
+import { getAuth, provideAuth } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
@@ -25,6 +26,7 @@ providers: [
 
   // Firebase
   provideFirebaseApp(() => initializeApp(environment.firebase)),
+  provideAuth(() => getAuth()),
   provideAnalytics(() => getAnalytics()),
   ScreenTrackingService,
   UserTrackingService

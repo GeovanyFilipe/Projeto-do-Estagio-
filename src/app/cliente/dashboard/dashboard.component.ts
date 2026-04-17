@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService, User } from '../../services/auth.service';
 import { MenuComponent } from '../../layout/menu/menu.component';
 import { RodapeComponent } from '../../layout/rodape/rodape.component';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cliente-dashboard',
@@ -12,26 +14,15 @@ import { RodapeComponent } from '../../layout/rodape/rodape.component';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class ClienteDashboardComponent implements OnInit {
+export class ClienteDashboardComponent implements OnInit, OnDestroy {
   currentUser: User | null = null;
   activeTab: string = 'overview';
   showLogoutConfirm: boolean = false;
+  private destroy$ = new Subject<void>();
 
-  devices = [
-    { id: 1, nome: 'Notebook - Chrome', status: 'Ativo', ip: '192.168.1.100', ultimoAcesso: '2 min atrás' },
-    { id: 2, nome: 'Celular - Android', status: 'Ativo', ip: '192.168.1.101', ultimoAcesso: '15 min atrás' },
-    { id: 3, nome: 'Tablet - iPad', status: 'Inativo', ip: '192.168.1.102', ultimoAcesso: '2 dias atrás' }
-  ];
-
-  get hasPlan(): boolean {
-    return !!this.currentUser && this.currentUser.plano !== 'Nenhum plano' && this.currentUser.plano !== '';
-  }
-
-  invoices = [
-    { id: 1, data: '31/03/2026', valor: 'AOA 5.99', status: 'Pago', metodo: 'Cartão' },
-    { id: 2, data: '31/02/2026', valor: 'AOA 5.99', status: 'Pago', metodo: 'Cartão' },
-    { id: 3, data: '31/01/2026', valor: 'AOA 5.99', status: 'Pago', metodo: 'Cartão' }
-  ];
+  // Listas vazias por padrão para novos usuários
+  devices: any[] = [];
+  invoices: any[] = [];
 
   constructor(
     private authService: AuthService,
@@ -39,13 +30,24 @@ export class ClienteDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Verificar se está autenticado
-    if (!this.authService.isAuthenticated()) {
-      this.router.navigate(['/login']);
-      return;
-    }
+    this.authService.currentUser$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(user => {
+        this.currentUser = user;
+        // Se o usuário deslogar enquanto estiver no dashboard, redireciona
+        if (!user && !this.showLogoutConfirm) {
+          this.router.navigate(['/login']);
+        }
+      });
+  }
 
-    this.currentUser = this.authService.getCurrentUser();
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  get hasPlan(): boolean {
+    return !!this.currentUser && this.currentUser.plano !== 'Nenhum plano' && this.currentUser.plano !== '';
   }
 
   selectTab(tab: string): void {
@@ -54,12 +56,10 @@ export class ClienteDashboardComponent implements OnInit {
 
   disconnectDevice(deviceId: number): void {
     alert(`Dispositivo ${deviceId} desconectado`);
-    // Em produção, seria uma chamada HTTP
   }
 
   downloadInvoice(invoiceId: number): void {
     alert(`Baixando fatura ${invoiceId}`);
-    // Em produção, seria um download real
   }
 
   changePlan(newPlan: string): void {
@@ -67,7 +67,6 @@ export class ClienteDashboardComponent implements OnInit {
       const confirmed = confirm(`Alterar para ${newPlan}?`);
       if (confirmed) {
         this.authService.updatePlano(newPlan);
-        this.currentUser = this.authService.getCurrentUser();
         alert('Plano alterado com sucesso!');
       }
     }
@@ -81,9 +80,9 @@ export class ClienteDashboardComponent implements OnInit {
     this.showLogoutConfirm = true;
   }
 
-  logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/']);
+  async logout(): Promise<void> {
+    await this.authService.logout();
+    this.router.navigate(['/login']);
   }
 
   cancelLogout(): void {

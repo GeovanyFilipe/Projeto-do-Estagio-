@@ -11,6 +11,11 @@
       <h1>VPN Angola</h1>
     </div>
 
+    <div class="header-text">
+        <h2>Entrar na sua conta</h2>
+        <p>Acesse sua área segura e gerencie sua conexão</p>
+    </div>
+
     <!-- Mensagens de erro e sucesso -->
     <div *ngIf="error" class="alert alert-error">
       <span>{{ error }}</span>
@@ -19,72 +24,38 @@
       <span>{{ success }}</span>
     </div>
 
-    <!-- Abas -->
-    <div class="tabs">
-      <button class="tab" [class.active]="!isRegister" (click)="!isRegister || toggleForm()">
-        Login
-      </button>
-      <button class="tab" [class.active]="isRegister" (click)="isRegister || toggleForm()">
-        Cadastro
-      </button>
-    </div>
-
     <!-- Formulário Login -->
-    <form *ngIf="!isRegister" (ngSubmit)="submit()" class="form">
+    <form (ngSubmit)="login()" class="form">
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" id="email" name="email" [(ngModel)]="email" placeholder="seu@email.com" required />
+        <div class="input-wrapper">
+            <input type="email" id="email" name="email" [(ngModel)]="email" placeholder="seu@email.com" required />
+        </div>
       </div>
 
       <div class="form-group">
         <label for="password">Senha</label>
-        <input type="password" id="password" name="password" [(ngModel)]="password" placeholder="Mínimo 6 caracteres"
+        <div class="input-wrapper">
+            <input type="password" id="password" name="password" [(ngModel)]="password" placeholder="Sua senha"
           required />
+        </div>
       </div>
 
       <button type="submit" class="btn-submit" [disabled]="loading">
         <span *ngIf="!loading">Entrar</span>
-        <span *ngIf="loading">Carregando...</span>
+        <span *ngIf="loading">Aguarde...</span>
       </button>
 
       <p class="help-text">
-        Não tem conta? <a href="#" (click)="toggleForm(); $event.preventDefault()">Cadastre-se</a>
-      </p>
-    </form>
-
-    <!-- Formulário Cadastro -->
-    <form *ngIf="isRegister" (ngSubmit)="submit()" class="form">
-      <div class="form-group">
-        <label for="register-name">Nome Completo</label>
-        <input type="text" id="register-name" name="nome" [(ngModel)]="nome" placeholder="Seu nome completo" required />
-      </div>
-
-      <div class="form-group">
-        <label for="register-email">Email</label>
-        <input type="email" id="register-email" name="email" [(ngModel)]="email" placeholder="seu@email.com" required />
-      </div>
-
-      <div class="form-group">
-        <label for="register-password">Senha</label>
-        <input type="password" id="register-password" name="password" [(ngModel)]="password"
-          placeholder="Mínimo 6 caracteres" required />
-      </div>
-
-      <button type="submit" class="btn-submit" [disabled]="loading">
-        <span *ngIf="!loading">Cadastrar</span>
-        <span *ngIf="loading">Carregando...</span>
-      </button>
-
-      <p class="help-text">
-        Já tem conta? <a href="#" (click)="toggleForm(); $event.preventDefault()">Faça login</a>
+        Não tem conta? <a routerLink="/registro">Cadastre-se agora</a>
       </p>
     </form>
 
     <!-- Links úteis -->
     <div class="footer-links">
-      <a href="/">Voltar para início</a>
+      <a routerLink="/">Voltar para início</a>
       <span>•</span>
-      <a href="/suporte/tecnico">Precisa de ajuda?</a>
+      <a routerLink="/suporte/tecnico">Precisa de ajuda?</a>
     </div>
   </div>
 </div>

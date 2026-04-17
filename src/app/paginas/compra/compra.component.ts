@@ -1,16 +1,17 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MenuComponent } from '../../layout/menu/menu.component';
 import { RodapeComponent } from '../../layout/rodape/rodape.component';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-compra',
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule, MenuComponent, RodapeComponent],
   templateUrl: './compra.component.html',
-  styleUrl: './compra.component.css'
+ styleUrls: ['./compra.component.css']
 })
 export class CompraComponent {
 
@@ -54,7 +55,11 @@ export class CompraComponent {
     }
   };
 
-  constructor(private route: ActivatedRoute) {
+  constructor(
+    private route: ActivatedRoute,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.route.params.subscribe(params => {
       this.planoSelecionadoKey = params['plano'];
 
@@ -81,7 +86,11 @@ export class CompraComponent {
     console.log('Plano:', this.planoSelecionadoKey);
     console.log('Detalhes:', this.plano);
     
+    // Atualizar plano do usuário
+    this.authService.updatePlano(this.plano.nome);
+    
     alert('Pagamento processado com sucesso! Verifique o seu dispositivo para confirmação.');
+    this.router.navigate(['/cliente/dashboard']);
   }
 
   formatarCartao(event: any) {

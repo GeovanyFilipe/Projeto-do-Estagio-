@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MenuComponent } from '../../../layout/menu/menu.component';
 import { RodapeComponent } from '../../../layout/rodape/rodape.component';
-import emailjs, { type EmailJSResponseStatus } from '@emailjs/browser';
+import emailjs from '@emailjs/browser';
+import type { EmailJSResponseStatus } from '@emailjs/browser';
 
 @Component({
   selector: 'app-comercial',
@@ -16,30 +17,33 @@ export class ComercialComponent {
   nome = '';
   email = '';
   mensagem = '';
-  telefone = '';  
-  
+  telefone = '';
+
   formatarTelefone(event: any) {
     let valor = event.target.value.replace(/\D/g, ''); // Remove tudo que não é dígito
     this.telefone = valor.substring(0, 9); // Limita a 9 dígitos
-    event.target.value = this.telefone;
+    if (event.target) {
+      event.target.value = this.telefone;
+    }
   }
 
   enviarMensagem() {
-    if (!this.nome || !this.email || !this.mensagem) {
+    if (!this.nome || !this.email || !this.mensagem || !this.telefone) {
       alert('Por favor, preencha todos os campos antes de enviar.');
       return;
     }
 
     // envia o email
     emailjs.send(
-      'service_8v4flwl',
-      'template_230v28n',
+      'service_94cybzf',
+      'template_ckd0ye9',
       {
         nome: this.nome,
         email: this.email,
+        telefone: this.telefone,
         mensagem: this.mensagem
       },
-      '7OIcnpDmePvmmZsDa' // publicKey
+      'oS30F7gUdd16Lkhxx' // publicKey
     ).then((res: EmailJSResponseStatus) => {
       // sucesso
       alert('Mensagem enviada com sucesso! Nossa equipe comercial irá contactá-lo em breve.');
@@ -47,6 +51,7 @@ export class ComercialComponent {
       // limpa os campos do formulário
       this.nome = '';
       this.email = '';
+      this.telefone = '';
       this.mensagem = '';
 
       console.log('Email enviado com sucesso!', res);
