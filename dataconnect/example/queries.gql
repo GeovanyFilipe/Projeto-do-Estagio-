@@ -1,0 +1,47 @@
+query ListAllServers @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public as it only retrieves public server information.") {
+  servers {
+    id
+    name
+    location
+    ipAddress
+    status
+    country
+    city
+    load
+  }
+}
+
+query GetUserSubscriptions @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users as it retrieves only their own subscription data.") {
+  userSubscriptions(where: {userId: {eq_expr: "auth.uid"}}) {
+    id
+    startDate
+    endDate
+    status
+    autoRenew
+    subscriptionType {
+      name
+      price
+      durationMonths
+    }
+  }
+}
+
+mutation CreateNewUserSubscription($subscriptionTypeId: UUID!, $startDate: Date!, $endDate: Date!, $status: String!, $autoRenew: Boolean!) @auth(level: USER, insecureReason: "This mutation requires user authentication to create a subscription for the logged-in user.") {
+  userSubscription_insert(data: {
+    userId_expr: "auth.uid",
+    subscriptionTypeId: $subscriptionTypeId,
+    startDate: $startDate,
+    endDate: $endDate,
+    status: $status,
+    autoRenew: $autoRenew,
+    createdAt_expr: "request.time"
+  }) {
+    id
+  }
+}
+
+mutation UpdateServerStatus($serverId: UUID!, $newStatus: String!) @auth(expr: "auth.token.admin == true") {
+  server_update(key: {id: $serverId}, data: {status: $newStatus}) {
+    id
+  }
+}

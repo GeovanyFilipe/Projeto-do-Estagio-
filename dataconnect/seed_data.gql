@@ -1,0 +1,104 @@
+mutation CreateDemoData @transaction @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users.") {
+  user_insertMany(data: [
+    {
+      id: "c6a1e2d3-4f5a-6b7c-8d9e-0f1a2b3c4d5e",
+      username: "userone",
+      email: "userone@example.com",
+      passwordHash: "hashedpassword1",
+      createdAt: "2023-01-01T10:00:00Z"
+    },
+    {
+      id: "b8c7d6e5-4a3b-2c1d-0e9f-8a7b6c5d4e3f",
+      username: "usertwo",
+      email: "usertwo@example.com",
+      passwordHash: "hashedpassword2",
+      createdAt: "2023-01-02T11:00:00Z"
+    }
+  ])
+  server_insertMany(data: [
+    {
+      id: "123e4567-e89b-12d3-a456-426614174000",
+      name: "Server A",
+      location: "New York",
+      ipAddress: "192.168.1.1",
+      status: "Active",
+      createdAt: "2023-01-01T09:00:00Z",
+      country: "USA",
+      city: "New York",
+      load: 50
+    },
+    {
+      id: "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+      name: "Server B",
+      location: "London",
+      ipAddress: "192.168.1.2",
+      status: "Idle",
+      createdAt: "2023-01-03T14:00:00Z",
+      country: "UK",
+      city: "London",
+      load: 20
+    }
+  ])
+  subscriptionType_insertMany(data: [
+    {
+      id: "f8e7d6c5-b4a3-2109-8765-4321fedcba98",
+      name: "Basic",
+      durationMonths: 1,
+      price: 9.99,
+      createdAt: "2023-01-01T08:00:00Z",
+      features: ["Feature A", "Feature B"]
+    },
+    {
+      id: "1a2b3c4d-5e6f-789a-bcde-f01234567890",
+      name: "Premium",
+      durationMonths: 12,
+      price: 99.99,
+      createdAt: "2023-01-01T08:30:00Z",
+      features: ["Feature A", "Feature B", "Feature C"]
+    }
+  ])
+  userSubscription_insertMany(data: [
+    {
+      userId: "c6a1e2d3-4f5a-6b7c-8d9e-0f1a2b3c4d5e",
+      subscriptionTypeId: "f8e7d6c5-b4a3-2109-8765-4321fedcba98",
+      startDate: "2023-01-10",
+      endDate: "2023-02-10",
+      status: "Active",
+      createdAt: "2023-01-10T12:00:00Z",
+      paymentMethod: "Credit Card",
+      autoRenew: true
+    },
+    {
+      userId: "b8c7d6e5-4a3b-2c1d-0e9f-8a7b6c5d4e3f",
+      subscriptionTypeId: "1a2b3c4d-5e6f-789a-bcde-f01234567890",
+      startDate: "2023-01-15",
+      endDate: "2024-01-15",
+      status: "Active",
+      createdAt: "2023-01-15T13:00:00Z",
+      paymentMethod: "PayPal",
+      autoRenew: true
+    }
+  ])
+  connectionLog_insertMany(data: [
+    {
+      userId: "c6a1e2d3-4f5a-6b7c-8d9e-0f1a2b3c4d5e",
+      serverId: "123e4567-e89b-12d3-a456-426614174000",
+      connectionTime: "2023-01-10T12:05:00Z",
+      disconnectionTime: "2023-01-10T12:35:00Z",
+      createdAt: "2023-01-10T12:35:00Z",
+      durationMinutes: 30,
+      dataTransferredMB: 150.75,
+      connectionStatus: "Disconnected"
+    },
+    {
+      userId: "b8c7d6e5-4a3b-2c1d-0e9f-8a7b6c5d4e3f",
+      serverId: "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+      connectionTime: "2023-01-15T13:10:00Z",
+      disconnectionTime: "2023-01-15T14:10:00Z",
+      createdAt: "2023-01-15T14:10:00Z",
+      durationMinutes: 60,
+      dataTransferredMB: 500.20,
+      connectionStatus: "Disconnected"
+    }
+  ])
+}
