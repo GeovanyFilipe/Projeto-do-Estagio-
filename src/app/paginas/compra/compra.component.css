@@ -140,33 +140,32 @@
 
 .icons {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
+  flex-shrink: 0; /* Impede que os ícones sumam em telas pequenas */
 }
 
-/* BASE PADRÃO (VISA como referência) */
+/* BASE PADRÃO */
 .icons img {
-  height: 32px;
-  width: 50px;
+  height: 28px;
+  width: auto;
+  max-width: 45px;
   object-fit: contain;
   opacity: 1;
   transition: all 0.3s ease;
 }
 
-/* MASTERCARD IGUAL AO VISA */
+/* Ajustes específicos para Mastercard para ficar harmonioso com Visa */
 .icons img.mastercard-icon {
-  height: 22px;
-  width: auto;
-  object-fit: contain;
+  height: 24px;
 }
 
-/* E-KWANZA MANTIDO COMO ESTÁ */
+/* E-KWANZA - Ajustado para melhor visibilidade (Removido limite de largura do base) */
 .icons img.ekwanza-icon {
-  height: 75px;
+  height: 55px;
   width: auto;
-  object-fit: contain;
-  margin-top: -26px;
-  margin-bottom: -26px;
+  max-width: 100px;
+  margin: -10px 0; /* Pequeno ajuste para não esticar demais a linha */
 }
 
 /* HOVER */
@@ -323,5 +322,35 @@
 @media (max-width: 768px) {
   .linha {
     flex-direction: column;
+  }
+}
+
+@media (max-width: 400px) {
+  .metodo {
+    padding: 10px;
+  }
+  
+  .metodo-conteudo span {
+    font-size: 13px;
+    line-height: 1.2;
+  }
+
+  .icons {
+    gap: 4px;
+  }
+
+  .icons img {
+    height: 22px;
+    max-width: 35px;
+  }
+  
+  .icons img.mastercard-icon {
+    height: 18px;
+  }
+
+  .icons img.ekwanza-icon {
+    height: 35px;
+    max-width: 70px;
+    margin: -5px 0;
   }
 }
