@@ -4,11 +4,10 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  updateProfile,
-  User as FirebaseUser
+  updateProfile
 } from 'firebase/auth';
 
-import { BehaviorSubject, from, switchMap, map, catchError } from 'rxjs';
+import { BehaviorSubject, from, switchMap, map } from 'rxjs';
 
 export interface User {
   id: string;
@@ -46,6 +45,10 @@ export class AuthService {
     });
   }
 
+  // ========================
+  // AUTH
+  // ========================
+
   login(email: string, password: string) {
     return from(signInWithEmailAndPassword(this.auth, email, password));
   }
@@ -62,5 +65,29 @@ export class AuthService {
 
   logout() {
     return signOut(this.auth);
+  }
+
+  // ========================
+  // MÉTODOS QUE FALTAVAM
+  // ========================
+
+  isAuthenticated(): boolean {
+    return !!this.currentUserSubject.value;
+  }
+
+  isAuthenticated$ = this.currentUser$.pipe(
+    map(user => !!user)
+  );
+
+  updatePlano(plano: string) {
+    const user = this.currentUserSubject.value;
+
+    if (user) {
+      this.currentUserSubject.next({ ...user, plano });
+    }
+  }
+
+  getCurrentUser(): User | null {
+    return this.currentUserSubject.value;
   }
 }
