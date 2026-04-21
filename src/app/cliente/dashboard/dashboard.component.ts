@@ -1,11 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService, User } from '../../services/auth.service';
 import { MenuComponent } from '../../layout/menu/menu.component';
 import { RodapeComponent } from '../../layout/rodape/rodape.component';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { DataConnect } from 'firebase/data-connect';
+import { listUserDevices, getUserSubscription, deleteDevice, listUserInvoices, listUserSessions, listConnectionLogs, listSubscriptionTypes } from '@dataconnect/generated';
+import { inject } from '@angular/core';
+
+
+
 
 @Component({
   selector: 'app-cliente-dashboard',
@@ -14,15 +18,36 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class ClienteDashboardComponent implements OnInit, OnDestroy {
+export class ClienteDashboardComponent implements OnInit {
   currentUser: User | null = null;
   activeTab: string = 'overview';
   showLogoutConfirm: boolean = false;
-  private destroy$ = new Subject<void>();
+  private dataconnect: DataConnect = inject(DataConnect);
 
-  // Listas vazias por padrão para novos usuários
   devices: any[] = [];
+  currentSubscription: any = null;
   invoices: any[] = [];
+  sessions: any[] = [];
+  connections: any[] = [];
+  availablePlans: any[] = [];
+
+
+
+
+  get hasPlan(): boolean {
+    return !!this.currentUser && this.currentUser.plano !== 'Nenhum plano' && this.currentUser.plano !== '';
+  }
+
+  get deviceLimit(): number {
+    if (this.currentSubscription?.subscriptionType) {
+      return this.currentSubscription.subscriptionType.maxDevices;
+    }
+    return 0;
+  }
+
+
+
+
 
   constructor(
     private authService: AuthService,
@@ -30,44 +55,120 @@ export class ClienteDashboardComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.authService.currentUser$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(user => {
-        this.currentUser = user;
-        // Se o usuário deslogar enquanto estiver no dashboard, redireciona
-        if (!user && !this.showLogoutConfirm) {
-          this.router.navigate(['/login']);
-        }
-      });
+    // Verificar se está autenticado
+    if (!this.authService.isAuthenticated()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    this.authService.currentUser$.subscribe(user => {
+      this.currentUser = user;
+      if (user) {
+        this.loadDashboardData(user.id);
+        this.loadAvailablePlans();
+      }
+    });
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+  private async loadAvailablePlans(): Promise<void> {
+    try {
+      const res = await listSubscriptionTypes(this.dataconnect);
+      this.availablePlans = res.data.subscriptionTypes;
+    } catch (err) {
+      console.error('Erro ao carregar tipos de assinatura:', err);
+    }
   }
 
-  get hasPlan(): boolean {
-    return !!this.currentUser && this.currentUser.plano !== 'Nenhum plano' && this.currentUser.plano !== '';
+
+  private async loadDashboardData(userId: string): Promise<void> {
+    try {
+      // Carregar dispositivos
+      const devicesRes = await listUserDevices(this.dataconnect, { userId });
+      this.devices = devicesRes.data.devices;
+
+      // Carregar assinatura
+      const subRes = await getUserSubscription(this.dataconnect, { userId });
+      this.currentSubscription = subRes.data.userSubscriptions[0] || null;
+
+      // Carregar faturas
+      const invoicesRes = await listUserInvoices(this.dataconnect, { userId });
+      this.invoices = invoicesRes.data.invoices;
+
+      // Carregar histórico de atividade
+      const sessionsRes = await listUserSessions(this.dataconnect, { userId });
+      this.sessions = sessionsRes.data.userSessions;
+
+      const connRes = await listConnectionLogs(this.dataconnect, { userId });
+      this.connections = connRes.data.connectionLogs;
+    } catch (err) {
+      console.error('Erro ao carregar dados do dashboard do PGLite:', err);
+    }
   }
+
+  // Getters para UI dinâmica
+  get daysRemaining(): number {
+    if (!this.currentSubscription?.endDate) return 0;
+    const end = new Date(this.currentSubscription.endDate).getTime();
+    const now = new Date().getTime();
+    const diff = end - now;
+    return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+  }
+
+  get subscriptionProgress(): number {
+    if (!this.currentSubscription?.startDate || !this.currentSubscription?.endDate) return 0;
+    const start = new Date(this.currentSubscription.startDate).getTime();
+    const end = new Date(this.currentSubscription.endDate).getTime();
+    const now = new Date().getTime();
+
+    if (now >= end) return 100;
+    if (now <= start) return 0;
+
+    const total = end - start;
+    const consumed = now - start;
+    return Math.min(100, Math.round((consumed / total) * 100));
+  }
+
+  get statusLevel(): 'success' | 'warning' | 'danger' {
+    const days = this.daysRemaining;
+    if (days > 7) return 'success';
+    if (days > 2) return 'warning';
+    return 'danger';
+  }
+
+
 
   selectTab(tab: string): void {
     this.activeTab = tab;
   }
 
-  disconnectDevice(deviceId: number): void {
-    alert(`Dispositivo ${deviceId} desconectado`);
+  async disconnectDevice(deviceId: string): Promise<void> {
+    const confirmed = confirm('Tem certeza que deseja desconectar este dispositivo?');
+    if (confirmed) {
+      try {
+        await deleteDevice(this.dataconnect, { id: deviceId });
+        this.devices = this.devices.filter(d => d.id !== deviceId);
+      } catch (err) {
+        alert('Erro ao desconectar dispositivo.');
+      }
+    }
   }
+
 
   downloadInvoice(invoiceId: number): void {
     alert(`Baixando fatura ${invoiceId}`);
+    // Em produção, seria um download real
   }
 
-  changePlan(newPlan: string): void {
+  async changePlan(newPlan: string): Promise<void> {
     if (this.currentUser && this.currentUser.plano !== newPlan) {
       const confirmed = confirm(`Alterar para ${newPlan}?`);
       if (confirmed) {
-        this.authService.updatePlano(newPlan);
-        alert('Plano alterado com sucesso!');
+        try {
+          await this.authService.updatePlano(newPlan);
+          alert('Plano alterado com sucesso!');
+        } catch (error) {
+          alert('Erro ao alterar o plano. Tente novamente.');
+        }
       }
     }
   }
@@ -80,9 +181,9 @@ export class ClienteDashboardComponent implements OnInit, OnDestroy {
     this.showLogoutConfirm = true;
   }
 
-  async logout(): Promise<void> {
-    await this.authService.logout();
-    this.router.navigate(['/login']);
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/']);
   }
 
   cancelLogout(): void {

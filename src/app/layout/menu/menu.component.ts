@@ -5,16 +5,18 @@ import { AuthService, User } from '../../services/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+
 @Component({
   selector: 'app-menu',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterLink],
+  imports: [CommonModule, RouterModule],
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit, OnDestroy {
 
   isMobileMenuOpen = false;
+  isProfileMenuOpen = false;
   activeDropdown: string | null = null;
   isAuthenticated = false;
   currentUser: User | null = null;
@@ -22,10 +24,10 @@ export class MenuComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private router: Router,
     private elementRef: ElementRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.authService.isAuthenticated$
@@ -55,12 +57,22 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   closeMobileMenu() {
     this.isMobileMenuOpen = false;
+    this.isProfileMenuOpen = false;
     this.activeDropdown = null;
     document.documentElement.classList.remove('menu-open');
   }
 
-  toggleDropdown(dropdown: string) {
-    this.activeDropdown = this.activeDropdown === dropdown ? null : dropdown;
+  toggleProfileMenu(event: Event) {
+    event.stopPropagation();
+    this.isProfileMenuOpen = !this.isProfileMenuOpen;
+  }
+
+  toggleDropdown(dropdown: string | null) {
+    if (dropdown === null) {
+      this.activeDropdown = null;
+    } else {
+      this.activeDropdown = this.activeDropdown === dropdown ? null : dropdown;
+    }
   }
 
   isDropdownOpen(dropdown: string): boolean {
@@ -71,6 +83,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   onClickOutside(event: Event) {
     if (!this.elementRef.nativeElement.contains(event.target)) {
       this.activeDropdown = null;
+      this.isProfileMenuOpen = false;
     }
   }
 

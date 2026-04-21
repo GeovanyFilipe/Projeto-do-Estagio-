@@ -33,5 +33,19 @@
 </section>
   </main>
   
+  <!-- Modal de Assinatura Necessária -->
+  <div *ngIf="showSubscriptionModal" class="modal-overlay" (click)="closeSubscriptionModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-icon">⭐</div>
+      <h2>Requisito de Assinatura</h2>
+      <p>Para aceder ao recurso de conexão VPN, você precisa de ter uma assinatura ativa.</p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" (click)="closeSubscriptionModal()">Agora Não</button>
+        <button class="btn btn-primary" (click)="goToPlans()">Ver Planos</button>
+      </div>
+    </div>
+  </div>
+
 </div>
 <app-rodape></app-rodape>
+

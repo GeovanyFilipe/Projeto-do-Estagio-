@@ -39,6 +39,7 @@ mutation CreateDemoData @transaction @auth(level: PUBLIC, insecureReason: "This 
   ])
   subscriptionType_insertMany(data: [
     {
+<<<<<<< HEAD
       id: "c1d2e3f4-a5b6-0123-4567-890abcdef012",
       name: "Basic Plan",
       price: 9.99,
@@ -55,8 +56,45 @@ mutation CreateDemoData @transaction @auth(level: PUBLIC, insecureReason: "This 
       maxSpeedMbps: 200,
       maxDevices: 5,
       description: "Advanced VPN plan with higher speeds"
+=======
+      id: "f8e7d6c5-b4a3-2109-8765-4321fedcba98",
+      name: "Individual",
+      durationMonths: 1,
+      price: 6000.0,
+      maxSpeedMbps: 50,
+      maxDevices: 2,
+      description: "Ideal para uso individual e navegação estável"
+    },
+    {
+      id: "1a2b3c4d-5e6f-789a-bcde-f01234567890",
+      name: "Startup",
+      durationMonths: 1,
+      price: 15000.0,
+      maxSpeedMbps: 200,
+      maxDevices: 5,
+      description: "Alta performance para pequenas equipes e startups"
+    },
+    {
+      id: "d2e3f4g5-6h7i-8j9k-0l1m-2n3o4p5q6r7s",
+      name: "Educacional",
+      durationMonths: 1,
+      price: 10000.0,
+      maxSpeedMbps: 100,
+      maxDevices: 10,
+      description: "Acesso seguro e controlado para instituições de ensino"
+    },
+    {
+      id: "e3f4g5h6-7i8j-9k0l-1m2n-3o4p5q6r7s8t",
+      name: "Empresarial",
+      durationMonths: 1,
+      price: 60000.0,
+      maxSpeedMbps: 500,
+      maxDevices: 15,
+      description: "Solução completa com máxima segurança e dispositivos"
+>>>>>>> 7cb0d603539b19c13fce02c59ef5c06568f1ec75
     }
   ])
+
   userSubscription_insertMany(data: [
     {
       id: "e1f2a3b4-c5d6-2345-6789-0abcdef01234",

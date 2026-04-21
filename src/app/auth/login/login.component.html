@@ -1,61 +1,109 @@
 <div class="login-container">
   <div class="login-box">
+
     <!-- Logo -->
     <div class="login-logo">
-      <svg width="80" height="80" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <svg width="80" height="80" viewBox="0 0 100 100">
         <rect width="100" height="100" fill="#1e3a5f" rx="20" />
-        <path d="M50 20 L70 30 L70 50 C70 65 50 80 50 80 C50 80 30 65 30 50 L30 30 Z" fill="#00d4ff" stroke="#fff"
-          stroke-width="2" />
+        <path d="M50 20 L70 30 L70 50 C70 65 50 80 50 80 C50 80 30 65 30 50 L30 30 Z"
+          fill="#00d4ff" stroke="#fff" stroke-width="2" />
         <path d="M50 40 L58 48 L52 48 L52 58 L48 58 L48 48 L42 48 Z" fill="#fff" />
       </svg>
       <h1>VPN Angola</h1>
     </div>
 
     <div class="header-text">
-        <h2>Entrar na sua conta</h2>
-        <p>Acesse sua área segura e gerencie sua conexão</p>
+      <h2>{{ isRegister ? 'Criar conta' : 'Entrar na sua conta' }}</h2>
+      <p>{{ isRegister ? 'Crie sua conta para continuar' : 'Acesse sua área segura' }}</p>
     </div>
 
-    <!-- Mensagens de erro e sucesso -->
+    <!-- ALERTAS -->
     <div *ngIf="error" class="alert alert-error">
-      <span>{{ error }}</span>
-    </div>
-    <div *ngIf="success" class="alert alert-success">
-      <span>{{ success }}</span>
+      {{ error }}
     </div>
 
-    <!-- Formulário Login -->
-    <form (ngSubmit)="login()" class="form">
+    <div *ngIf="success" class="alert alert-success">
+      {{ success }}
+    </div>
+
+    <!-- ================= LOGIN ================= -->
+    <form *ngIf="!isRegister" (ngSubmit)="login()" class="form">
+
       <div class="form-group">
-        <label for="email">Email</label>
-        <div class="input-wrapper">
-            <input type="email" id="email" name="email" [(ngModel)]="email" placeholder="seu@email.com" required />
-        </div>
+        <label>Email</label>
+        <input type="email" [(ngModel)]="loginEmail" name="loginEmail"
+          placeholder="seu@email.com" required />
       </div>
 
       <div class="form-group">
-        <label for="password">Senha</label>
-        <div class="input-wrapper">
-            <input type="password" id="password" name="password" [(ngModel)]="password" placeholder="Sua senha"
-          required />
-        </div>
+        <label>Senha</label>
+        <input type="password" [(ngModel)]="loginPassword" name="loginPassword"
+          placeholder="Sua senha" required />
       </div>
 
       <button type="submit" class="btn-submit" [disabled]="loading">
-        <span *ngIf="!loading">Entrar</span>
-        <span *ngIf="loading">Aguarde...</span>
+        {{ loading ? 'Aguarde...' : 'Entrar' }}
+      </button>
+
+      <div class="divider">OU</div>
+
+      <button type="button" class="btn-google" (click)="loginWithGoogle()">
+        Entrar com Google
       </button>
 
       <p class="help-text">
-        Não tem conta? <a routerLink="/registro">Cadastre-se agora</a>
+        Não tem conta?
+        <a href="#" (click)="toggleForm(); $event.preventDefault()">
+          Criar conta
+        </a>
       </p>
     </form>
 
-    <!-- Links úteis -->
+    <!-- ================= REGISTRO ================= -->
+    <form *ngIf="isRegister" (ngSubmit)="register()" class="form">
+
+      <div class="form-group">
+        <label>Nome</label>
+        <input type="text" [(ngModel)]="registerName" name="registerName"
+          placeholder="Seu nome" required />
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="registerEmail" name="registerEmail"
+          placeholder="seu@email.com" required />
+      </div>
+
+      <div class="form-group">
+        <label>Senha</label>
+        <input type="password" [(ngModel)]="registerPassword" name="registerPassword"
+          placeholder="Mínimo 6 caracteres" required />
+      </div>
+
+      <button type="submit" class="btn-submit" [disabled]="loading">
+        {{ loading ? 'Carregando...' : 'Cadastrar' }}
+      </button>
+
+      <div class="divider">OU</div>
+
+      <button type="button" class="btn-google" (click)="loginWithGoogle()">
+        Entrar com Google
+      </button>
+
+      <p class="help-text">
+        Já tem conta?
+        <a href="#" (click)="toggleForm(); $event.preventDefault()">
+          Fazer login
+        </a>
+      </p>
+    </form>
+
+    <!-- LINKS -->
     <div class="footer-links">
-      <a routerLink="/">Voltar para início</a>
+      <a routerLink="/">Voltar</a>
       <span>•</span>
-      <a routerLink="/suporte/tecnico">Precisa de ajuda?</a>
+      <a routerLink="/suporte">Ajuda</a>
     </div>
+
   </div>
 </div>

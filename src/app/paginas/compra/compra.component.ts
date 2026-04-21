@@ -1,21 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+
 import { MenuComponent } from '../../layout/menu/menu.component';
 import { RodapeComponent } from '../../layout/rodape/rodape.component';
 import { AuthService } from '../../services/auth.service';
+import { DataConnect } from 'firebase/data-connect';
+import { createInvoice } from '@dataconnect/generated';
+
+
 
 @Component({
   selector: 'app-compra',
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule, MenuComponent, RodapeComponent],
   templateUrl: './compra.component.html',
- styleUrls: ['./compra.component.css']
+  styleUrl: './compra.component.css'
 })
 export class CompraComponent {
-
+  private dataconnect: DataConnect = inject(DataConnect);
   metodoPagamento: 'cartao' | 'ekwanza' = 'cartao';
+
   tipoCartao: string = '';
 
   // Campos do formulário para validação
@@ -39,10 +45,11 @@ export class CompraComponent {
       descricao: 'Navegar em serviços angolanos com rapidez e segurança'
     },
     negocio: {
-      nome: 'Plano de Negócio',
+      nome: 'Plano Startup',
       preco: '15.000 Kz',
-      descricao: 'Melhor desempenho para trabalhar com sistemas angolanos sem falhas'
+      descricao: 'Acelere o crescimento da sua startup com conexão segura e alta performance'
     },
+
     empresarial: {
       nome: 'Plano Empresarial',
       preco: '60.000 Kz',
@@ -69,7 +76,7 @@ export class CompraComponent {
     });
   }
 
-  finalizarCompra() {
+  async finalizarCompra() {
     if (this.metodoPagamento === 'cartao') {
       if (!this.numeroCartao || !this.dataValidade || !this.cvv) {
         alert('Por favor, preencha todos os dados do cartão.');
@@ -82,16 +89,36 @@ export class CompraComponent {
       }
     }
 
-    console.log('Método:', this.metodoPagamento);
-    console.log('Plano:', this.planoSelecionadoKey);
-    console.log('Detalhes:', this.plano);
-    
-    // Atualizar plano do usuário
-    this.authService.updatePlano(this.plano.nome);
-    
-    alert('Pagamento processado com sucesso! Verifique o seu dispositivo para confirmação.');
-    this.router.navigate(['/cliente/dashboard']);
+    try {
+      await this.authService.updatePlano(this.planoSelecionadoKey);
+      
+      // Regista a Fatura no PGLite
+      const user = this.authService.getCurrentUser();
+      if (user) {
+        // Extrai o preço numérico do string (ex: "6.000 Kz" -> 6000)
+        const valorNumerico = parseFloat(this.plano.preco.replace(/[^0-9]/g, ''));
+        
+        await createInvoice(this.dataconnect, {
+          id: crypto.randomUUID(),
+          userId: user.id,
+          amount: valorNumerico,
+          currency: 'AOA',
+          paymentMethod: this.metodoPagamento === 'cartao' ? 'Cartão de Crédito' : 'E-Kwanza',
+          status: 'Pago',
+          createdAt: new Date().toISOString(),
+          planName: this.plano.nome
+        });
+      }
+
+      alert('Pagamento processado com sucesso! Plano ativado.');
+      this.router.navigate(['/admin']);
+    } catch (err) {
+      console.error('Erro ao processar compra no PGLite:', err);
+      alert('Erro ao processar pagamento. Tente novamente.');
+    }
+
   }
+
 
   formatarCartao(event: any) {
     let valor = event.target.value.replace(/\D/g, '');

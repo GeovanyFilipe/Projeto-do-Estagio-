@@ -18,7 +18,7 @@ export class PlanosComponent {
       preco: '60.000,00 Kz',
       descricao: 'Ideal para empresas médias e grandes',
       features: [
-        '10+ dispositivos (expansível)',
+        'Até 15 dispositivos simultâneos',
         'Alta velocidade + baixa latência garantida',
         'Acesso otimizado a CDNs angolanas',
         'Estabilidade para sistemas críticos',
@@ -30,9 +30,9 @@ export class PlanosComponent {
       destaque: true
     },
     {
-      titulo: '🏢 Plano Individual',
+      titulo: '👤 Plano Individual',
       preco: '6.000,00 kz',
-      descricao: 'Ideal para empresas médias e grandes',
+      descricao: 'Para uso pessoal e profissional em poucos dispositivos',
       features: [
         'Até 2 dispositivos simultâneos',
         'Conexão com servidores em Angola',
@@ -46,9 +46,9 @@ export class PlanosComponent {
       destaque: true
     },
     {
-      titulo: '🏢 Plano Educacional',
+      titulo: '🎓 Plano Educacional',
       preco: '10.000,00 kz',
-      descricao: 'Ideal para empresas médias e grandes',
+      descricao: 'Especialmente desenhado para estudantes e professores',
       features: [
         'Até 10 dispositivos simultâneos',
         'Filtro de conteúdo (bloqueio de sites impróprios)',
@@ -63,9 +63,9 @@ export class PlanosComponent {
       destaque: true
     },
     {
-      titulo: '🏢 Pequenos Negócios',
+      titulo: '🚀 Plano Startup',
       preco: '15.000,00 kz',
-      descricao: 'Ideal para empresas médias e grandes',
+      descricao: 'Acelere o crescimento da sua startup com conexão segura',
       features: [
         'Até 5 dispositivos simultâneos',
         'Velocidade mais rápida e estável',
@@ -79,4 +79,5 @@ export class PlanosComponent {
       destaque: true
     },
   ];
+
 }

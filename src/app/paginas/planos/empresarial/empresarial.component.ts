@@ -13,7 +13,7 @@ import { RodapeComponent } from '../../../layout/rodape/rodape.component';
 })
 export class EmpresarialComponent {
   specs = [
-    { icon: '💻', titulo: 'Dispositivos', descricao: '10+ dispositivos (expansível)' },
+    { icon: '💻', titulo: 'Dispositivos', descricao: 'Até 15 dispositivos simultâneos' },
     { icon: '⚡', titulo: 'Desempenho', descricao: 'Alta velocidade + baixa latência garantida' },
     { icon: '🌐', titulo: 'CDNs Locais', descricao: 'Acesso otimizado a CDNs angolanas' },
     { icon: '🛡️', titulo: 'Estabilidade', descricao: 'Estabilidade para sistemas críticos' },

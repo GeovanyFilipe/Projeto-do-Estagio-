@@ -37,6 +37,40 @@ type ConnectionLog @table {
   user: User!
   server: Server!
   connectTime: Timestamp!
+<<<<<<< HEAD
   disconnectTime: Timestamp!
   dataTransferredGB: Float
+=======
+  disconnectTime: Timestamp
+  dataTransferredGB: Float
+}
+
+
+type Device @table {
+  id: UUID!
+  user: User!
+  deviceName: String!
+  ipAddress: String
+  lastSeen: Timestamp!
+}
+
+type UserSession @table {
+  id: UUID!
+  user: User!
+  loginTime: Timestamp!
+  logoutTime: Timestamp
+  ipAddress: String
+  userAgent: String
+}
+
+type Invoice @table {
+  id: UUID!
+  user: User!
+  amount: Float!
+  currency: String!
+  paymentMethod: String!
+  status: String!
+  createdAt: Timestamp!
+  planName: String!
+>>>>>>> 7cb0d603539b19c13fce02c59ef5c06568f1ec75
 }

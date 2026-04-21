@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -6,7 +6,10 @@ import * as L from 'leaflet';
 import { MenuComponent } from "../../layout/menu/menu.component";
 import { RodapeComponent } from '../../layout/rodape/rodape.component';
 import { AuthService, User } from '../../services/auth.service';
-import { Router } from '@angular/router'; // 🔹 Importa Router
+import { Router } from '@angular/router';
+import { DataConnect } from 'firebase/data-connect';
+import { logVpnConnection, logVpnDisconnection } from '@dataconnect/generated';
+
 
 @Component({
   selector: 'app-mapa',
@@ -22,12 +25,16 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   isConnected = false;
+  showSubscriptionModal = false; // 🔹 Controla exibição do modal de assinatura
   statusText = 'Desprotegido';
   country = 'Angola';
   fakeIp = '102.112.200.178';
   provider = 'AngolanVPN';
 
   currentUser: User | null = null;
+  private currentConnectionLogId: string | null = null;
+  private dataconnect: DataConnect = inject(DataConnect);
+
 
   constructor(
     private authService: AuthService,
@@ -107,10 +114,42 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    // Usuário logado → alterna conexão
+    // 🔹 Verifica se o usuário tem um plano assinado
+    if (!this.currentUser || this.currentUser.plano === 'Nenhum plano' || !this.currentUser.plano) {
+      this.showSubscriptionModal = true;
+      return;
+    }
+
+    // Usuário logado e com plano → alterna conexão
     this.isConnected = !this.isConnected;
     this.statusText = this.isConnected ? 'Conectado' : 'Desprotegido';
     this.fakeIp = this.isConnected ? '102.223.156.255' : '102.112.200.178';
     this.createCenterMarker();
+
+    // Registo no PGLite
+    if (this.isConnected && this.currentUser) {
+      this.currentConnectionLogId = crypto.randomUUID();
+      logVpnConnection(this.dataconnect, {
+        userId: this.currentUser.id,
+        serverId: "123e4567-e89b-12d3-a456-426614174000", // Server A do seed
+        connectTime: new Date().toISOString()
+      }).catch((err: any) => console.error('Erro ao logar conexão VPN:', err));
+    } else if (!this.isConnected && this.currentConnectionLogId) {
+      logVpnDisconnection(this.dataconnect, {
+        id: this.currentConnectionLogId,
+        disconnectTime: new Date().toISOString(),
+        dataTransferredGB: Math.random() * 2 // Simulado
+      }).catch((err: any) => console.error('Erro ao logar desconexão VPN:', err));
+      this.currentConnectionLogId = null;
+    }
   }
-}
+
+
+  closeSubscriptionModal() {
+    this.showSubscriptionModal = false;
+  }
+
+  goToPlans() {
+    this.router.navigate(['/planos']);
+  }
+}

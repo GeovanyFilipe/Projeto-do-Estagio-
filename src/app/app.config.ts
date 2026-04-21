@@ -3,32 +3,42 @@ import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 
 import { routes } from './app.routes';
-import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 
-// Firebase imports
+// Firebase
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { getAnalytics, provideAnalytics, ScreenTrackingService, UserTrackingService } from '@angular/fire/analytics';
-import { getAuth, provideAuth } from '@angular/fire/auth';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideAnalytics, getAnalytics, ScreenTrackingService, UserTrackingService } from '@angular/fire/analytics';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { provideDataConnect, getDataConnect } from '@angular/fire/data-connect';
+
 import { environment } from '../environments/environment';
+import { connectorConfig } from '@dataconnect/generated';
 
 export const appConfig: ApplicationConfig = {
-providers: [
-  provideZoneChangeDetection({ eventCoalescing: true }),
-  provideRouter(
-    routes,
-    withInMemoryScrolling({
-      scrollPositionRestoration: 'top',
-      anchorScrolling: 'enabled'
-    })
-  ),
-  provideHttpClient(),
-  provideClientHydration(withEventReplay()),
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
 
-  // Firebase
-  provideFirebaseApp(() => initializeApp(environment.firebase)),
-  provideAuth(() => getAuth()),
-  provideAnalytics(() => getAnalytics()),
-  ScreenTrackingService,
-  UserTrackingService
-]
+    provideRouter(
+      routes,
+      withInMemoryScrolling({
+        scrollPositionRestoration: 'top',
+        anchorScrolling: 'enabled'
+      })
+    ),
+
+    provideHttpClient(),
+
+    // Firebase core
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+
+    provideAuth(() => getAuth()),
+
+    provideAnalytics(() => getAnalytics()),
+    ScreenTrackingService,
+    UserTrackingService,
+
+    provideFirestore(() => getFirestore()),
+
+    provideDataConnect(() => getDataConnect(connectorConfig))
+  ]
 };
