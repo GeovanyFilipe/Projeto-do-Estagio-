@@ -1,0 +1,426 @@
+extend type Query {
+  """
+  ✨ Look up a single `ConnectionLog` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  connectionLog(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: ConnectionLog_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: ConnectionLog_FirstRow
+  ): ConnectionLog @fdc_generated(from: "ConnectionLog", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `Device` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  device(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Device_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Device_FirstRow
+  ): Device @fdc_generated(from: "Device", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `Invoice` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  invoice(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Invoice_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Invoice_FirstRow
+  ): Invoice @fdc_generated(from: "Invoice", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `Server` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  server(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Server_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Server_FirstRow
+  ): Server @fdc_generated(from: "Server", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `SubscriptionType` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  subscriptionType(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: SubscriptionType_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: SubscriptionType_FirstRow
+  ): SubscriptionType @fdc_generated(from: "SubscriptionType", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `User` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  user(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: User_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: User_FirstRow
+  ): User @fdc_generated(from: "User", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `UserSession` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  userSession(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: UserSession_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: UserSession_FirstRow
+  ): UserSession @fdc_generated(from: "UserSession", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `UserSubscription` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  userSubscription(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: UserSubscription_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: UserSubscription_FirstRow
+  ): UserSubscription @fdc_generated(from: "UserSubscription", purpose: QUERY_SINGLE)
+  """
+  ✨ List `ConnectionLog` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  connectionLogs(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: ConnectionLog_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [ConnectionLog_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: ConnectionLog_Having
+  ): [ConnectionLog!]! @fdc_generated(from: "ConnectionLog", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `Device` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  devices(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Device_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Device_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Device_Having
+  ): [Device!]! @fdc_generated(from: "Device", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `Invoice` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  invoices(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Invoice_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Invoice_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Invoice_Having
+  ): [Invoice!]! @fdc_generated(from: "Invoice", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `Server` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  servers(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Server_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Server_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Server_Having
+  ): [Server!]! @fdc_generated(from: "Server", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `SubscriptionType` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  subscriptionTypes(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: SubscriptionType_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [SubscriptionType_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: SubscriptionType_Having
+  ): [SubscriptionType!]! @fdc_generated(from: "SubscriptionType", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `User` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  users(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: User_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [User_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: User_Having
+  ): [User!]! @fdc_generated(from: "User", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `UserSession` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  userSessions(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: UserSession_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [UserSession_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: UserSession_Having
+  ): [UserSession!]! @fdc_generated(from: "UserSession", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `UserSubscription` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  userSubscriptions(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: UserSubscription_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [UserSubscription_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: UserSubscription_Having
+  ): [UserSubscription!]! @fdc_generated(from: "UserSubscription", purpose: QUERY_MULTIPLE)
+}

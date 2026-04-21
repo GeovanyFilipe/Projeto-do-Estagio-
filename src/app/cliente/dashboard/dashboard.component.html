@@ -111,14 +111,7 @@
     <header class="dashboard-header">
       <div class="header-content">
         <h1>Bem-vindo, {{ currentUser?.nome }}!</h1>
-        <p class="header-subtitle">Gerencie sua assinatura VPN aqui</p>
-      </div>
-      <div class="user-info">
-        <div class="user-avatar">{{ (currentUser?.nome || 'U').charAt(0).toUpperCase() }}</div>
-        <div class="user-details">
-          <p class="user-name">{{ currentUser?.nome }}</p>
-          <p class="user-email">{{ currentUser?.email }}</p>
-        </div>
+        <p class="header-subtitle">{{ currentUser?.email }}</p>
       </div>
     </header>
 
@@ -128,32 +121,34 @@
       <!-- TAB: Visão Geral -->
       <section *ngIf="activeTab === 'overview'" class="tab-pane active">
         <div class="overview-grid">
-          <!-- Card de Status -->
-          <div class="info-card card-status">
+          <!-- Card de Status (Subscription) -->
+          <div class="info-card">
             <div class="card-header">
-              <h3>Status da Assinatura</h3>
-              <span class="badge" [class.badge-active]="hasPlan" [class.badge-inactive]="!hasPlan">
-                {{ hasPlan ? 'Ativo' : 'Inativo' }}
+              <h3>Sua Assinatura</h3>
+              <span class="status-badge" [class]="statusLevel" *ngIf="currentSubscription">
+                {{ daysRemaining }} dias restantes
+              </span>
+              <span class="status-badge danger" *ngIf="!currentSubscription">
+                Sem Assinatura
               </span>
             </div>
             <div class="card-body">
-              <p class="status-info">
-                <strong>Plano:</strong> {{ currentUser?.plano }}
-              </p>
-              <p class="status-info">
-                <strong>Membro desde:</strong> {{ currentUser?.dataCadastro | date: 'dd/MM/yyyy' }}
-              </p>
-              <p class="status-info" *ngIf="hasPlan">
-                <strong>Próximo pagamento:</strong> 30/04/2026
-              </p>
-              <p class="status-info" *ngIf="!hasPlan">
-                <strong>Próximo pagamento:</strong> N/A
-              </p>
-              <button class="btn btn-secondary" (click)="router.navigate(['/planos'])">
-                {{ hasPlan ? 'Gerenciar Plano' : 'Adquirir Plano' }}
+              <div class="subscription-premium-content">
+                <p class="plan-hero">{{ currentSubscription?.subscriptionType?.name || 'Nenhum plano ativo' }}</p>
+                <div class="premium-progress-container" *ngIf="currentSubscription">
+                  <div class="premium-progress-bar" [style.width.%]="subscriptionProgress" [class]="statusLevel"></div>
+                </div>
+                <div class="date-summary">
+                  <p><span>Início:</span> {{ (currentSubscription?.startDate | date:'dd/MM/yyyy':'UTC') || '---' }}</p>
+                  <p><span>Expira:</span> {{ (currentSubscription?.endDate | date:'dd/MM/yyyy':'UTC') || '---' }}</p>
+                </div>
+              </div>
+              <button class="btn btn-primary" (click)="router.navigate(['/planos'])" style="width: 100%; margin-top: 20px;">
+                {{ currentSubscription ? 'Gerenciar Plano' : 'Assinar agora' }}
               </button>
             </div>
           </div>
+
 
           <!-- Card de Uso -->
           <div class="info-card card-usage">
@@ -178,7 +173,7 @@
               <h3>Dispositivos Conectados</h3>
             </div>
             <div class="card-body" *ngIf="hasPlan">
-              <p class="device-count">2 de 5 dispositivos</p>
+              <p class="device-count">{{ devices.length }} de {{ deviceLimit }} dispositivos</p>
               <ul class="device-list">
                 <li class="device-item active">
                   <span class="device-name">Notebook</span>
@@ -197,18 +192,36 @@
             </div>
           </div>
 
-          <!-- Card de Suporte -->
-          <div class="info-card card-support">
+          <!-- Atividade Recente -->
+          <div class="info-card recent-activity">
             <div class="card-header">
-              <h3>Precisa de Ajuda?</h3>
+              <h3>Atividade Recente</h3>
             </div>
             <div class="card-body">
-              <p>Estamos aqui para ajudar! Entre em contato conosco:</p>
-              <button class="btn btn-primary" (click)="contacterSuporte()">Abrir Suporte</button>
-              <p class="support-info">Resposta em até 2 horas</p>
+              <div class="activity-feed">
+                <div class="feed-item" *ngFor="let session of sessions.slice(0, 2)">
+                  <div class="feed-icon login-ico">🔑</div>
+                  <div class="feed-text">
+                  <p>Sessão iniciada</p>
+                  <span>IP: {{ session.ipAddress }} • {{ session.loginTime | date:'dd/MM/yyyy HH:mm' }}</span>
+                  </div>
+                </div>
+                <div class="feed-item" *ngFor="let conn of connections.slice(0, 1)">
+                  <div class="feed-icon vpn-ico">🛡️</div>
+                  <div class="feed-text">
+                    <p>VPN Conectada: {{ conn.server.name }}</p>
+                    <span>{{ conn.connectTime | date:'dd/MM/yyyy HH:mm' }}</span>
+                  </div>
+                </div>
+                <div *ngIf="sessions.length === 0 && connections.length === 0" class="no-data-msg">
+                  Sem atividades registradas no banco.
+                </div>
+              </div>
+              <button class="btn btn-secondary" (click)="selectTab('faturamento')" style="width: 100%; margin-top: 10px;">Ver tudo</button>
             </div>
           </div>
         </div>
+
       </section>
 
       <!-- TAB: Meu Plano -->
@@ -276,28 +289,28 @@
             <div class="table-cell">Ação</div>
           </div>
 
-          <div *ngIf="!hasPlan || invoices.length === 0" class="no-faturas">
-            <p>Nenhuma fatura encontrada.</p>
+          <ng-container *ngIf="invoices.length > 0">
+            <div *ngFor="let invoice of invoices" class="table-row">
+              <div class="table-cell">{{ invoice.createdAt | date:'dd/MM/yyyy' }}</div>
+              <div class="table-cell"><strong>{{ invoice.amount | number:'1.0-0' }} {{ invoice.currency }}</strong></div>
+              <div class="table-cell">
+                <span class="status-badge paid">Pago</span>
+              </div>
+              <div class="table-cell">{{ invoice.paymentMethod }}</div>
+              <div class="table-cell">
+                <button 
+                  class="btn btn-small btn-secondary"
+                  (click)="downloadInvoice(invoice.id)"
+                >
+                  Recibo
+                </button>
+              </div>
+            </div>
+          </ng-container>
+          <div *ngIf="invoices.length === 0" class="no-faturas">
+            Nenhuma fatura encontrada.
           </div>
 
-          <ng-container *ngIf="hasPlan">
-            <div *ngFor="let invoice of invoices" class="table-row">
-            <div class="table-cell">{{ invoice.data }}</div>
-            <div class="table-cell"><strong>{{ invoice.valor }}</strong></div>
-            <div class="table-cell">
-              <span class="status-badge paid">{{ invoice.status }}</span>
-            </div>
-            <div class="table-cell">{{ invoice.metodo }}</div>
-            <div class="table-cell">
-              <button 
-                class="btn btn-small btn-secondary"
-                (click)="downloadInvoice(invoice.id)"
-              >
-                Baixar
-              </button>
-            </div>
-          </div>
-        </ng-container>
       </div>
     </section>
 
@@ -343,7 +356,7 @@
           <h3>Perguntas Frequentes</h3>
           <div class="faq-item">
             <h4>Como conectar em múltiplos dispositivos?</h4>
-            <p>Você pode conectar até 5 dispositivos simultaneamente. Vá para "Dispositivos" para gerenciar suas conexões.</p>
+            <p>Com o seu plano atual ({{ currentUser?.plano }}), você pode conectar até {{ deviceLimit }} dispositivos simultaneamente. Vá para "Dispositivos" para gerenciar suas conexões.</p>
           </div>
           <div class="faq-item">
             <h4>Como cancelar minha assinatura?</h4>

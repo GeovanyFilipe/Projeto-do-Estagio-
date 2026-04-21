@@ -42,21 +42,42 @@ mutation CreateDemoData @transaction @auth(level: USER, insecureReason: "This op
   subscriptionType_insertMany(data: [
     {
       id: "f8e7d6c5-b4a3-2109-8765-4321fedcba98",
-      name: "Basic",
+      name: "Individual",
       durationMonths: 1,
-      price: 9.99,
-      createdAt: "2023-01-01T08:00:00Z",
-      features: ["Feature A", "Feature B"]
+      price: 6000.0,
+      maxSpeedMbps: 50,
+      maxDevices: 2,
+      description: "Ideal para uso individual e navegação estável"
     },
     {
       id: "1a2b3c4d-5e6f-789a-bcde-f01234567890",
-      name: "Premium",
-      durationMonths: 12,
-      price: 99.99,
-      createdAt: "2023-01-01T08:30:00Z",
-      features: ["Feature A", "Feature B", "Feature C"]
+      name: "Startup",
+      durationMonths: 1,
+      price: 15000.0,
+      maxSpeedMbps: 200,
+      maxDevices: 5,
+      description: "Alta performance para pequenas equipes e startups"
+    },
+    {
+      id: "d2e3f4g5-6h7i-8j9k-0l1m-2n3o4p5q6r7s",
+      name: "Educacional",
+      durationMonths: 1,
+      price: 10000.0,
+      maxSpeedMbps: 100,
+      maxDevices: 10,
+      description: "Acesso seguro e controlado para instituições de ensino"
+    },
+    {
+      id: "e3f4g5h6-7i8j-9k0l-1m2n-3o4p5q6r7s8t",
+      name: "Empresarial",
+      durationMonths: 1,
+      price: 60000.0,
+      maxSpeedMbps: 500,
+      maxDevices: 15,
+      description: "Solução completa com máxima segurança e dispositivos"
     }
   ])
+
   userSubscription_insertMany(data: [
     {
       userId: "c6a1e2d3-4f5a-6b7c-8d9e-0f1a2b3c4d5e",

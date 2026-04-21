@@ -22,6 +22,7 @@
     "@angular/platform-server": "^20.3.18",
     "@angular/router": "^20.3.18",
     "@angular/ssr": "^20.3.22",
+    "@dataconnect/generated": "file:src/dataconnect-generated",
     "@emailjs/browser": "^4.4.1",
     "express": "^4.18.2",
     "firebase": "^11.10.0",

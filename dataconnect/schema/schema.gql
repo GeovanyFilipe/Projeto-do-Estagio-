@@ -1,53 +1,71 @@
 type User @table {
-  username: String!
   email: String!
   passwordHash: String!
   createdAt: Timestamp!
-  lastLoginAt: Timestamp
   firstName: String
   lastName: String
-  phoneNumber: String
-}
-
-type SubscriptionType @table {
-  name: String!
-  durationMonths: Int!
-  price: Float!
-  createdAt: Timestamp!
-  description: String
-  features: [String]
-}
-
-type UserSubscription @table {
-  user: User!
-  subscriptionType: SubscriptionType!
-  startDate: Date!
-  endDate: Date!
-  status: String!
-  createdAt: Timestamp!
-  paymentMethod: String
-  autoRenew: Boolean
+  lastLoginAt: Timestamp
 }
 
 type Server @table {
   name: String!
   location: String!
   ipAddress: String!
-  status: String!
-  createdAt: Timestamp!
-  country: String
-  city: String
   description: String
-  load: Int
+  latency: Int
+}
+
+type SubscriptionType @table {
+  name: String!
+  price: Float!
+  durationMonths: Int!
+  maxSpeedMbps: Int!
+  maxDevices: Int!
+  description: String
+}
+
+type UserSubscription @table {
+  user: User!
+  subscriptionType: SubscriptionType!
+  startDate: Timestamp!
+  endDate: Timestamp!
+  isActive: Boolean!
+  autoRenew: Boolean
 }
 
 type ConnectionLog @table {
   user: User!
   server: Server!
-  connectionTime: Timestamp!
-  disconnectionTime: Timestamp!
+  connectTime: Timestamp!
+  disconnectTime: Timestamp
+  dataTransferredGB: Float
+}
+
+
+type Device @table {
+  id: UUID!
+  user: User!
+  deviceName: String!
+  ipAddress: String
+  lastSeen: Timestamp!
+}
+
+type UserSession @table {
+  id: UUID!
+  user: User!
+  loginTime: Timestamp!
+  logoutTime: Timestamp
+  ipAddress: String
+  userAgent: String
+}
+
+type Invoice @table {
+  id: UUID!
+  user: User!
+  amount: Float!
+  currency: String!
+  paymentMethod: String!
+  status: String!
   createdAt: Timestamp!
-  durationMinutes: Int
-  dataTransferredMB: Float
-  connectionStatus: String
+  planName: String!
 }
