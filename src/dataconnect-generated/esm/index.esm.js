@@ -6,21 +6,7 @@ export const connectorConfig = {
   location: 'europe-west1'
 };
 
-/** Polyfill local para evitar erro de export em falta no Firebase 11.10.0 */
-function validateArgs(config, dcOrVars, vars, hasVars) {
-  if (dcOrVars && (dcOrVars.app || dcOrVars._useGeneratedSdk)) {
-    return { dc: dcOrVars, vars };
-  }
-  return { dc: getDataConnect(config), vars: dcOrVars };
-}
 
-/** Polyfill local para funções com opções */
-function validateArgsWithOptions(config, dcOrVars, varsOrOptions, options, hasVars, hasOptions) {
-  if (dcOrVars && (dcOrVars.app || dcOrVars._useGeneratedSdk)) {
-    return { dc: dcOrVars, vars: varsOrOptions, options };
-  }
-  return { dc: getDataConnect(config), vars: dcOrVars, options: varsOrOptions };
-}
 
 export const dataConnectSettings = {
   // Caching desativado para estabilidade do build
