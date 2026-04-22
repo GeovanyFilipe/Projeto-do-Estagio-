@@ -6,45 +6,103 @@
 
   <div class="painel-content">
     <div class="painel-card">
-      <h2>Minha Assinatura</h2>
+      <div class="card-header-flex">
+        <h2>Minha Assinatura</h2>
+        <span class="status-badge" [class]="statusLevel" *ngIf="currentSubscription">
+          {{ daysRemaining }} dias restantes
+        </span>
+      </div>
       <div class="card-content">
-        <p><strong>Plano Atual:</strong> Plano YouTube</p>
-        <p><strong>Status:</strong> <span class="status-ativo">Ativo</span></p>
-        <p><strong>Próxido Vencimento:</strong> 15/04/2026</p>
-        <button class="btn-acao">Gerenciar Plano</button>
+        <div class="subscription-details">
+          <p class="plan-name">{{ currentSubscription?.subscriptionType?.name || 'Nenhum plano' }}</p>
+          <div class="progress-container" *ngIf="currentSubscription">
+            <div class="progress-bar" [style.width.%]="subscriptionProgress" [class]="statusLevel"></div>
+          </div>
+          <div class="date-row">
+            <p><strong>Início:</strong> {{ (currentSubscription?.startDate | date:'dd/MM/yyyy':'UTC') || '---' }}</p>
+            <p><strong>Vencimento:</strong> {{ (currentSubscription?.endDate | date:'dd/MM/yyyy':'UTC') || '---' }}</p>
+          </div>
+        </div>
+        <button class="btn-acao" (click)="gerenciarPlano()" [class.primary]="!currentSubscription">
+          {{ currentSubscription ? 'Alterar Plano' : 'Assinar agora' }}
+        </button>
       </div>
     </div>
+
 
     <div class="painel-card">
       <h2>Meus Dispositivos</h2>
       <div class="card-content">
-        <div class="dispositivo">
-          <p>Windows 11 - Principal</p>
-          <p class="data">Último acesso: 31/03/2026</p>
+        <div class="dispositivo" *ngFor="let device of devices">
+          <p>{{ device.deviceName }}</p>
+          <p class="data">Último acesso: {{ device.lastSeen | date:'dd/MM/yyyy HH:mm' }}</p>
         </div>
-        <div class="dispositivo">
-          <p>Android - Smartphone</p>
-          <p class="data">Último acesso: 30/03/2026</p>
+        <div *ngIf="devices.length === 0">
+          <p>Nenhum dispositivo registrado.</p>
         </div>
-        <button class="btn-acao">Gerenciar Dispositivos</button>
+        <button class="btn-acao" (click)="gerenciarDispositivos()">Gerenciar Dispositivos</button>
       </div>
     </div>
 
     <div class="painel-card">
       <h2>Faturamento</h2>
       <div class="card-content">
-        <button class="btn-acao">Ver Faturas</button>
-        <button class="btn-acao secundario">Atualizar Forma de Pagamento</button>
+        <div class="fatura-item" *ngFor="let invoice of invoices">
+          <div class="fatura-info">
+            <p class="fatura-data">{{ invoice.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
+            <p class="fatura-plano">{{ invoice.planName }}</p>
+          </div>
+          <div class="fatura-valor">
+            <p>{{ invoice.amount | number:'1.0-0' }} {{ invoice.currency }}</p>
+            <p class="fatura-metodo">{{ invoice.paymentMethod }}</p>
+          </div>
+        </div>
+        <div *ngIf="invoices.length === 0">
+          <p>Nenhuma fatura encontrada.</p>
+        </div>
+        <button class="btn-acao secundario" style="margin-top: 15px;">Atualizar Forma de Pagamento</button>
       </div>
     </div>
+
 
     <div class="painel-card">
       <h2>Conta</h2>
       <div class="card-content">
         <button class="btn-acao secundario">Alterar Senha</button>
         <button class="btn-acao secundario">Verificação em Duas Etapas</button>
-        <button class="btn-acao perigo">Sair da Conta</button>
+        <button class="btn-acao perigo" (click)="logout()">Sair da Conta</button>
       </div>
     </div>
+
+    <!-- Histórico de Atividade -->
+    <div class="painel-card total-width">
+      <h2>Histórico de Acessos</h2>
+      <div class="card-content">
+        <div class="atividade-item" *ngFor="let session of sessions">
+          <p><strong>Login:</strong> {{ session.loginTime | date:'dd/MM/yyyy HH:mm' }}</p>
+          <p class="data" *ngIf="session.logoutTime"><strong>Logout:</strong> {{ session.logoutTime | date:'dd/MM/yyyy HH:mm' }}</p>
+          <p class="data"><strong>IP:</strong> {{ session.ipAddress }}</p>
+        </div>
+        <div *ngIf="sessions.length === 0">
+          <p>Nenhum registro de acesso encontrado.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="painel-card total-width">
+      <h2>Conexões VPN Recentes</h2>
+      <div class="card-content">
+        <div class="atividade-item" *ngFor="let conn of connections">
+          <p><strong>Servidor:</strong> {{ conn.server.name }} ({{ conn.server.location }})</p>
+          <p class="data"><strong>Duração:</strong> {{ conn.connectTime | date:'dd/MM/yyyy HH:mm' }} - {{ conn.disconnectTime ? (conn.disconnectTime | date:'dd/MM/yyyy HH:mm') : 'Conectado' }}</p>
+          <p class="data" *ngIf="conn.dataTransferredGB"><strong>Tráfego:</strong> {{ conn.dataTransferredGB | number:'1.2-2' }} GB</p>
+        </div>
+        <div *ngIf="connections.length === 0">
+          <p>Nenhuma conexão VPN registrada.</p>
+        </div>
+      </div>
+    </div>
+
+
   </div>
 </div>

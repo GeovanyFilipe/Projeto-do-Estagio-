@@ -1,0 +1,62 @@
+<app-menu></app-menu>
+
+<div class="pagina-container">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">🏢 Solução Corporativa</div>
+    <h1>Plano Empresarial</h1>
+    <p>Conectividade segura e de alto desempenho para a sua empresa</p>
+    <div class="hero-tags">
+      <span class="tag">Ideal para empresas médias e grandes</span>
+    </div>
+  </section>
+
+  <!-- ✅ CTA AGORA VEM PRIMEIRO -->
+  <section class="cta-section">
+    <div class="cta-container">
+      <div class="cta-content">
+        <h2>Pronto para acelerar a navegação dentro da sua empresa?</h2>
+        <p>Fale connosco e receba uma proposta personalizada para as suas necessidades.</p>
+
+        <div class="cta-buttons">
+          <a [routerLink]="['/compra', 'empresarial']" class="btn-primary">
+            Assinar agora
+          </a>
+          <a routerLink="/suporte/tecnico" class="btn-secondary">
+            Falar com um Técnico
+          </a>
+        </div>
+      </div>
+
+      <div class="cta-badge">
+        <div class="badge-inner">
+          <span class="badge-label">Preço</span>
+          <span class="badge-value">60.000,00 kz</span>
+          <span class="badge-sub">Mensal</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ✅ SPECS AGORA VEM DEPOIS -->
+  <section class="specs-section">
+    <div class="specs-container">
+      <h2 class="section-title">O que está incluso</h2>
+
+      <div class="specs-grid">
+        <div class="spec-card" *ngFor="let spec of specs">
+          <div class="spec-icon">{{ spec.icon }}</div>
+
+          <div class="spec-info">
+            <h3>{{ spec.titulo }}</h3>
+            <p>{{ spec.descricao }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<app-rodape></app-rodape>

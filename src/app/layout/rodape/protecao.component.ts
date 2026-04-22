@@ -138,4 +138,4 @@ import { MenuComponent } from '../menu/menu.component';
     }
   `]
 })
-export class ProtecaoComponent {}
+export class ProtecaoComponent { }

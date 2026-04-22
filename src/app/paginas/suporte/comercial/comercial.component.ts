@@ -16,6 +16,13 @@ export class ComercialComponent {
   nome = '';
   email = '';
   mensagem = '';
+  telefone = '';  
+  
+  formatarTelefone(event: any) {
+    let valor = event.target.value.replace(/\D/g, ''); // Remove tudo que não é dígito
+    this.telefone = valor.substring(0, 9); // Limita a 9 dígitos
+    event.target.value = this.telefone;
+  }
 
   enviarMensagem() {
     if (!this.nome || !this.email || !this.mensagem) {
@@ -36,12 +43,12 @@ export class ComercialComponent {
     ).then((res: EmailJSResponseStatus) => {
       // sucesso
       alert('Mensagem enviada com sucesso! Nossa equipe comercial irá contactá-lo em breve.');
-      
+
       // limpa os campos do formulário
       this.nome = '';
       this.email = '';
       this.mensagem = '';
-      
+
       console.log('Email enviado com sucesso!', res);
     }, (err) => {
       // erro

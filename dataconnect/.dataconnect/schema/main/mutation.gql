@@ -1,0 +1,898 @@
+extend type Mutation {
+  """
+  ✨ Insert a single `ConnectionLog` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  connectionLog_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: ConnectionLog_Data!
+  ): ConnectionLog_KeyOutput! @fdc_generated(from: "ConnectionLog", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `Device` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  device_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: Device_Data!
+  ): Device_KeyOutput! @fdc_generated(from: "Device", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `Invoice` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  invoice_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: Invoice_Data!
+  ): Invoice_KeyOutput! @fdc_generated(from: "Invoice", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `Server` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  server_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: Server_Data!
+  ): Server_KeyOutput! @fdc_generated(from: "Server", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `SubscriptionType` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  subscriptionType_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: SubscriptionType_Data!
+  ): SubscriptionType_KeyOutput! @fdc_generated(from: "SubscriptionType", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `User` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  user_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: User_Data!
+  ): User_KeyOutput! @fdc_generated(from: "User", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `UserSession` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  userSession_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: UserSession_Data!
+  ): UserSession_KeyOutput! @fdc_generated(from: "UserSession", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `UserSubscription` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  userSubscription_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: UserSubscription_Data!
+  ): UserSubscription_KeyOutput! @fdc_generated(from: "UserSubscription", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert `ConnectionLog` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  connectionLog_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [ConnectionLog_Data!]!
+  ): [ConnectionLog_KeyOutput!]! @fdc_generated(from: "ConnectionLog", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `Device` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  device_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [Device_Data!]!
+  ): [Device_KeyOutput!]! @fdc_generated(from: "Device", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `Invoice` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  invoice_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [Invoice_Data!]!
+  ): [Invoice_KeyOutput!]! @fdc_generated(from: "Invoice", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `Server` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  server_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [Server_Data!]!
+  ): [Server_KeyOutput!]! @fdc_generated(from: "Server", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `SubscriptionType` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  subscriptionType_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [SubscriptionType_Data!]!
+  ): [SubscriptionType_KeyOutput!]! @fdc_generated(from: "SubscriptionType", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `User` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  user_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [User_Data!]!
+  ): [User_KeyOutput!]! @fdc_generated(from: "User", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `UserSession` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  userSession_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [UserSession_Data!]!
+  ): [UserSession_KeyOutput!]! @fdc_generated(from: "UserSession", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `UserSubscription` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  userSubscription_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [UserSubscription_Data!]!
+  ): [UserSubscription_KeyOutput!]! @fdc_generated(from: "UserSubscription", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert or update a single `ConnectionLog` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `ConnectionLog`.
+  """
+  connectionLog_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: ConnectionLog_Data!
+  ): ConnectionLog_KeyOutput! @fdc_generated(from: "ConnectionLog", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `Device` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Device`.
+  """
+  device_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: Device_Data!
+  ): Device_KeyOutput! @fdc_generated(from: "Device", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `Invoice` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Invoice`.
+  """
+  invoice_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: Invoice_Data!
+  ): Invoice_KeyOutput! @fdc_generated(from: "Invoice", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `Server` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Server`.
+  """
+  server_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: Server_Data!
+  ): Server_KeyOutput! @fdc_generated(from: "Server", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `SubscriptionType` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `SubscriptionType`.
+  """
+  subscriptionType_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: SubscriptionType_Data!
+  ): SubscriptionType_KeyOutput! @fdc_generated(from: "SubscriptionType", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `User` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `User`.
+  """
+  user_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: User_Data!
+  ): User_KeyOutput! @fdc_generated(from: "User", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `UserSession` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `UserSession`.
+  """
+  userSession_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: UserSession_Data!
+  ): UserSession_KeyOutput! @fdc_generated(from: "UserSession", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `UserSubscription` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `UserSubscription`.
+  """
+  userSubscription_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: UserSubscription_Data!
+  ): UserSubscription_KeyOutput! @fdc_generated(from: "UserSubscription", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update `ConnectionLog` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `ConnectionLog`.
+  """
+  connectionLog_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [ConnectionLog_Data!]!
+  ): [ConnectionLog_KeyOutput!]! @fdc_generated(from: "ConnectionLog", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `Device` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Device`.
+  """
+  device_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [Device_Data!]!
+  ): [Device_KeyOutput!]! @fdc_generated(from: "Device", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `Invoice` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Invoice`.
+  """
+  invoice_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [Invoice_Data!]!
+  ): [Invoice_KeyOutput!]! @fdc_generated(from: "Invoice", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `Server` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Server`.
+  """
+  server_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [Server_Data!]!
+  ): [Server_KeyOutput!]! @fdc_generated(from: "Server", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `SubscriptionType` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `SubscriptionType`.
+  """
+  subscriptionType_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [SubscriptionType_Data!]!
+  ): [SubscriptionType_KeyOutput!]! @fdc_generated(from: "SubscriptionType", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `User` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `User`.
+  """
+  user_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [User_Data!]!
+  ): [User_KeyOutput!]! @fdc_generated(from: "User", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `UserSession` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `UserSession`.
+  """
+  userSession_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [UserSession_Data!]!
+  ): [UserSession_KeyOutput!]! @fdc_generated(from: "UserSession", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `UserSubscription` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `UserSubscription`.
+  """
+  userSubscription_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [UserSubscription_Data!]!
+  ): [UserSubscription_KeyOutput!]! @fdc_generated(from: "UserSubscription", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Update a single `ConnectionLog` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `ConnectionLog` or `null` if not found.
+  """
+  connectionLog_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: ConnectionLog_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: ConnectionLog_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: ConnectionLog_Data!
+  ): ConnectionLog_KeyOutput @fdc_generated(from: "ConnectionLog", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `Device` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `Device` or `null` if not found.
+  """
+  device_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Device_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Device_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: Device_Data!
+  ): Device_KeyOutput @fdc_generated(from: "Device", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `Invoice` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `Invoice` or `null` if not found.
+  """
+  invoice_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Invoice_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Invoice_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: Invoice_Data!
+  ): Invoice_KeyOutput @fdc_generated(from: "Invoice", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `Server` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `Server` or `null` if not found.
+  """
+  server_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Server_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Server_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: Server_Data!
+  ): Server_KeyOutput @fdc_generated(from: "Server", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `SubscriptionType` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `SubscriptionType` or `null` if not found.
+  """
+  subscriptionType_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: SubscriptionType_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: SubscriptionType_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: SubscriptionType_Data!
+  ): SubscriptionType_KeyOutput @fdc_generated(from: "SubscriptionType", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `User` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `User` or `null` if not found.
+  """
+  user_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: User_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: User_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: User_Data!
+  ): User_KeyOutput @fdc_generated(from: "User", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `UserSession` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `UserSession` or `null` if not found.
+  """
+  userSession_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: UserSession_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: UserSession_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: UserSession_Data!
+  ): UserSession_KeyOutput @fdc_generated(from: "UserSession", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `UserSubscription` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `UserSubscription` or `null` if not found.
+  """
+  userSubscription_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: UserSubscription_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: UserSubscription_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: UserSubscription_Data!
+  ): UserSubscription_KeyOutput @fdc_generated(from: "UserSubscription", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update `ConnectionLog` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  connectionLog_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: ConnectionLog_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: ConnectionLog_Data!
+  ): Int! @fdc_generated(from: "ConnectionLog", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `Device` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  device_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: Device_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: Device_Data!
+  ): Int! @fdc_generated(from: "Device", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `Invoice` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  invoice_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: Invoice_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: Invoice_Data!
+  ): Int! @fdc_generated(from: "Invoice", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `Server` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  server_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: Server_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: Server_Data!
+  ): Int! @fdc_generated(from: "Server", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `SubscriptionType` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  subscriptionType_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: SubscriptionType_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: SubscriptionType_Data!
+  ): Int! @fdc_generated(from: "SubscriptionType", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `User` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  user_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: User_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: User_Data!
+  ): Int! @fdc_generated(from: "User", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `UserSession` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  userSession_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: UserSession_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: UserSession_Data!
+  ): Int! @fdc_generated(from: "UserSession", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `UserSubscription` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  userSubscription_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: UserSubscription_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: UserSubscription_Data!
+  ): Int! @fdc_generated(from: "UserSubscription", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Delete a single `ConnectionLog` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  connectionLog_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: ConnectionLog_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: ConnectionLog_FirstRow
+  ): ConnectionLog_KeyOutput @fdc_generated(from: "ConnectionLog", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `Device` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  device_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Device_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Device_FirstRow
+  ): Device_KeyOutput @fdc_generated(from: "Device", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `Invoice` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  invoice_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Invoice_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Invoice_FirstRow
+  ): Invoice_KeyOutput @fdc_generated(from: "Invoice", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `Server` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  server_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Server_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Server_FirstRow
+  ): Server_KeyOutput @fdc_generated(from: "Server", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `SubscriptionType` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  subscriptionType_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: SubscriptionType_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: SubscriptionType_FirstRow
+  ): SubscriptionType_KeyOutput @fdc_generated(from: "SubscriptionType", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `User` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  user_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: User_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: User_FirstRow
+  ): User_KeyOutput @fdc_generated(from: "User", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `UserSession` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  userSession_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: UserSession_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: UserSession_FirstRow
+  ): UserSession_KeyOutput @fdc_generated(from: "UserSession", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `UserSubscription` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  userSubscription_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: UserSubscription_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: UserSubscription_FirstRow
+  ): UserSubscription_KeyOutput @fdc_generated(from: "UserSubscription", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete `ConnectionLog` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  connectionLog_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: ConnectionLog_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "ConnectionLog", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `Device` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  device_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: Device_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "Device", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `Invoice` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  invoice_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: Invoice_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "Invoice", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `Server` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  server_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: Server_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "Server", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `SubscriptionType` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  subscriptionType_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: SubscriptionType_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "SubscriptionType", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `User` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  user_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: User_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "User", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `UserSession` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  userSession_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: UserSession_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "UserSession", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `UserSubscription` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  userSubscription_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: UserSubscription_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "UserSubscription", purpose: DELETE_MULTIPLE)
+}

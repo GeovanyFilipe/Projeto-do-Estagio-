@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
+import { Router, RouterModule } from '@angular/router';
 import { MenuComponent } from '../../layout/menu/menu.component';
 import { RodapeComponent } from '../../layout/rodape/rodape.component';
 
 @Component({
   selector: 'app-porque',
   standalone: true,
-  imports: [CommonModule, MenuComponent,RodapeComponent],
+  imports: [CommonModule, RouterModule, MenuComponent, RodapeComponent],
   templateUrl: './porque.component.html',
   styleUrl: './porque.component.css'
 })
@@ -33,4 +35,19 @@ export class PorqueComponent {
       icon: '💰'
     }
   ];
+
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  get isAuthenticated(): boolean {
+    return this.authService.isAuthenticated();
+  }
+
+  goToCadastro() {
+    this.router.navigate(['/login'], { queryParams: { mode: 'register' } });
+  }
 }
+
+

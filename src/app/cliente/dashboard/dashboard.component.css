@@ -386,6 +386,11 @@
   color: #3c3;
 }
 
+.badge-inactive {
+  background: #fee;
+  color: #c33;
+}
+
 .badge-current {
   background: rgba(0, 212, 255, 0.2);
   color: #00d4ff;
@@ -451,6 +456,14 @@
 .device-status {
   color: #888;
   font-size: 12px;
+}
+
+.no-data-text {
+  color: #888;
+  font-size: 14px;
+  font-style: italic;
+  text-align: center;
+  margin: 20px 0;
 }
 
 /* Plans Grid */
@@ -560,6 +573,101 @@
   color: #555;
 }
 
+/* Novos estilos Premium */
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.status-badge.success { background: #d4edda; color: #155724; }
+.status-badge.warning { background: #fff3cd; color: #856404; }
+.status-badge.danger { background: #f8d7da; color: #721c24; }
+.status-badge.paid { background: #e3fcef; color: #006644; }
+
+.subscription-premium-content {
+  margin-bottom: 15px;
+}
+
+.plan-hero {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e3a5f;
+  margin-bottom: 15px !important;
+}
+
+.premium-progress-container {
+  height: 8px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  margin: 15px 0 10px;
+  overflow: hidden;
+}
+
+.premium-progress-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.premium-progress-bar.success { background: #28a745; }
+.premium-progress-bar.warning { background: #ffc107; }
+.premium-progress-bar.danger { background: #dc3545; }
+
+.date-summary {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #666;
+}
+
+.activity-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.feed-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px;
+  background: #f8faff;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.03);
+}
+
+.feed-icon {
+  font-size: 18px;
+  background: white;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.feed-text p {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+}
+
+.feed-text span {
+  font-size: 11px;
+  color: #888;
+}
+
+.no-data-msg {
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+  padding: 20px 0;
+}
+
 .status-badge {
   display: inline-block;
   padding: 4px 12px;
@@ -570,14 +678,12 @@
   color: #888;
 }
 
-.status-badge.active {
-  background: #efe;
-  color: #3c3;
-}
 
-.status-badge.paid {
-  background: #efe;
-  color: #3c3;
+.no-faturas {
+  padding: 40px;
+  text-align: center;
+  color: #888;
+  font-size: 15px;
 }
 
 /* Support Grid */

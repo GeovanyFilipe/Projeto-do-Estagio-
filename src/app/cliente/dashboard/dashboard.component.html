@@ -111,14 +111,7 @@
     <header class="dashboard-header">
       <div class="header-content">
         <h1>Bem-vindo, {{ currentUser?.nome }}!</h1>
-        <p class="header-subtitle">Gerencie sua assinatura VPN aqui</p>
-      </div>
-      <div class="user-info">
-        <div class="user-avatar">{{ (currentUser?.nome || 'U').charAt(0).toUpperCase() }}</div>
-        <div class="user-details">
-          <p class="user-name">{{ currentUser?.nome }}</p>
-          <p class="user-email">{{ currentUser?.email }}</p>
-        </div>
+        <p class="header-subtitle">{{ currentUser?.email }}</p>
       </div>
     </header>
 
@@ -128,37 +121,49 @@
       <!-- TAB: Visão Geral -->
       <section *ngIf="activeTab === 'overview'" class="tab-pane active">
         <div class="overview-grid">
-          <!-- Card de Status -->
-          <div class="info-card card-status">
+          <!-- Card de Status (Subscription) -->
+          <div class="info-card">
             <div class="card-header">
-              <h3>Status da Assinatura</h3>
-              <span class="badge badge-active">Ativo</span>
+              <h3>Sua Assinatura</h3>
+              <span class="status-badge" [class]="statusLevel" *ngIf="currentSubscription">
+                {{ daysRemaining }} dias restantes
+              </span>
+              <span class="status-badge danger" *ngIf="!currentSubscription">
+                Sem Assinatura
+              </span>
             </div>
             <div class="card-body">
-              <p class="status-info">
-                <strong>Plano:</strong> {{ currentUser?.plano }}
-              </p>
-              <p class="status-info">
-                <strong>Membro desde:</strong> {{ currentUser?.dataCadastro | date: 'shortDate' }}
-              </p>
-              <p class="status-info">
-                <strong>Próximo pagamento:</strong> 30/04/2026
-              </p>
-              <button class="btn btn-secondary" (click)="selectTab('plano')">Gerenciar Plano</button>
+              <div class="subscription-premium-content">
+                <p class="plan-hero">{{ currentSubscription?.subscriptionType?.name || 'Nenhum plano ativo' }}</p>
+                <div class="premium-progress-container" *ngIf="currentSubscription">
+                  <div class="premium-progress-bar" [style.width.%]="subscriptionProgress" [class]="statusLevel"></div>
+                </div>
+                <div class="date-summary">
+                  <p><span>Início:</span> {{ (currentSubscription?.startDate | date:'dd/MM/yyyy':'UTC') || '---' }}</p>
+                  <p><span>Expira:</span> {{ (currentSubscription?.endDate | date:'dd/MM/yyyy':'UTC') || '---' }}</p>
+                </div>
+              </div>
+              <button class="btn btn-primary" (click)="router.navigate(['/planos'])" style="width: 100%; margin-top: 20px;">
+                {{ currentSubscription ? 'Gerenciar Plano' : 'Assinar agora' }}
+              </button>
             </div>
           </div>
+
 
           <!-- Card de Uso -->
           <div class="info-card card-usage">
             <div class="card-header">
               <h3>Uso de Largura de Banda</h3>
             </div>
-            <div class="card-body">
+            <div class="card-body" *ngIf="hasPlan">
               <div class="usage-bar">
                 <div class="usage-fill" style="width: 65%"></div>
               </div>
               <p class="usage-text">6.5 GB de 10 GB utilizados</p>
               <p class="usage-percentage">65%</p>
+            </div>
+            <div class="card-body" *ngIf="!hasPlan">
+              <p class="no-data-text">Adquira um plano para ver seu uso.</p>
             </div>
           </div>
 
@@ -167,8 +172,8 @@
             <div class="card-header">
               <h3>Dispositivos Conectados</h3>
             </div>
-            <div class="card-body">
-              <p class="device-count">2 de 5 dispositivos</p>
+            <div class="card-body" *ngIf="hasPlan">
+              <p class="device-count">{{ devices.length }} de {{ deviceLimit }} dispositivos</p>
               <ul class="device-list">
                 <li class="device-item active">
                   <span class="device-name">Notebook</span>
@@ -181,20 +186,42 @@
               </ul>
               <button class="btn btn-secondary" (click)="selectTab('dispositivos')">Ver Mais</button>
             </div>
+            <div class="card-body" *ngIf="!hasPlan">
+              <p class="no-data-text">Nenhum dispositivo conectado.</p>
+              <button class="btn btn-secondary" (click)="router.navigate(['/planos'])">Ativar VPN</button>
+            </div>
           </div>
 
-          <!-- Card de Suporte -->
-          <div class="info-card card-support">
+          <!-- Atividade Recente -->
+          <div class="info-card recent-activity">
             <div class="card-header">
-              <h3>Precisa de Ajuda?</h3>
+              <h3>Atividade Recente</h3>
             </div>
             <div class="card-body">
-              <p>Estamos aqui para ajudar! Entre em contato conosco:</p>
-              <button class="btn btn-primary" (click)="contacterSuporte()">Abrir Suporte</button>
-              <p class="support-info">Resposta em até 2 horas</p>
+              <div class="activity-feed">
+                <div class="feed-item" *ngFor="let session of sessions.slice(0, 2)">
+                  <div class="feed-icon login-ico">🔑</div>
+                  <div class="feed-text">
+                  <p>Sessão iniciada</p>
+                  <span>IP: {{ session.ipAddress }} • {{ session.loginTime | date:'dd/MM/yyyy HH:mm' }}</span>
+                  </div>
+                </div>
+                <div class="feed-item" *ngFor="let conn of connections.slice(0, 1)">
+                  <div class="feed-icon vpn-ico">🛡️</div>
+                  <div class="feed-text">
+                    <p>VPN Conectada: {{ conn.server.name }}</p>
+                    <span>{{ conn.connectTime | date:'dd/MM/yyyy HH:mm' }}</span>
+                  </div>
+                </div>
+                <div *ngIf="sessions.length === 0 && connections.length === 0" class="no-data-msg">
+                  Sem atividades registradas no banco.
+                </div>
+              </div>
+              <button class="btn btn-secondary" (click)="selectTab('faturamento')" style="width: 100%; margin-top: 10px;">Ver tudo</button>
             </div>
           </div>
         </div>
+
       </section>
 
       <!-- TAB: Meu Plano -->
@@ -202,69 +229,7 @@
         <h2 class="section-title">Planos Disponíveis</h2>
         
         <div class="plans-grid">
-          <!-- Plano YouTube -->
-          <div class="plan-card" [class.current]="currentUser?.plano === 'Plano YouTube sem Anúncios'">
-            <div class="plan-header">
-              <h3>YouTube sem Anúncios</h3>
-              <span *ngIf="currentUser?.plano === 'Plano YouTube sem Anúncios'" class="badge badge-current">Plano Atual</span>
-            </div>
-            <div class="plan-price">
-              <span class="price">AOA 5.99</span>
-              <span class="period">/mês</span>
-            </div>
-            <div class="plan-features">
-              <p>✓ Assistir YouTube sem anúncios</p>
-              <p>✓ Download de vídeos</p>
-              <p>✓ Qualidade até 1080p</p>
-              <p>✓ Suporte 24/7</p>
-            </div>
-            <button 
-              class="btn btn-primary"
-              *ngIf="currentUser?.plano !== 'Plano YouTube sem Anúncios'"
-              (click)="changePlan('Plano YouTube sem Anúncios')"
-            >
-              Selecionar Plano
-            </button>
-            <button 
-              class="btn btn-disabled"
-              *ngIf="currentUser?.plano === 'Plano YouTube sem Anúncios'"
-              disabled
-            >
-              Plano Ativo
-            </button>
-          </div>
-
-          <!-- Plano GOV.AO -->
-          <div class="plan-card" [class.current]="currentUser?.plano === 'Plano .GOV.AO'">
-            <div class="plan-header">
-              <h3>Plano .GOV.AO</h3>
-              <span *ngIf="currentUser?.plano === 'Plano .GOV.AO'" class="badge badge-current">Plano Atual</span>
-            </div>
-            <div class="plan-price">
-              <span class="price">AOA 9.99</span>
-              <span class="period">/mês</span>
-            </div>
-            <div class="plan-features">
-              <p>✓ Acesso a plataforma .GOV.AO</p>
-              <p>✓ Documentos seguros e encriptados</p>
-              <p>✓ Suporte prioritário</p>
-              <p>✓ Múltiplos dispositivos</p>
-            </div>
-            <button 
-              class="btn btn-primary"
-              *ngIf="currentUser?.plano !== 'Plano .GOV.AO'"
-              (click)="changePlan('Plano .GOV.AO')"
-            >
-              Selecionar Plano
-            </button>
-            <button 
-              class="btn btn-disabled"
-              *ngIf="currentUser?.plano === 'Plano .GOV.AO'"
-              disabled
-            >
-              Plano Ativo
-            </button>
-          </div>
+          <!-- Nenhum plano local exibido (removido) -->
         </div>
       </section>
 
@@ -273,7 +238,7 @@
         <h2 class="section-title">Meus Dispositivos</h2>
         
         <div class="devices-table">
-          <div class="table-header">
+          <div class="table-header" *ngIf="hasPlan">
             <div class="table-cell">Dispositivo</div>
             <div class="table-cell">Status</div>
             <div class="table-cell">IP</div>
@@ -281,26 +246,33 @@
             <div class="table-cell">Ação</div>
           </div>
 
-          <div *ngFor="let device of devices" class="table-row">
-            <div class="table-cell">
-              <strong>{{ device.nome }}</strong>
-            </div>
-            <div class="table-cell">
-              <span class="status-badge" [class.active]="device.status === 'Ativo'">
-                {{ device.status }}
-              </span>
-            </div>
-            <div class="table-cell">{{ device.ip }}</div>
-            <div class="table-cell">{{ device.ultimoAcesso }}</div>
-            <div class="table-cell">
-              <button 
-                class="btn btn-small btn-danger"
-                (click)="disconnectDevice(device.id)"
-              >
-                Desconectar
-              </button>
-            </div>
+          <div *ngIf="!hasPlan || devices.length === 0" class="no-faturas">
+            <p>Nenhum dispositivo conectado. Adquira um plano para começar a usar.</p>
+            <button class="btn btn-primary" (click)="router.navigate(['/planos'])" style="margin-top: 15px;">Ver Planos</button>
           </div>
+
+          <ng-container *ngIf="hasPlan">
+            <div *ngFor="let device of devices" class="table-row">
+              <div class="table-cell">
+                <strong>{{ device.nome }}</strong>
+              </div>
+              <div class="table-cell">
+                <span class="status-badge" [class.active]="device.status === 'Ativo'">
+                  {{ device.status }}
+                </span>
+              </div>
+              <div class="table-cell">{{ device.ip }}</div>
+              <div class="table-cell">{{ device.ultimoAcesso }}</div>
+              <div class="table-cell">
+                <button 
+                  class="btn btn-small btn-danger"
+                  (click)="disconnectDevice(device.id)"
+                >
+                  Desconectar
+                </button>
+              </div>
+            </div>
+          </ng-container>
         </div>
       </section>
 
@@ -317,24 +289,30 @@
             <div class="table-cell">Ação</div>
           </div>
 
-          <div *ngFor="let invoice of invoices" class="table-row">
-            <div class="table-cell">{{ invoice.data }}</div>
-            <div class="table-cell"><strong>{{ invoice.valor }}</strong></div>
-            <div class="table-cell">
-              <span class="status-badge paid">{{ invoice.status }}</span>
+          <ng-container *ngIf="invoices.length > 0">
+            <div *ngFor="let invoice of invoices" class="table-row">
+              <div class="table-cell">{{ invoice.createdAt | date:'dd/MM/yyyy' }}</div>
+              <div class="table-cell"><strong>{{ invoice.amount | number:'1.0-0' }} {{ invoice.currency }}</strong></div>
+              <div class="table-cell">
+                <span class="status-badge paid">Pago</span>
+              </div>
+              <div class="table-cell">{{ invoice.paymentMethod }}</div>
+              <div class="table-cell">
+                <button 
+                  class="btn btn-small btn-secondary"
+                  (click)="downloadInvoice(invoice.id)"
+                >
+                  Recibo
+                </button>
+              </div>
             </div>
-            <div class="table-cell">{{ invoice.metodo }}</div>
-            <div class="table-cell">
-              <button 
-                class="btn btn-small btn-secondary"
-                (click)="downloadInvoice(invoice.id)"
-              >
-                Baixar
-              </button>
-            </div>
+          </ng-container>
+          <div *ngIf="invoices.length === 0" class="no-faturas">
+            Nenhuma fatura encontrada.
           </div>
-        </div>
-      </section>
+
+      </div>
+    </section>
 
       <!-- TAB: Suporte -->
       <section *ngIf="activeTab === 'suporte'" class="tab-pane active">
@@ -378,7 +356,7 @@
           <h3>Perguntas Frequentes</h3>
           <div class="faq-item">
             <h4>Como conectar em múltiplos dispositivos?</h4>
-            <p>Você pode conectar até 5 dispositivos simultaneamente. Vá para "Dispositivos" para gerenciar suas conexões.</p>
+            <p>Com o seu plano atual ({{ currentUser?.plano }}), você pode conectar até {{ deviceLimit }} dispositivos simultaneamente. Vá para "Dispositivos" para gerenciar suas conexões.</p>
           </div>
           <div class="faq-item">
             <h4>Como cancelar minha assinatura?</h4>
@@ -407,3 +385,4 @@
   </div>
 </div>
 
+<app-rodape></app-rodape>

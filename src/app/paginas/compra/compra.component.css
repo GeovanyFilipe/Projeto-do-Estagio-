@@ -1,0 +1,314 @@
+.pagina-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+/* HERO */
+.hero {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%);
+  color: white;
+  padding: 70px 20px 60px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero h1 {
+  font-size: 52px;
+  margin: 0 0 16px 0;
+  font-weight: 800;
+  color: #fff;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%);
+  border: 1px solid rgba(0, 212, 255, 0.4);
+  color: #00d4ff;
+  padding: 6px 20px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 20px; 
+}
+
+/* WRAPPER CENTRAL */
+.compra-wrapper {
+  max-width: 800px;
+  margin: 20px auto 40px;
+  padding: 0 20px;
+}
+
+/* RESUMO DO PLANO */
+.plano-resumo {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  color: #fff;
+}
+
+.plano-info {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.plano-icon {
+  font-size: 30px;
+}
+
+.plano-info h3 {
+  font-size: 22px;
+  margin: 0;
+  font-weight: 700;
+  color: #fff;
+}
+
+.plano-info p {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.plano-preco {
+  text-align: right;
+}
+
+.plano-preco strong {
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+}
+
+/* PAGAMENTO */
+.pagamento-box {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  border-top: 4px solid #0099ff;
+}
+
+.pagamento-box h2 {
+  margin-bottom: 20px;
+  color: #1e3a5f;
+}
+
+/* MÉTODOS DE PAGAMENTO */
+.metodos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.metodo {
+  display: flex;
+  align-items: center;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.metodo:hover {
+  background: rgba(0, 153, 255, 0.08);
+}
+
+.metodo.ativo {
+  border: 2px solid #0099ff;
+  background: rgba(0, 153, 255, 0.05);
+}
+
+.metodo input {
+  margin-right: 10px;
+}
+
+.metodo-conteudo {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.icons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* BASE PADRÃO (VISA como referência) */
+.icons img {
+  height: 32px;
+  width: 50px;
+  object-fit: contain;
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+/* MASTERCARD IGUAL AO VISA */
+.icons img.mastercard-icon {
+  height: 22px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* E-KWANZA MANTIDO COMO ESTÁ */
+.icons img.ekwanza-icon {
+  height: 75px;
+  width: auto;
+  object-fit: contain;
+  margin-top: -26px;
+  margin-bottom: -26px;
+}
+
+/* HOVER */
+.icons img:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* FORM */
+.form-pagamento {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  font-size: 14px;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.input-group input {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: all 0.2s ease;
+}
+
+/* FOCUS */
+.input-group input:focus {
+  outline: none;
+  border: 1px solid #0099ff;
+  box-shadow: 0 0 0 2px rgba(0,153,255,0.15);
+}
+
+.input-group input.invalid {
+  border-color: #ff4d4d !important;
+  background: #fff5f5;
+}
+
+.error-msg {
+  color: #ff4d4d;
+  font-size: 11px;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding-right: 55px;
+}
+
+.card-brand-view {
+  position: absolute;
+  right: 12px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.card-brand-view img {
+  height: 24px;
+  width: 40px;
+  object-fit: contain;
+  animation: cardIn 0.3s ease-out;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateX(10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* LINHA */
+.linha {
+  display: flex;
+  gap: 15px;
+}
+
+.linha .input-group {
+  flex: 1;
+}
+
+/* BOTÃO */
+.btn-finalizar {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%);
+  border: none;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn-finalizar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,153,255,0.3);
+}
+
+
+/* EKWANZA BOX */
+
+.btn-finalizar:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* EKWANZA */
+
+.ekwanza-box {
+  padding: 20px;
+  background: #f5f7fa;
+  border-radius: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  .linha {
+    flex-direction: column;
+  }
+}

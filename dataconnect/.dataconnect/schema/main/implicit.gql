@@ -1,0 +1,64 @@
+extend type ConnectionLog {
+  """
+  ✨ Implicit primary key field. It's a UUID column default to a generated new value. See `@table` for how to customize it.
+  """
+  id: UUID! @default(expr: "uuidV4()") @fdc_generated(from: "ConnectionLog", purpose: IMPLICIT_KEY_FIELD)
+  """
+  ✨ Implicit foreign key field based on `ConnectionLog`.`server`. It must match the value of `Server`.`id`. See `@ref` for how to customize it.
+  """
+  serverId: UUID! @fdc_generated(from: "ConnectionLog.server", purpose: IMPLICIT_REF_FIELD)
+  """
+  ✨ Implicit foreign key field based on `ConnectionLog`.`user`. It must match the value of `User`.`id`. See `@ref` for how to customize it.
+  """
+  userId: UUID! @fdc_generated(from: "ConnectionLog.user", purpose: IMPLICIT_REF_FIELD)
+}
+extend type Device {
+  """
+  ✨ Implicit foreign key field based on `Device`.`user`. It must match the value of `User`.`id`. See `@ref` for how to customize it.
+  """
+  userId: UUID! @fdc_generated(from: "Device.user", purpose: IMPLICIT_REF_FIELD)
+}
+extend type Invoice {
+  """
+  ✨ Implicit foreign key field based on `Invoice`.`user`. It must match the value of `User`.`id`. See `@ref` for how to customize it.
+  """
+  userId: UUID! @fdc_generated(from: "Invoice.user", purpose: IMPLICIT_REF_FIELD)
+}
+extend type Server {
+  """
+  ✨ Implicit primary key field. It's a UUID column default to a generated new value. See `@table` for how to customize it.
+  """
+  id: UUID! @default(expr: "uuidV4()") @fdc_generated(from: "Server", purpose: IMPLICIT_KEY_FIELD)
+}
+extend type SubscriptionType {
+  """
+  ✨ Implicit primary key field. It's a UUID column default to a generated new value. See `@table` for how to customize it.
+  """
+  id: UUID! @default(expr: "uuidV4()") @fdc_generated(from: "SubscriptionType", purpose: IMPLICIT_KEY_FIELD)
+}
+extend type User {
+  """
+  ✨ Implicit primary key field. It's a UUID column default to a generated new value. See `@table` for how to customize it.
+  """
+  id: UUID! @default(expr: "uuidV4()") @fdc_generated(from: "User", purpose: IMPLICIT_KEY_FIELD)
+}
+extend type UserSession {
+  """
+  ✨ Implicit foreign key field based on `UserSession`.`user`. It must match the value of `User`.`id`. See `@ref` for how to customize it.
+  """
+  userId: UUID! @fdc_generated(from: "UserSession.user", purpose: IMPLICIT_REF_FIELD)
+}
+extend type UserSubscription {
+  """
+  ✨ Implicit primary key field. It's a UUID column default to a generated new value. See `@table` for how to customize it.
+  """
+  id: UUID! @default(expr: "uuidV4()") @fdc_generated(from: "UserSubscription", purpose: IMPLICIT_KEY_FIELD)
+  """
+  ✨ Implicit foreign key field based on `UserSubscription`.`subscriptionType`. It must match the value of `SubscriptionType`.`id`. See `@ref` for how to customize it.
+  """
+  subscriptionTypeId: UUID! @fdc_generated(from: "UserSubscription.subscriptionType", purpose: IMPLICIT_REF_FIELD)
+  """
+  ✨ Implicit foreign key field based on `UserSubscription`.`user`. It must match the value of `User`.`id`. See `@ref` for how to customize it.
+  """
+  userId: UUID! @fdc_generated(from: "UserSubscription.user", purpose: IMPLICIT_REF_FIELD)
+}

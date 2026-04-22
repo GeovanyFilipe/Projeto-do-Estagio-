@@ -1,0 +1,71 @@
+type User @table {
+  email: String!
+  passwordHash: String!
+  createdAt: Timestamp!
+  firstName: String
+  lastName: String
+  lastLoginAt: Timestamp
+}
+
+type Server @table {
+  name: String!
+  location: String!
+  ipAddress: String!
+  description: String
+  latency: Int
+}
+
+type SubscriptionType @table {
+  name: String!
+  price: Float!
+  durationMonths: Int!
+  maxSpeedMbps: Int!
+  maxDevices: Int!
+  description: String
+}
+
+type UserSubscription @table {
+  user: User!
+  subscriptionType: SubscriptionType!
+  startDate: Timestamp!
+  endDate: Timestamp!
+  isActive: Boolean!
+  autoRenew: Boolean
+}
+
+type ConnectionLog @table {
+  user: User!
+  server: Server!
+  connectTime: Timestamp!
+  disconnectTime: Timestamp
+  dataTransferredGB: Float
+}
+
+
+type Device @table {
+  id: UUID!
+  user: User!
+  deviceName: String!
+  ipAddress: String
+  lastSeen: Timestamp!
+}
+
+type UserSession @table {
+  id: UUID!
+  user: User!
+  loginTime: Timestamp!
+  logoutTime: Timestamp
+  ipAddress: String
+  userAgent: String
+}
+
+type Invoice @table {
+  id: UUID!
+  user: User!
+  amount: Float!
+  currency: String!
+  paymentMethod: String!
+  status: String!
+  createdAt: Timestamp!
+  planName: String!
+}

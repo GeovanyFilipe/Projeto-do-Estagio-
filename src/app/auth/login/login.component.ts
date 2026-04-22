@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService, LoginResponse } from '../../services/auth.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +13,7 @@ import { AuthService, LoginResponse } from '../../services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   email: string = '';
   password: string = '';
   nome: string = '';
@@ -21,11 +23,13 @@ export class LoginComponent implements OnInit {
   success: string = '';
   returnUrl: string = '';
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Pega a URL de retorno da query ou padrão para o painel
@@ -61,21 +65,35 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.error = '';
 
-    this.authService.login(this.email, this.password).subscribe({
-      next: (response: LoginResponse) => {
+    this.authService.login(this.email, this.password)
+      .then((user) => {
         this.loading = false;
         this.success = 'Login realizado com sucesso!';
-
         setTimeout(() => {
-          // Redireciona para a página de onde o usuário veio
           this.router.navigateByUrl(this.returnUrl);
         }, 1500);
-      },
-      error: (err: any) => {
+      })
+      .catch((err: any) => {
         this.loading = false;
-        this.error = err.message || 'Erro ao fazer login. Tente novamente.';
-      }
-    });
+        this.error = this.translateError(err.code) || err.message || 'Erro ao fazer login. Tente novamente.';
+      });
+  }
+
+  async loginWithGoogle(): Promise<void> {
+    this.loading = true;
+    this.error = '';
+    
+    try {
+      await this.authService.loginWithGoogle();
+      this.loading = false;
+      this.success = 'Login com Google realizado com sucesso!';
+      setTimeout(() => {
+        this.router.navigateByUrl(this.returnUrl);
+      }, 1500);
+    } catch (err: any) {
+      this.loading = false;
+      this.error = this.translateError(err.code) || 'Erro ao fazer login com Google.';
+    }
   }
 
   register(): void {
@@ -92,21 +110,37 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.error = '';
 
-    // Cadastro sem plano - usuário escolherá depois
-    this.authService.register(this.email, this.password, this.nome, '').subscribe({
-      next: (response: LoginResponse) => {
+    this.authService.register(this.email, this.password, this.nome, '')
+      .then((user) => {
         this.loading = false;
         this.success = 'Cadastro realizado com sucesso! Bem-vindo!';
         setTimeout(() => {
-          // Redireciona para a página inicial ou outra página que desejar
-          this.router.navigate(['/']);
+          this.router.navigateByUrl(this.returnUrl);
         }, 1500);
-      },
-      error: (err: any) => {
+      })
+      .catch((err: any) => {
         this.loading = false;
-        this.error = err.message || 'Erro ao fazer cadastro. Tente novamente.';
-      }
-    });
+        this.error = this.translateError(err.code) || err.message || 'Erro ao fazer cadastro. Tente novamente.';
+      });
+  }
+
+  private translateError(code: string): string {
+    switch (code) {
+      case 'auth/user-not-found':
+        return 'Usuário não encontrado.';
+      case 'auth/wrong-password':
+        return 'Senha incorreta.';
+      case 'auth/email-already-in-use':
+        return 'Este email já está sendo utilizado.';
+      case 'auth/weak-password':
+        return 'A senha é muito fraca.';
+      case 'auth/invalid-email':
+        return 'Email inválido.';
+      case 'auth/popup-closed-by-user':
+        return 'Login cancelado.';
+      default:
+        return '';
+    }
   }
 
   submit(): void {
@@ -115,5 +149,10 @@ export class LoginComponent implements OnInit {
     } else {
       this.login();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

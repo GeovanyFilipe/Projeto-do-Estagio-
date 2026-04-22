@@ -1,0 +1,81 @@
+query ListSubscriptionTypes @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public") {
+  subscriptionTypes {
+    id
+    name
+    price
+    durationMonths
+    maxSpeedMbps
+    maxDevices
+    description
+  }
+}
+
+query ListUserDevices($userId: UUID!) @auth(level: USER) {
+  devices(where: { user: { id: { eq: $userId } } }) {
+    id
+    deviceName
+    ipAddress
+    lastSeen
+  }
+}
+
+query GetUserSubscription($userId: UUID!) @auth(level: USER) {
+  userSubscriptions(where: { user: { id: { eq: $userId } }, isActive: { eq: true } }) {
+    id
+    subscriptionType {
+      name
+      maxDevices
+      maxSpeedMbps
+    }
+    startDate
+    endDate
+  }
+}
+
+query ListConnectionLogs($userId: UUID!) @auth(level: USER) {
+  connectionLogs(where: { user: { id: { eq: $userId } } }, orderBy: [{ connectTime: DESC }], limit: 10) {
+    id
+    server {
+      name
+      location
+    }
+    connectTime
+    disconnectTime
+    dataTransferredGB
+  }
+}
+
+query ListUserInvoices($userId: UUID!) @auth(level: USER) {
+  invoices(where: { user: { id: { eq: $userId } } }, orderBy: [{ createdAt: DESC }]) {
+    id
+    amount
+    currency
+    paymentMethod
+    status
+    createdAt
+    planName
+  }
+}
+
+query ListUserSessions($userId: UUID!) @auth(level: USER) {
+  userSessions(where: { user: { id: { eq: $userId } } }, orderBy: [{ loginTime: DESC }], limit: 10) {
+    id
+    loginTime
+    logoutTime
+    ipAddress
+    userAgent
+  }
+}
+
+query GetUser($id: UUID!) @auth(level: USER) {
+  user(id: $id) {
+    id
+    email
+    firstName
+    userSubscriptions(where: { isActive: { eq: true } }) {
+      subscriptionType {
+        name
+      }
+    }
+  }
+}

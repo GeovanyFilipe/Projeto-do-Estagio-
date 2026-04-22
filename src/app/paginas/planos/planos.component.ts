@@ -14,21 +14,70 @@ import { RodapeComponent } from '../../layout/rodape/rodape.component';
 export class PlanosComponent {
   planos = [
     {
-      titulo: 'Plano YouTube sem Anúncios',
-      preco: 5.99,
-      descricao: 'Acesse YouTube sem interrupções',
-      features: ['Acesso YouTube', 'Sem anúncios', 'HD 1080p', 'Suporte básico'],
-      cta: 'Contratar Plano',
-      rota: '/planos/youtube'
+      titulo: '🏢 Plano Empresarial',
+      preco: '60.000,00 Kz',
+      descricao: 'Ideal para empresas médias e grandes',
+      features: [
+        'Até 15 dispositivos simultâneos',
+        'Alta velocidade + baixa latência garantida',
+        'Acesso otimizado a CDNs angolanas',
+        'Estabilidade para sistemas críticos',
+        'Criptografia de nível empresarial',
+        'Suporte prioritário 24/7'
+      ],
+      cta: 'Assinar Agora',
+      rota: '/compra/empresarial',
+      destaque: true
     },
     {
-      titulo: 'Plano .GOV.AO',
-      preco: 9.99,
-      descricao: 'Acesso privilegiado a recursos governamentais',
-      features: ['Acesso .GOV.AO', 'Prioridade', 'IP Premium', 'Suporte prioritário'],
-      cta: 'Contratar Plano',
-      rota: '/planos/gobierno',
+      titulo: '👤 Plano Individual',
+      preco: '6.000,00 kz',
+      descricao: 'Para uso pessoal e profissional em poucos dispositivos',
+      features: [
+        'Até 2 dispositivos simultâneos',
+        'Conexão com servidores em Angola',
+        'Velocidade padrão (estável para navegação diária)',
+        ' Acesso a serviços angolanos (portais, bancos, etc.)',
+        'Criptografia básica de dados',
+        'Suporte padrão (email ou chat)',
+      ],
+      cta: 'Assinar agora',
+      rota: '/compra/individual',
       destaque: true
-    }
+    },
+    {
+      titulo: '🎓 Plano Educacional',
+      preco: '10.000,00 kz',
+      descricao: 'Especialmente desenhado para estudantes e professores',
+      features: [
+        'Até 10 dispositivos simultâneos',
+        'Filtro de conteúdo (bloqueio de sites impróprios)',
+        'Proteção contra phishing e ameaças',
+        'Acesso seguro a plataformas educacionais',
+        'Velocidade estável para múltiplos usuários',
+        'Controle de uso da internet',
+        'Suporte técnico dedicado',
+      ],
+      cta: 'Assinar agora',
+      rota: '/compra/educacional',
+      destaque: true
+    },
+    {
+      titulo: '🚀 Plano Startup',
+      preco: '15.000,00 kz',
+      descricao: 'Acelere o crescimento da sua startup com conexão segura',
+      features: [
+        'Até 5 dispositivos simultâneos',
+        'Velocidade mais rápida e estável',
+        'Baixa latência para sistemas locais',
+        'Acesso otimizado a plataformas (ERP, CRM, etc.)',
+        'Criptografia avançada',
+        'Suporte prioritário básico',
+      ],
+      cta: 'Assinar agora',
+      rota: '/compra/negocio',
+      destaque: true
+    },
   ];
+
 }

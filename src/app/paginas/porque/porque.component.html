@@ -18,7 +18,7 @@
 
   <section class="cta-section">
     <h2>Pronto para começar?</h2>
-    <button class="btn-primary">Experimente Grátis</button>
+      <button class="btn-primary" (click)="goToCadastro()" *ngIf="!isAuthenticated">Experimente Grátis</button>
   </section>
 </div>
 <app-rodape></app-rodape>

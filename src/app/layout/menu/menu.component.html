@@ -1,144 +1,110 @@
-<nav class="navbar-container">
-  <div class="navbar-wrapper">
+<nav class="navbar">
+  <div class="container">
+
     <!-- Logo -->
-    <div class="navbar-logo">
-      <a routerLink="/" class="logo-link">
-        <img src="imagens/logo.svg" alt="Angolan VPN" class="logo-img">
+    <div class="logo-box">
+      <a routerLink="/" class="logo-link" (click)="closeMobileMenu()">
+        <div class="logo-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 10L30 35H0L15 10Z" fill="#00D4FF" />
+            <circle cx="28" cy="20" r="10" fill="#006699" />
+          </svg>
+        </div>
         <span class="logo-text">Angolan VPN</span>
       </a>
     </div>
 
-    <!-- Menu Hamburguês Mobile — transforma-se em X ao clicar -->
-    <button class="mobile-toggle" (click)="toggleMobileMenu()" [class.active]="isMobileMenuOpen" aria-label="Abrir/fechar menu">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+    <!-- Links Centrais (Desktop) -->
+    <div class="nav-links" [class.mobile-open]="isMobileMenuOpen">
 
-    <!-- Menu Principal / Sidebar Mobile -->
-    <div class="navbar-menu" [class.mobile-open]="isMobileMenuOpen">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+         class="nav-item" (click)="closeMobileMenu()">Início</a>
 
-      <!-- Cabeçalho do Sidebar Mobile (só logo, sem X — o X são as 3 barras) -->
-      <div class="mobile-sidebar-header">
-        <a  href="" class="mobile-logo-link" (click)="closeMobileMenu()">
-          <img src="imagens/logo.svg" alt="Angolan VPN" class="mobile-logo-img">
-          <span class="mobile-logo-text">Angolan VPN</span>
-        </a>
+      <!-- Dropdown Planos -->
+      <div class="nav-item dropdown" [class.open]="isDropdownOpen('planos')">
+        <span class="trigger" (click)="toggleDropdown('planos')">
+          Planos
+          <i class="fas fa-chevron-down arrow-icon" [class.rotated]="isDropdownOpen('planos')"></i>
+        </span>
+        <div class="dropdown-content" [class.visible]="isDropdownOpen('planos')">
+          <a routerLink="/planos/individual"   (click)="closeMobileMenu()">Individual</a>
+          <a routerLink="/planos/negocio"      (click)="closeMobileMenu()">Negócio</a>
+          <a routerLink="/planos/empresarial"  (click)="closeMobileMenu()">Empresarial</a>
+          <a routerLink="/planos/educacional"  (click)="closeMobileMenu()">Educacional</a>
+        </div>
       </div>
 
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a routerLink="/" class="nav-link" (click)="closeMobileMenu()">
-            <svg class="nav-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            Início
-          </a>
-        </li>
+      <a routerLink="/download"  routerLinkActive="active" class="nav-item" (click)="closeMobileMenu()">Download</a>
+      <a routerLink="/empresas"  routerLinkActive="active" class="nav-item" (click)="closeMobileMenu()">Empresas</a>
 
-        <!-- Dropdown Planos -->
-        <li class="nav-item dropdown">
-          <a href="#" class="nav-link dropdown-toggle"
-            (click)="toggleDropdown('planos'); $event.preventDefault()"
-            [class.open]="activeDropdown === 'planos'">
-            <svg class="nav-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-            Planos
-            <svg class="dropdown-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-              <polyline points="6 9 12 15 18 9"/>
-            </svg>
-          </a>
-          <div class="dropdown-menu" [class.show]="activeDropdown === 'planos'">
-            <a routerLink="/planos/youtube" class="dropdown-item" (click)="closeMobileMenu()">
-              <span class="dropdown-item-icon">📺</span>
-              <div class="dropdown-item-content">
-                <span class="dropdown-item-title">YouTube sem Anúncios</span>
-                <span class="dropdown-item-desc">AOA 5000,00kz/mês</span>
-              </div>
-            </a>
-            <a routerLink="/planos/gobierno" class="dropdown-item" (click)="closeMobileMenu()">
-              <span class="dropdown-item-icon">🏛️</span>
-              <div class="dropdown-item-content">
-                <span class="dropdown-item-title">Plano .GOV.AO</span>
-                <span class="dropdown-item-desc">AOA 10 000,00kz/mês</span>
-              </div>
-            </a>
-          </div>
-        </li>
-
-        <li class="nav-item">
-          <a routerLink="/download" class="nav-link" (click)="closeMobileMenu()">
-            <svg class="nav-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a routerLink="/empresas" class="nav-link" (click)="closeMobileMenu()">
-            <svg class="nav-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
-            Empresas
-          </a>
-        </li>
-
-        <!-- Dropdown Contacto -->
-        <li class="nav-item dropdown">
-          <a href="#" class="nav-link dropdown-toggle"
-            (click)="toggleDropdown('contacto'); $event.preventDefault()"
-            [class.open]="activeDropdown === 'contacto'">
-            <svg class="nav-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-            Contacto
-            <svg class="dropdown-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-              <polyline points="6 9 12 15 18 9"/>
-            </svg>
-          </a>
-          <div class="dropdown-menu" [class.show]="activeDropdown === 'contacto'">
-            <p class="dropdown-group-label">Suporte</p>
-            <a routerLink="/suporte/tecnico" class="dropdown-item" (click)="closeMobileMenu()">
-              <span class="dropdown-item-icon">🔧</span>
-              <div class="dropdown-item-content">
-                <span class="dropdown-item-title">Suporte Técnico</span>
-                <span class="dropdown-item-desc">Problemas técnicos</span>
-              </div>
-            </a>
-            <a routerLink="/suporte/comercial" class="dropdown-item" (click)="closeMobileMenu()">
-              <span class="dropdown-item-icon">💼</span>
-              <div class="dropdown-item-content">
-                <span class="dropdown-item-title">Suporte Comercial</span>
-                <span class="dropdown-item-desc">Planos e preços</span>
-              </div>
-            </a>
-          </div>
-        </li>
-      </ul>
-
-      <!-- Divisor -->
-      <div class="mobile-divider"></div>
-
-      <!-- Botões de Ação - Não Autenticado -->
-      <div class="navbar-actions" *ngIf="!isAuthenticated">
-        <p class="mobile-section-label">Conta</p>
-        <button class="btn-login" (click)="goToLogin()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-          Entrar na Conta
-        </button>
+      <!-- Dropdown Contacto -->
+      <div class="nav-item dropdown" [class.open]="isDropdownOpen('contacto')">
+        <span class="trigger" (click)="toggleDropdown('contacto')">
+          Contacto
+          <i class="fas fa-chevron-down arrow-icon" [class.rotated]="isDropdownOpen('contacto')"></i>
+        </span>
+        <div class="dropdown-content" [class.visible]="isDropdownOpen('contacto')">
+          <a routerLink="/suporte/tecnico"   (click)="closeMobileMenu()">Suporte Técnico</a>
+          <a routerLink="/suporte/comercial" (click)="closeMobileMenu()">Comercial</a>
+        </div>
       </div>
 
-      <!-- Botões de Ação - Autenticado -->
-      <div class="navbar-actions-auth" *ngIf="isAuthenticated">
-        <p class="mobile-section-label">Minha Conta</p>
-        <button class="user-profile" (click)="goToPerfil()">
-          <div class="user-avatar">{{ (currentUser?.nome || 'U').charAt(0).toUpperCase() }}</div>
-          <div class="user-info">
-            <p class="user-name">{{ currentUser?.nome }}</p>
-            <p class="user-plan">{{ currentUser?.plano || 'Sem plano' }}</p>
-          </div>
-          <svg class="user-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-        <button class="btn-logout" (click)="logout()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          Terminar Sessão
-        </button>
+      <!-- Botão conta (dentro do menu mobile) -->
+      <div class="mobile-account-section">
+        <ng-container *ngIf="!(authService.isAuthenticated$ | async); else mobileLoggedIn">
+          <button class="btn-account mobile-full" routerLink="/login" (click)="closeMobileMenu()">
+            <i class="fas fa-sign-in-alt"></i> Entrar na Conta
+          </button>
+        </ng-container>
+        <ng-template #mobileLoggedIn>
+          <a routerLink="/cliente/dashboard" fragment="perfil" class="mobile-menu-link"
+             (click)="closeMobileMenu()">
+            <i class="fas fa-chart-line"></i> Painel Administrativo
+          </a>
+          <button class="mobile-menu-link logout" (click)="logout()">
+            <i class="fas fa-power-off"></i> Sair
+          </button>
+        </ng-template>
       </div>
     </div>
 
-    <!-- Overlay para fechar menu mobile -->
-    <div class="mobile-overlay" [class.show]="isMobileMenuOpen" (click)="closeMobileMenu()"></div>
+    <!-- Ação de Conta (Desktop) -->
+    <div class="nav-actions">
+      <!-- Não logado -->
+      <ng-container *ngIf="!(authService.isAuthenticated$ | async); else userLoggedIn">
+        <button class="btn-account" routerLink="/login">
+          <i class="fas fa-sign-in-alt"></i> Entrar na Conta
+        </button>
+      </ng-container>
+
+      <!-- Logado -->
+      <ng-template #userLoggedIn>
+        <div class="nav-item dropdown account-dropdown" [class.open]="isDropdownOpen('account')">
+          <button class="btn-account logged-in" (click)="toggleDropdown('account')">
+            <i class="fas fa-user-circle"></i>
+            {{ currentUser?.nome || 'Minha Conta' }}
+            <i class="fas fa-chevron-down arrow-icon" [class.rotated]="isDropdownOpen('account')"></i>
+          </button>
+          <div class="dropdown-content right-align" [class.visible]="isDropdownOpen('account')">
+            <a routerLink="/cliente/dashboard" fragment="perfil" (click)="closeMobileMenu()">
+              <i class="fas fa-chart-line"></i> Painel administrativo
+            </a>
+            <button (click)="logout()" class="logout-link">
+              <i class="fas fa-power-off"></i> Sair
+            </button>
+          </div>
+        </div>
+      </ng-template>
+
+      <!-- Botão hambúrguer (mobile) -->
+      <button class="hamburger" (click)="toggleMobileMenu()" aria-label="Menu">
+        <span [class.open]="isMobileMenuOpen"></span>
+        <span [class.open]="isMobileMenuOpen"></span>
+        <span [class.open]="isMobileMenuOpen"></span>
+      </button>
+    </div>
   </div>
 </nav>
+
+<!-- Overlay para fechar menu ao clicar fora (mobile) -->
+<div class="mobile-overlay" [class.active]="isMobileMenuOpen" (click)="closeMobileMenu()"></div>

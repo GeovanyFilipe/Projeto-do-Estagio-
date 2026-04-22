@@ -1,0 +1,91 @@
+# User and Authentication
+mutation CreateUser($id: UUID!, $email: String!, $passwordHash: String!, $firstName: String, $lastName: String, $createdAt: Timestamp!) @auth(level: PUBLIC) {
+  user_insert(data: {
+    id: $id,
+    email: $email,
+    passwordHash: $passwordHash,
+    createdAt: $createdAt,
+    firstName: $firstName,
+    lastName: $lastName
+  })
+}
+
+mutation LogLogin($id: UUID!, $userId: UUID!, $loginTime: Timestamp!, $ipAddress: String, $userAgent: String) @auth(level: USER) {
+  userSession_insert(data: {
+    id: $id,
+    user: { id: $userId },
+    loginTime: $loginTime,
+    ipAddress: $ipAddress,
+    userAgent: $userAgent
+  })
+}
+
+mutation LogLogout($sessionId: UUID!, $logoutTime: Timestamp!) @auth(level: USER) {
+  userSession_update(id: $sessionId, data: {
+    logoutTime: $logoutTime
+  })
+}
+
+# Subscriptions
+mutation CreateSubscription($userId: UUID!, $typeId: UUID!, $startDate: Timestamp!, $endDate: Timestamp!) @auth(level: USER) {
+  userSubscription_insert(data: {
+    user: { id: $userId },
+    subscriptionType: { id: $typeId },
+    startDate: $startDate,
+    endDate: $endDate,
+    isActive: true,
+    autoRenew: true
+  })
+}
+
+# VPN Connections
+mutation LogVPNConnection($userId: UUID!, $serverId: UUID!, $connectTime: Timestamp!) @auth(level: USER) {
+  connectionLog_insert(data: {
+    user: { id: $userId },
+    server: { id: $serverId },
+    connectTime: $connectTime
+  })
+}
+
+mutation LogVPNDisconnection($id: UUID!, $disconnectTime: Timestamp!, $dataTransferredGB: Float) @auth(level: USER) {
+  connectionLog_update(id: $id, data: {
+    disconnectTime: $disconnectTime,
+    dataTransferredGB: $dataTransferredGB
+  })
+}
+
+# Devices
+mutation RegisterDevice($id: UUID!, $userId: UUID!, $deviceName: String!, $ipAddress: String, $lastSeen: Timestamp!) @auth(level: USER) {
+  device_insert(data: {
+    id: $id,
+    user: { id: $userId },
+    deviceName: $deviceName,
+    ipAddress: $ipAddress,
+    lastSeen: $lastSeen
+  })
+}
+
+
+mutation DeleteDevice($id: UUID!) @auth(level: USER) {
+  device_delete(id: $id)
+}
+
+mutation UpdateDeviceSeen($id: UUID!, $lastSeen: Timestamp!) @auth(level: USER) {
+  device_update(id: $id, data: {
+    lastSeen: $lastSeen
+  })
+}
+
+mutation CreateInvoice($id: UUID!, $userId: UUID!, $amount: Float!, $currency: String!, $paymentMethod: String!, $status: String!, $createdAt: Timestamp!, $planName: String!) @auth(level: USER) {
+  invoice_insert(data: {
+    id: $id,
+    user: { id: $userId },
+    amount: $amount,
+    currency: $currency,
+    paymentMethod: $paymentMethod,
+    status: $status,
+    createdAt: $createdAt,
+    planName: $planName
+  })
+}
+
