@@ -1,14 +1,29 @@
-import { queryRef, executeQuery, validateArgsWithOptions, mutationRef, executeMutation, validateArgs, makeMemoryCacheProvider } from 'firebase/data-connect';
+import { queryRef, executeQuery, mutationRef, executeMutation, getDataConnect } from 'firebase/data-connect';
 
 export const connectorConfig = {
   connector: 'example',
   service: 'projeto-do-estagio-1',
   location: 'europe-west1'
 };
-export const dataConnectSettings = {
-  cacheSettings: {
-    cacheProvider: makeMemoryCacheProvider()
+
+/** Polyfill local para evitar erro de export em falta no Firebase 11.10.0 */
+function validateArgs(config, dcOrVars, vars, hasVars) {
+  if (dcOrVars && (dcOrVars.app || dcOrVars._useGeneratedSdk)) {
+    return { dc: dcOrVars, vars };
   }
+  return { dc: getDataConnect(config), vars: dcOrVars };
+}
+
+/** Polyfill local para funções com opções */
+function validateArgsWithOptions(config, dcOrVars, varsOrOptions, options, hasVars, hasOptions) {
+  if (dcOrVars && (dcOrVars.app || dcOrVars._useGeneratedSdk)) {
+    return { dc: dcOrVars, vars: varsOrOptions, options };
+  }
+  return { dc: getDataConnect(config), vars: dcOrVars, options: varsOrOptions };
+}
+
+export const dataConnectSettings = {
+  // Caching desativado para estabilidade do build
 };
 export const createUserRef = (dcOrVars, vars) => {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
