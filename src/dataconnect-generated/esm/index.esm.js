@@ -28,7 +28,7 @@ function validateArgs(connectorConfig, dcOrVars, vars, isMutation = false) {
 }
 
 function validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, hasVars = true, isQuery = true) {
-  const isDC =
+  const isDC =kaut
     dcOrVars &&
     (typeof dcOrVars.executeMutation === 'function' ||
       typeof dcOrVars.executeQuery === 'function');
