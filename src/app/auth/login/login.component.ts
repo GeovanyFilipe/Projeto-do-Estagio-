@@ -157,10 +157,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   async loginWithGoogle() {
     try {
       this.loading = true;
+      this.error = '';
       await this.authService.loginWithGoogle();
-      this.router.navigate(['/cliente/dashboard']);
+      this.success = 'Login efetuado com sucesso!';
+      setTimeout(() => this.router.navigate(['/cliente/dashboard']), 1000);
     } catch (err: any) {
-      this.error = 'Erro ao entrar com Google';
+      console.error('Google Login Error:', err);
+      this.error = this.mapError(err.code || err.message);
     } finally {
       this.loading = false;
     }
@@ -173,7 +176,13 @@ export class LoginComponent implements OnInit, OnDestroy {
       case 'auth/email-already-in-use': return 'Este email já está em uso.';
       case 'auth/weak-password': return 'A senha é muito fraca.';
       case 'auth/invalid-email': return 'Email inválido.';
-      default: return 'Ocorreu um erro. Tente novamente.';
+      case 'auth/popup-closed-by-user': return 'A janela de login foi fechada antes de concluir.';
+      case 'auth/cancelled-by-user': return 'Operação cancelada pelo utilizador.';
+      case 'auth/operation-not-allowed': return 'O login com Google não está ativado no Firebase Console.';
+      case 'auth/popup-blocked': return 'O seu navegador bloqueou a janela de login.';
+      default: 
+        if (code?.includes('network-request-failed')) return 'Erro de rede. Verifique sua conexão.';
+        return 'Ocorreu um erro ao entrar com Google. Tente novamente.';
     }
   }
 }
