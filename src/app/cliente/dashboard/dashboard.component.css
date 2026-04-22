@@ -26,11 +26,12 @@
 }
 
 .main-content {
+  grid-column: 2;
   padding: 40px;
   overflow-y: auto;
   min-height: 100vh;
   position: relative;
-  grid-column: 2;
+  width: 100%;
 }
 
 
@@ -222,13 +223,6 @@
 }
 
 
-/* Main Content */
-.main-content {
-  margin-left: 250px;
-  padding: 40px;
-  overflow-y: auto;
-  min-height: calc(100vh - 60px);
-}
 
 .dashboard-header {
   display: flex;
