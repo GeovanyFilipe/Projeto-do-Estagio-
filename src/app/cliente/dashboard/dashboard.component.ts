@@ -4,9 +4,10 @@ import { Router } from '@angular/router';
 import { AuthService, User } from '../../services/auth.service';
 import { MenuComponent } from '../../layout/menu/menu.component';
 import { RodapeComponent } from '../../layout/rodape/rodape.component';
-import { DataConnect } from 'firebase/data-connect';
 import { listUserDevices, getUserSubscription, deleteDevice, listUserInvoices, listUserSessions, listConnectionLogs, listSubscriptionTypes } from '@dataconnect/generated';
 import { inject } from '@angular/core';
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig } from '@dataconnect/generated';
 
 
 
@@ -22,7 +23,6 @@ export class ClienteDashboardComponent implements OnInit {
   currentUser: User | null = null;
   activeTab: string = 'overview';
   showLogoutConfirm: boolean = false;
-  private dataconnect: DataConnect = inject(DataConnect);
 
   devices: any[] = [];
   currentSubscription: any = null;
@@ -72,7 +72,8 @@ export class ClienteDashboardComponent implements OnInit {
 
   private async loadAvailablePlans(): Promise<void> {
     try {
-      const res = await listSubscriptionTypes(this.dataconnect);
+      const dc = getDataConnect(connectorConfig);
+      const res = await listSubscriptionTypes(dc);
       this.availablePlans = res.data.subscriptionTypes;
     } catch (err) {
       console.error('Erro ao carregar tipos de assinatura:', err);
@@ -82,26 +83,29 @@ export class ClienteDashboardComponent implements OnInit {
 
   private async loadDashboardData(userId: string): Promise<void> {
     try {
+      const dc = getDataConnect(connectorConfig);
+      
       // Carregar dispositivos
-      const devicesRes = await listUserDevices(this.dataconnect, { userId });
+      const devicesRes = await listUserDevices(dc, { userId });
       this.devices = devicesRes.data.devices;
 
       // Carregar assinatura
-      const subRes = await getUserSubscription(this.dataconnect, { userId });
+      const subRes = await getUserSubscription(dc, { userId });
       this.currentSubscription = subRes.data.userSubscriptions[0] || null;
 
       // Carregar faturas
-      const invoicesRes = await listUserInvoices(this.dataconnect, { userId });
+      const invoicesRes = await listUserInvoices(dc, { userId });
       this.invoices = invoicesRes.data.invoices;
 
       // Carregar histórico de atividade
-      const sessionsRes = await listUserSessions(this.dataconnect, { userId });
+      const sessionsRes = await listUserSessions(dc, { userId });
       this.sessions = sessionsRes.data.userSessions;
 
-      const connRes = await listConnectionLogs(this.dataconnect, { userId });
+      const connRes = await listConnectionLogs(dc, { userId });
       this.connections = connRes.data.connectionLogs;
-    } catch (err) {
-      console.error('Erro ao carregar dados do dashboard do PGLite:', err);
+    } catch (err: any) {
+      const errorMsg = err?.message ? String(err.message) : String(err);
+      console.error('Erro ao carregar dados do dashboard do Firebase:', errorMsg);
     }
   }
 
@@ -145,7 +149,8 @@ export class ClienteDashboardComponent implements OnInit {
     const confirmed = confirm('Tem certeza que deseja desconectar este dispositivo?');
     if (confirmed) {
       try {
-        await deleteDevice(this.dataconnect, { id: deviceId });
+        const dc = getDataConnect(connectorConfig);
+        await deleteDevice(dc, { id: deviceId });
         this.devices = this.devices.filter(d => d.id !== deviceId);
       } catch (err) {
         alert('Erro ao desconectar dispositivo.');

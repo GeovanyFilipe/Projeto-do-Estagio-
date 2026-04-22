@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ANGOLAN VPN - MENU DEFINITIVO (DROP DOWN + ESTILO FOTO + MOBILE)
+   ANGOLAN VPN - MENU DEFINITIVO (Angular Animations + GSAP)
    ========================================================================== */
 
 .navbar {
@@ -12,6 +12,7 @@
   display: flex;
   align-items: center;
   border-bottom: 2px solid #2d4a77;
+  transition: box-shadow 0.4s ease, backdrop-filter 0.4s ease;
 }
 
 .container {
@@ -66,19 +67,44 @@
   align-items: center;
   gap: 7px;
   user-select: none;
+  transition: color 0.3s ease;
 }
 
-/* Seta do dropdown — controlada por Angular */
+/* Linha animada ao passar o rato (Desktop) */
+@media (min-width: 901px) {
+  .nav-item::after {
+    content: '';
+    position: absolute;
+    bottom: 18px; /* Alinhado acima da borda da navbar */
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #00D4FF;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 8px rgba(0, 212, 255, 0.6);
+  }
+
+  .nav-item:hover::after {
+    width: 100%;
+  }
+
+  .nav-item:hover {
+    color: #00D4FF;
+  }
+}
+
+
+/* Seta do dropdown — Angular Animations controla opacity/translate; CSS apenas roda */
 .arrow-icon {
   font-size: 10px;
-  transition: transform 0.25s ease;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .arrow-icon.rotated {
   transform: rotate(180deg);
 }
 
-/* Dropdown content — controlado por Angular */
+/* Dropdown content — Angular Animations (@dropdownFade) controla opacity/translateY */
 .dropdown-content {
   position: absolute;
   top: 100%;
@@ -89,18 +115,13 @@
   border-radius: 0 0 8px 8px;
   padding: 10px 0;
   border-top: 2px solid #00D4FF;
-  /* Animação de abertura */
-  opacity: 0;
-  transform: translateY(-8px);
-  pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none; /* Evita cliques quando invisível sem gerar avisos de animação */
 }
 
-.dropdown-content.visible {
-  opacity: 1;
-  transform: translateY(0);
+.nav-item.open .dropdown-content {
   pointer-events: auto;
 }
+
 
 .dropdown-content a,
 .dropdown-content button {
@@ -116,15 +137,18 @@
   background: none;
   text-align: left;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, padding-left 0.2s;
   box-sizing: border-box;
 }
 
 .dropdown-content a:hover,
 .dropdown-content button:hover {
-  background-color: rgba(0, 212, 255, 0.15);
+  background: linear-gradient(90deg, rgba(0, 212, 255, 0.1) 0%, transparent 100%);
   color: #00D4FF;
+  padding-left: 28px;
+  border-left: 3px solid #00D4FF;
 }
+
 
 /* Dropdown da conta — alinhado à direita */
 .account-dropdown .dropdown-content.right-align {
@@ -156,9 +180,13 @@
 }
 
 .btn-account:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  transform: translateY(-1px);
+  background-color: white;
+  color: #1e3a5f;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+  border-color: white;
 }
+
 
 .logout-link {
   color: #ff5555 !important;
@@ -187,7 +215,8 @@
   height: 2px;
   background: #ffffff;
   border-radius: 2px;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   transform-origin: center;
 }
 
@@ -196,20 +225,12 @@
 .hamburger span:nth-child(2).open { opacity: 0; transform: scaleX(0); }
 .hamburger span:nth-child(3).open { transform: translateY(-7px) rotate(-45deg); }
 
-/* --- OVERLAY MOBILE --- */
+/* --- OVERLAY MOBILE --- controlado por *ngIf + @overlayFade --- */
 .mobile-overlay {
-  display: none;
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.55);
   z-index: 9990;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.mobile-overlay.active {
-  display: block;
-  opacity: 1;
 }
 
 /* --- SECÇÃO DE CONTA NO MENU MOBILE --- */
@@ -228,7 +249,7 @@ a.active {
 
   .container { padding: 0 20px; }
 
-  /* Painel lateral deslizante */
+  /* Painel lateral —  @menuSlide controla o transform/opacity */
   .nav-links {
     display: none;
     position: fixed;
@@ -245,13 +266,10 @@ a.active {
     overflow-y: auto;
     z-index: 9995;
     box-shadow: -6px 0 24px rgba(0,0,0,0.6);
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
   }
 
   .nav-links.mobile-open {
     display: flex;
-    transform: translateX(0);
   }
 
   /* ── Link simples (Início, Download, Empresas) ── */
@@ -260,7 +278,6 @@ a.active {
     height: auto;
     padding: 0;
     font-size: 15px;
-    /* No mobile os items são coluna para acomodar dropdown */
     flex-direction: column;
     align-items: flex-start;
     border-bottom: 1px solid rgba(255,255,255,0.07);
@@ -282,11 +299,16 @@ a.active {
     box-sizing: border-box;
   }
 
-  /* ── Dropdown inline (accordion) ── */
-  .dropdown-content {
-    /* Cancela estilos de desktop */
-    position: static !important;
-    transform: none !important;
+  /* ── Desktop-only: esconde no mobile ── */
+  .desktop-only {
+    display: none !important;
+  }
+
+  /* ── Mobile-only: mostra no mobile (accordion via @accordionSlide) ── */
+  .mobile-only {
+    display: block;
+    position: static;
+    transform: none;
     box-shadow: none;
     border-radius: 0 0 10px 10px;
     border-top: 2px solid rgba(0, 212, 255, 0.5);
@@ -299,23 +321,12 @@ a.active {
     width: calc(100% - 32px);
     background: linear-gradient(180deg, rgba(0, 30, 70, 0.6) 0%, rgba(10, 25, 55, 0.8) 100%);
     backdrop-filter: blur(4px);
-    /* Animação accordion */
-    max-height: 0;
     overflow: hidden;
-    opacity: 0;
-    pointer-events: none;
-    transition: max-height 0.35s ease, opacity 0.25s ease;
-  }
-
-  .dropdown-content.visible {
-    max-height: 400px;
-    opacity: 1;
-    pointer-events: auto;
   }
 
   /* Items dentro do dropdown mobile */
-  .dropdown-content a,
-  .dropdown-content button {
+  .mobile-only a,
+  .mobile-only button {
     padding: 13px 20px 13px 32px;
     font-size: 14px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
@@ -323,8 +334,8 @@ a.active {
   }
 
   /* Pequeno indicador de seta antes de cada item */
-  .dropdown-content a::before,
-  .dropdown-content button::before {
+  .mobile-only a::before,
+  .mobile-only button::before {
     content: '›';
     position: absolute;
     left: 16px;
@@ -334,16 +345,9 @@ a.active {
     line-height: 1;
   }
 
-  .dropdown-content a:last-child,
-  .dropdown-content button:last-child {
+  .mobile-only a:last-child,
+  .mobile-only button:last-child {
     border-bottom: none;
-  }
-
-  .dropdown-content a:hover,
-  .dropdown-content button:hover {
-    background-color: rgba(0, 212, 255, 0.12);
-    padding-left: 36px;
-    transition: padding-left 0.2s ease, background-color 0.2s ease;
   }
 
   /* ── Conta: esconde versão desktop, mostra mobile ── */
@@ -392,7 +396,24 @@ a.active {
 
   .mobile-menu-link:last-child { border-bottom: none; }
 
+  .mobile-menu-link:active,
+  .mobile-menu-link:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+    padding-left: 8px;
+  }
+
   .mobile-menu-link.logout {
     color: #ff7070;
+  }
+
+}
+
+/* ── Desktop-only no desktop: garante que só desktop-only aparece ── */
+@media (min-width: 901px) {
+  .mobile-only {
+    display: none !important;
+  }
+  .desktop-only {
+    display: block;
   }
 }

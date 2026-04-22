@@ -1,7 +1,7 @@
 <div class="login-container">
-  <div class="login-box">
+  <div class="login-box" @boxEntrance>
     <!-- Logo -->
-    <div class="login-logo">
+    <div class="login-logo" @logoEntrance>
       <svg width="80" height="80" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         <rect width="100" height="100" fill="#1e3a5f" rx="20" />
         <path d="M50 20 L70 30 L70 50 C70 65 50 80 50 80 C50 80 30 65 30 50 L30 30 Z" fill="#00d4ff" stroke="#fff"
@@ -12,10 +12,10 @@
     </div>
 
     <!-- Mensagens de erro e sucesso -->
-    <div *ngIf="error" class="alert alert-error">
+    <div *ngIf="error" class="alert alert-error" @alertSlide>
       <span>{{ error }}</span>
     </div>
-    <div *ngIf="success" class="alert alert-success">
+    <div *ngIf="success" class="alert alert-success" @alertSlide>
       <span>{{ success }}</span>
     </div>
 
@@ -30,7 +30,7 @@
     </div>
 
     <!-- Formulário Login -->
-    <form *ngIf="!isRegister" (ngSubmit)="submit()" class="form">
+    <form *ngIf="!isRegister" (ngSubmit)="submit()" class="form" @formSwitch>
       <div class="form-group">
         <label for="email">Email</label>
         <input type="email" id="email" name="email" [(ngModel)]="email" placeholder="seu@email.com" required />
@@ -68,7 +68,7 @@
     </form>
 
     <!-- Formulário Cadastro -->
-    <form *ngIf="isRegister" (ngSubmit)="submit()" class="form">
+    <form *ngIf="isRegister" (ngSubmit)="submit()" class="form" @formSwitch>
       <div class="form-group">
         <label for="register-name">Nome Completo</label>
         <input type="text" id="register-name" name="nome" [(ngModel)]="nome" placeholder="Seu nome completo" required />

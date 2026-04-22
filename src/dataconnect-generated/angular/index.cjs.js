@@ -1,4 +1,4 @@
-const { createUserRef, logLoginRef, logLogoutRef, createSubscriptionRef, logVpnConnectionRef, logVpnDisconnectionRef, registerDeviceRef, deleteDeviceRef, updateDeviceSeenRef, createInvoiceRef, listSubscriptionTypesRef, listUserDevicesRef, getUserSubscriptionRef, listConnectionLogsRef, listUserInvoicesRef, listUserSessionsRef } = require('../');
+const { createUserRef, logLoginRef, logLogoutRef, createSubscriptionRef, logVpnConnectionRef, logVpnDisconnectionRef, registerDeviceRef, deleteDeviceRef, updateDeviceSeenRef, createInvoiceRef, listSubscriptionTypesRef, listUserDevicesRef, getUserSubscriptionRef, listConnectionLogsRef, listUserInvoicesRef, listUserSessionsRef, getUserRef } = require('../');
 const { DataConnect, CallerSdkTypeEnum } = require('@angular/fire/data-connect');
 const { injectDataConnectQuery, injectDataConnectMutation } = require('@tanstack-query-firebase/angular/data-connect');
 const { inject, EnvironmentInjector } = require('@angular/core');
@@ -115,6 +115,19 @@ exports.injectListUserSessions = function injectListUserSessions(args, options, 
     const addOpn = options && options();
     return {
       queryFn: () =>  listUserSessionsRef(dc, varsFactoryFn()),
+      ...addOpn
+    };
+  }, finalInjector, CallerSdkTypeEnum.GeneratedAngular);
+}
+
+exports.injectGetUser = function injectGetUser(args, options, injector) {
+  const finalInjector = injector || inject(EnvironmentInjector);
+  const dc = finalInjector.get(DataConnect);
+  const varsFactoryFn = (typeof args === 'function') ? args : () => args;
+  return injectDataConnectQuery(() => {
+    const addOpn = options && options();
+    return {
+      queryFn: () =>  getUserRef(dc, varsFactoryFn()),
       ...addOpn
     };
   }, finalInjector, CallerSdkTypeEnum.GeneratedAngular);

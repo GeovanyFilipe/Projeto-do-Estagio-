@@ -22,6 +22,7 @@ You can also follow the instructions from the [Data Connect documentation](https
   - [*ListConnectionLogs*](#listconnectionlogs)
   - [*ListUserInvoices*](#listuserinvoices)
   - [*ListUserSessions*](#listusersessions)
+  - [*GetUser*](#getuser)
 - [**Mutations**](#mutations)
   - [*CreateUser*](#createuser)
   - [*LogLogin*](#loglogin)
@@ -616,6 +617,93 @@ export class MyComponent {
     };
   };
   query = injectListUserSessions(this.listUserSessionsVars, this.options);
+}
+```
+
+## GetUser
+You can execute the `GetUser` Query using the following Query injector, which is defined in [dataconnect-generated/angular/index.d.ts](./index.d.ts):
+
+```javascript
+injectGetUser(args: GetUserArgs, options?: GetUserOptions, injector?: Injector): CreateDataConnectQueryResult<GetUserData, GetUserVariables>;
+```
+
+### Variables
+The `GetUser` Query requires an argument of type `GetUserVariables`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+
+```javascript
+export interface GetUserVariables {
+  id: UUIDString;
+}
+```
+### Return Type
+Recall that calling the `GetUser` Query injector returns a `CreateDataConnectQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
+
+To check the status of a Query, use the `CreateDataConnectQueryResult.status()` function. You can also check for pending / success / error status using the `CreateDataConnectQueryResult.isPending()`, `CreateDataConnectQueryResult.isSuccess()`, and `CreateDataConnectQueryResult.isError()` functions.
+
+To access the data returned by a Query, use the `CreateDataConnectQueryResult.data()` function. The data for the `GetUser` Query is of type `GetUserData`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+```javascript
+export interface GetUserData {
+  user?: {
+    id: UUIDString;
+    email: string;
+    firstName?: string | null;
+    userSubscriptions_on_user: ({
+      subscriptionType: {
+        name: string;
+      };
+    })[];
+  } & User_Key;
+}
+```
+
+To learn more about the `CreateDataConnectQueryResult` object, see the [TanStack Query Firebase documentation](https://docs.page/invertase/tanstack-query-firebase/angular/data-connect/functions/injectDataConnectQuery) and the [TanStack Angular Query documentation](https://tanstack.com/query/v5/docs/framework/angular/reference/functions/injectquery).
+
+### Using `GetUser`'s Query injector
+
+```javascript
+... // other imports
+import { connectorConfig, GetUserVariables } from '@dataconnect/generated';
+import { injectGetUser, GetUserOptions } from '@dataconnect/generated/angular'
+import { DataConnect } from '@angular/fire/data-connect';
+import { initializeApp } from '@angular/fire/app';
+
+@Component({
+  ... // other component fields
+  template: `
+    <!-- You can render your component dynamically based on the status of the Query. -->
+    @if (query.isPending()) {
+      Loading...
+    }
+    @if (query.error()) {
+      An error has occurred: {{ query.error() }}
+    }
+    <!-- If the Query is successful, you can access the data returned using
+      the CreateDataConnectQueryResult.data() function. -->
+    @if (query.data(); as data) {
+      <!-- use your data to display something -->
+            <div>Query successful!</div>
+    }
+  `,
+})
+export class MyComponent {
+  // The `GetUser` Query requires an argument of type `GetUserVariables`:
+  getUserVars: GetUserVariables = {
+    id: ..., 
+  };
+
+  // Since the execution of the query is eager, you don't have to call `execute` to "execute" the Query.
+  // Call the Query injector function to get a `CreateDataConnectQueryResult` object which holds the state of your Query.
+  query = injectGetUser(this.getUserVars);
+  // Variables can be defined inline as well.
+  query = injectGetUser({ id: ..., });
+
+  // You can also pass in an options function (not object) of type `GetUserOptions` to the Query injector function.
+  options: GetUserOptions = () => {
+    return {
+      staleTime: 5 * 1000
+    };
+  };
+  query = injectGetUser(this.getUserVars, this.options);
 }
 ```
 

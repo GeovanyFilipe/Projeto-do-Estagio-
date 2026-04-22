@@ -1,6 +1,7 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
 
@@ -8,13 +9,12 @@ import { routes } from './app.routes';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
-import { provideDataConnect, getDataConnect, connectDataConnectEmulator } from '@angular/fire/data-connect';
-import { connectorConfig } from '@dataconnect/generated';
 import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
+    provideAnimations(),
     provideRouter(
       routes,
       withInMemoryScrolling({
@@ -28,12 +28,6 @@ export const appConfig: ApplicationConfig = {
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
-    provideDataConnect(() => {
-      const dc = getDataConnect(connectorConfig);
-      if (!environment.production) {
-        connectDataConnectEmulator(dc, 'localhost', 9399);
-      }
-      return dc;
-    }),
+    provideFirestore(() => getFirestore()),
   ]
 };

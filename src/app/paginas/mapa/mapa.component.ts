@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy, inject } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy, inject, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -7,8 +7,9 @@ import { MenuComponent } from "../../layout/menu/menu.component";
 import { RodapeComponent } from '../../layout/rodape/rodape.component';
 import { AuthService, User } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { DataConnect } from 'firebase/data-connect';
 import { logVpnConnection, logVpnDisconnection } from '@dataconnect/generated';
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig } from '@dataconnect/generated';
 
 
 @Component({
@@ -33,7 +34,7 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
 
   currentUser: User | null = null;
   private currentConnectionLogId: string | null = null;
-  private dataconnect: DataConnect = inject(DataConnect);
+  private ngZone = inject(NgZone);
 
 
   constructor(
@@ -126,21 +127,38 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
     this.fakeIp = this.isConnected ? '102.223.156.255' : '102.112.200.178';
     this.createCenterMarker();
 
-    // Registo no PGLite
+    // Registo de conexão
     if (this.isConnected && this.currentUser) {
+      const userId = this.currentUser.id;
       this.currentConnectionLogId = crypto.randomUUID();
-      logVpnConnection(this.dataconnect, {
-        userId: this.currentUser.id,
-        serverId: "123e4567-e89b-12d3-a456-426614174000", // Server A do seed
-        connectTime: new Date().toISOString()
-      }).catch((err: any) => console.error('Erro ao logar conexão VPN:', err));
+      const logId = this.currentConnectionLogId;
+
+      this.ngZone.runOutsideAngular(() => {
+        const dc = getDataConnect(connectorConfig);
+        logVpnConnection(dc, {
+          userId: userId,
+          serverId: "123e4567-e89b-12d3-a456-426614174000",
+          connectTime: new Date().toISOString()
+        }).catch((err: any) => {
+          const errorMsg = err?.message ? String(err.message) : String(err);
+          console.error('Erro ao logar conexão VPN:', errorMsg);
+        });
+      });
     } else if (!this.isConnected && this.currentConnectionLogId) {
-      logVpnDisconnection(this.dataconnect, {
-        id: this.currentConnectionLogId,
-        disconnectTime: new Date().toISOString(),
-        dataTransferredGB: Math.random() * 2 // Simulado
-      }).catch((err: any) => console.error('Erro ao logar desconexão VPN:', err));
+      const logId = this.currentConnectionLogId;
       this.currentConnectionLogId = null;
+
+      this.ngZone.runOutsideAngular(() => {
+        const dc = getDataConnect(connectorConfig);
+        logVpnDisconnection(dc, {
+          id: logId,
+          disconnectTime: new Date().toISOString(),
+          dataTransferredGB: Math.random() * 2
+        }).catch((err: any) => {
+          const errorMsg = err?.message ? String(err.message) : String(err);
+          console.error('Erro ao logar desconexão VPN:', errorMsg);
+        });
+      });
     }
   }
 

@@ -1,4 +1,8 @@
-import { Component, OnInit, OnDestroy, HostListener, ElementRef } from '@angular/core';
+import {
+  Component, OnInit, OnDestroy, AfterViewInit,
+  HostListener, ElementRef, PLATFORM_ID, inject
+} from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from '../layout/menu/menu.component';
@@ -6,6 +10,7 @@ import { SliderComponent } from '../layout/slider/slider.component';
 import { SpecsComponent } from '../layout/specs/specs.component';
 import { RodapeComponent } from '../layout/rodape/rodape.component';
 import { AuthService } from '../services/auth.service';
+import { AnimationService } from '../services/animation.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -18,34 +23,48 @@ import { takeUntil } from 'rxjs/operators';
     MenuComponent,
     SliderComponent,
     SpecsComponent,
-    RodapeComponent
+    RodapeComponent,
   ],
   templateUrl: './inicio.component.html',
-  styleUrls: ['./inicio.component.css']
+  styleUrls: ['./inicio.component.css'],
 })
-export class InicioComponent implements OnInit, OnDestroy {
-  // Para controlar o dropdown de "Planos" no Hero
+export class InicioComponent implements OnInit, AfterViewInit, OnDestroy {
   activeDropdown: string | null = null;
   isAuthenticated = false;
+
   private destroy$ = new Subject<void>();
+  private platformId = inject(PLATFORM_ID);
 
   constructor(
-    private router: Router, 
+    private router: Router,
     private authService: AuthService,
-    private el: ElementRef
+    private el: ElementRef,
+    private animationService: AnimationService,
   ) { }
 
   ngOnInit() {
     this.authService.isAuthenticated$
       .pipe(takeUntil(this.destroy$))
       .subscribe(isAuth => {
-      this.isAuthenticated = isAuth;
-    });
+        this.isAuthenticated = isAuth;
+      });
+  }
+
+  ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    // Inicialização do ScrollTrigger (necessário para animações de scroll internas)
+    this.animationService.initScrollTrigger();
+    
+    // NOTA: O entrance da página agora é gerido globalmente pelo AppComponent
+    // para garantir consistência em todas as rotas do sistema.
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    // Limpar ScrollTriggers ao destruir o componente
+    this.animationService.killAll();
   }
 
   // Alterna dropdown
@@ -61,17 +80,14 @@ export class InicioComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Navegar para cadastro/teste grátis
   goToCadastro() {
     this.router.navigate(['/login'], { queryParams: { mode: 'register' } });
   }
 
-  // Navegar para cada plano
   goToPlano(plano: string) {
     this.router.navigate(['/planos']);
   }
 
-  // Navegar para mapa dos servidores
   goToMapa() {
     this.router.navigate(['/mapa']);
   }
