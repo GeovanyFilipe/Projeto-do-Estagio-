@@ -11,15 +11,13 @@ This README will guide you through the process of using the generated JavaScript
   - [*Connecting to the local Emulator*](#connecting-to-the-local-emulator)
 - [**Queries**](#queries)
   - [*ListSubscriptionTypes*](#listsubscriptiontypes)
-
-- [**Mutations**](#mutations)
-=======
   - [*ListUserDevices*](#listuserdevices)
   - [*GetUserSubscription*](#getusersubscription)
   - [*ListConnectionLogs*](#listconnectionlogs)
   - [*ListUserInvoices*](#listuserinvoices)
   - [*ListUserSessions*](#listusersessions)
   - [*GetUser*](#getuser)
+  - [*VerifyUser*](#verifyuser)
 - [**Mutations**](#mutations)
   - [*CreateUser*](#createuser)
   - [*LogLogin*](#loglogin)
@@ -31,7 +29,6 @@ This README will guide you through the process of using the generated JavaScript
   - [*DeleteDevice*](#deletedevice)
   - [*UpdateDeviceSeen*](#updatedeviceseen)
   - [*CreateInvoice*](#createinvoice)
->>>>>>> 7cb0d603539b19c13fce02c59ef5c06568f1ec75
 
 # Accessing the connector
 A connector is a collection of Queries and Mutations. One SDK is generated for each connector - this SDK is generated for the connector `example`. You can find more information about connectors in the [Data Connect documentation](https://firebase.google.com/docs/data-connect#how-does).
@@ -177,13 +174,6 @@ executeQuery(ref).then((response) => {
 });
 ```
 
-
-# Mutations
-
-No mutations were generated for the `example` connector.
-
-If you want to learn more about how to use mutations in Data Connect, you can follow the examples from the [Data Connect documentation](https://firebase.google.com/docs/data-connect/web-sdk#using-mutations).
-=======
 ## ListUserDevices
 You can execute the `ListUserDevices` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
 ```typescript
@@ -881,6 +871,122 @@ console.log(data.user);
 executeQuery(ref).then((response) => {
   const data = response.data;
   console.log(data.user);
+});
+```
+
+## VerifyUser
+You can execute the `VerifyUser` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
+```typescript
+verifyUser(vars: VerifyUserVariables, options?: ExecuteQueryOptions): QueryPromise<VerifyUserData, VerifyUserVariables>;
+
+interface VerifyUserRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: VerifyUserVariables): QueryRef<VerifyUserData, VerifyUserVariables>;
+}
+export const verifyUserRef: VerifyUserRef;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
+```typescript
+verifyUser(dc: DataConnect, vars: VerifyUserVariables, options?: ExecuteQueryOptions): QueryPromise<VerifyUserData, VerifyUserVariables>;
+
+interface VerifyUserRef {
+  ...
+  (dc: DataConnect, vars: VerifyUserVariables): QueryRef<VerifyUserData, VerifyUserVariables>;
+}
+export const verifyUserRef: VerifyUserRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the verifyUserRef:
+```typescript
+const name = verifyUserRef.operationName;
+console.log(name);
+```
+
+### Variables
+The `VerifyUser` query requires an argument of type `VerifyUserVariables`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+
+```typescript
+export interface VerifyUserVariables {
+  email: string;
+  passwordHash: string;
+}
+```
+### Return Type
+Recall that executing the `VerifyUser` query returns a `QueryPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `VerifyUserData`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+```typescript
+export interface VerifyUserData {
+  users: ({
+    id: UUIDString;
+    email: string;
+    firstName?: string | null;
+  } & User_Key)[];
+}
+```
+### Using `VerifyUser`'s action shortcut function
+
+```typescript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, verifyUser, VerifyUserVariables } from '@dataconnect/generated';
+
+// The `VerifyUser` query requires an argument of type `VerifyUserVariables`:
+const verifyUserVars: VerifyUserVariables = {
+  email: ..., 
+  passwordHash: ..., 
+};
+
+// Call the `verifyUser()` function to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await verifyUser(verifyUserVars);
+// Variables can be defined inline as well.
+const { data } = await verifyUser({ email: ..., passwordHash: ..., });
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await verifyUser(dataConnect, verifyUserVars);
+
+console.log(data.users);
+
+// Or, you can use the `Promise` API.
+verifyUser(verifyUserVars).then((response) => {
+  const data = response.data;
+  console.log(data.users);
+});
+```
+
+### Using `VerifyUser`'s `QueryRef` function
+
+```typescript
+import { getDataConnect, executeQuery } from 'firebase/data-connect';
+import { connectorConfig, verifyUserRef, VerifyUserVariables } from '@dataconnect/generated';
+
+// The `VerifyUser` query requires an argument of type `VerifyUserVariables`:
+const verifyUserVars: VerifyUserVariables = {
+  email: ..., 
+  passwordHash: ..., 
+};
+
+// Call the `verifyUserRef()` function to get a reference to the query.
+const ref = verifyUserRef(verifyUserVars);
+// Variables can be defined inline as well.
+const ref = verifyUserRef({ email: ..., passwordHash: ..., });
+
+// You can also pass in a `DataConnect` instance to the `QueryRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = verifyUserRef(dataConnect, verifyUserVars);
+
+// Call `executeQuery()` on the reference to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeQuery(ref);
+
+console.log(data.users);
+
+// Or, you can use the `Promise` API.
+executeQuery(ref).then((response) => {
+  const data = response.data;
+  console.log(data.users);
 });
 ```
 
@@ -2074,6 +2180,5 @@ executeMutation(ref).then((response) => {
   const data = response.data;
   console.log(data.invoice_insert);
 });
-
-
+```
 

@@ -11,11 +11,7 @@ The generated SDK creates injectable wrapper functions.
 
 Here's an example:
 ```
-
-import { injectListSubscriptionTypes } from '@dataconnect/generated/angular';
-
 import { injectCreateUser, injectLogLogin, injectLogLogout, injectCreateSubscription, injectLogVpnConnection, injectLogVpnDisconnection, injectRegisterDevice, injectDeleteDevice, injectUpdateDeviceSeen, injectCreateInvoice } from '@dataconnect/generated/angular';
-
 
 @Component({
   selector: 'my-component',
@@ -23,9 +19,6 @@ import { injectCreateUser, injectLogLogin, injectLogLogout, injectCreateSubscrip
 })
 class MyComponent {
   // The types of these injectors are available in angular/index.d.ts
-
-  private readonly ListSubscriptionTypesOperation = injectListSubscriptionTypes();
-
   private readonly CreateUserOperation = injectCreateUser(createUserVars);
   private readonly LogLoginOperation = injectLogLogin(logLoginVars);
   private readonly LogLogoutOperation = injectLogLogout(logLogoutVars);
@@ -36,7 +29,6 @@ class MyComponent {
   private readonly DeleteDeviceOperation = injectDeleteDevice(deleteDeviceVars);
   private readonly UpdateDeviceSeenOperation = injectUpdateDeviceSeen(updateDeviceSeenVars);
   private readonly CreateInvoiceOperation = injectCreateInvoice(createInvoiceVars);
-
   }
 ```
 
@@ -79,13 +71,6 @@ If a user is not using a supported framework, they can use the generated SDK dir
 Here's an example of how to use it with the first 5 operations:
 
 ```js
-
-import { listSubscriptionTypes } from '@dataconnect/generated';
-
-
-// Operation ListSubscriptionTypes: 
-const { data } = await ListSubscriptionTypes(dataConnect);
-
 import { createUser, logLogin, logLogout, createSubscription, logVpnConnection, logVpnDisconnection, registerDevice, deleteDevice, updateDeviceSeen, createInvoice } from '@dataconnect/generated';
 
 
@@ -118,7 +103,6 @@ const { data } = await UpdateDeviceSeen(dataConnect, updateDeviceSeenVars);
 
 // Operation CreateInvoice:  For variables, look at type CreateInvoiceVars in ../index.d.ts
 const { data } = await CreateInvoice(dataConnect, createInvoiceVars);
-
 
 
 ```

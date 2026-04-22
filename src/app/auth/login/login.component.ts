@@ -173,16 +173,17 @@ export class LoginComponent implements OnInit, OnDestroy {
     switch (code) {
       case 'auth/user-not-found': return 'Utilizador não encontrado.';
       case 'auth/wrong-password': return 'Senha incorreta.';
+      case 'auth/invalid-credential': return 'Email ou senha incorretos.';
       case 'auth/email-already-in-use': return 'Este email já está em uso.';
-      case 'auth/weak-password': return 'A senha é muito fraca.';
-      case 'auth/invalid-email': return 'Email inválido.';
-      case 'auth/popup-closed-by-user': return 'A janela de login foi fechada antes de concluir.';
-      case 'auth/cancelled-by-user': return 'Operação cancelada pelo utilizador.';
-      case 'auth/operation-not-allowed': return 'O login com Google não está ativado no Firebase Console.';
-      case 'auth/popup-blocked': return 'O seu navegador bloqueou a janela de login.';
+      case 'auth/weak-password': return 'A senha deve ter pelo menos 6 caracteres.';
+      case 'auth/invalid-email': return 'O formato do email é inválido.';
+      case 'auth/popup-closed-by-user': return 'A janela foi fechada antes de concluir o login.';
+      case 'auth/cancelled-by-user': return 'Operação cancelada.';
+      case 'auth/operation-not-allowed': return 'Este método de login não está ativo.';
+      case 'auth/popup-blocked': return 'O seu navegador bloqueou a janela de popup.';
       default: 
         if (code?.includes('network-request-failed')) return 'Erro de rede. Verifique sua conexão.';
-        return 'Ocorreu um erro ao entrar com Google. Tente novamente.';
+        return 'Ocorreu um erro ao processar o login. Por favor, tente novamente.';
     }
   }
 }

@@ -6,14 +6,7 @@ export const connectorConfig = {
   location: 'europe-west1'
 };
 
-
-
-export const dataConnectSettings = {
-  // Caching desativado para estabilidade do build
-};
-// =======================
-// UTILITÁRIOS (Restaurados localmente para compatibilidade)
-// =======================
+export const dataConnectSettings = {};
 
 function validateArgs(connectorConfig, dcOrVars, vars, isMutation = false) {
   const isDC =
@@ -28,30 +21,17 @@ function validateArgs(connectorConfig, dcOrVars, vars, isMutation = false) {
 }
 
 function validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, hasVars = true, isQuery = true) {
-  const isDC =kaut
+  const isDC =
     dcOrVars &&
     (typeof dcOrVars.executeMutation === 'function' ||
       typeof dcOrVars.executeQuery === 'function');
 
   const dc = isDC ? dcOrVars : getDataConnect(connectorConfig);
+  const v = isDC ? varsOrOptions : dcOrVars;
+  const o = isDC ? options : varsOrOptions;
 
-  let vars, opts;
-
-  if (isDC) {
-    vars = hasVars ? varsOrOptions : undefined;
-    opts = options;
-  } else {
-    vars = hasVars ? dcOrVars : undefined;
-    opts = hasVars ? varsOrOptions : dcOrVars;
-  }
-
-  return { dc, vars, options: opts };
+  return { dc, vars: v, options: o };
 }
-
-// =======================
-// MUTATIONS
-// =======================
-
 export const createUserRef = (dcOrVars, vars) => {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();
@@ -172,10 +152,6 @@ export function createInvoice(dcOrVars, vars) {
   return executeMutation(createInvoiceRef(dcInstance, inputVars));
 }
 
-// =======================
-// QUERIES
-// =======================
-
 export const listSubscriptionTypesRef = (dc) => {
   const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
   dcInstance._useGeneratedSdk();
@@ -184,7 +160,8 @@ export const listSubscriptionTypesRef = (dc) => {
 listSubscriptionTypesRef.operationName = 'ListSubscriptionTypes';
 
 export function listSubscriptionTypes(dcOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrOptions, options, undefined, false, false);
+  
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrOptions, options, undefined,false, false);
   return executeQuery(listSubscriptionTypesRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 }
 
@@ -196,6 +173,7 @@ export const listUserDevicesRef = (dcOrVars, vars) => {
 listUserDevicesRef.operationName = 'ListUserDevices';
 
 export function listUserDevices(dcOrVars, varsOrOptions, options) {
+  
   const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
   return executeQuery(listUserDevicesRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 }
@@ -208,6 +186,7 @@ export const getUserSubscriptionRef = (dcOrVars, vars) => {
 getUserSubscriptionRef.operationName = 'GetUserSubscription';
 
 export function getUserSubscription(dcOrVars, varsOrOptions, options) {
+  
   const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
   return executeQuery(getUserSubscriptionRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 }
@@ -220,6 +199,7 @@ export const listConnectionLogsRef = (dcOrVars, vars) => {
 listConnectionLogsRef.operationName = 'ListConnectionLogs';
 
 export function listConnectionLogs(dcOrVars, varsOrOptions, options) {
+  
   const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
   return executeQuery(listConnectionLogsRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 }
@@ -232,6 +212,7 @@ export const listUserInvoicesRef = (dcOrVars, vars) => {
 listUserInvoicesRef.operationName = 'ListUserInvoices';
 
 export function listUserInvoices(dcOrVars, varsOrOptions, options) {
+  
   const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
   return executeQuery(listUserInvoicesRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 }
@@ -244,6 +225,7 @@ export const listUserSessionsRef = (dcOrVars, vars) => {
 listUserSessionsRef.operationName = 'ListUserSessions';
 
 export function listUserSessions(dcOrVars, varsOrOptions, options) {
+  
   const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
   return executeQuery(listUserSessionsRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 }
@@ -256,6 +238,21 @@ export const getUserRef = (dcOrVars, vars) => {
 getUserRef.operationName = 'GetUser';
 
 export function getUser(dcOrVars, varsOrOptions, options) {
+  
   const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
   return executeQuery(getUserRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 }
+
+export const verifyUserRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'VerifyUser', inputVars);
+}
+verifyUserRef.operationName = 'VerifyUser';
+
+export function verifyUser(dcOrVars, varsOrOptions, options) {
+  
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  return executeQuery(verifyUserRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
+}
+
