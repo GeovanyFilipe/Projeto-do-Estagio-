@@ -58,14 +58,19 @@ import {
   ],
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  email: string = '';
-  password: string = '';
-  nome: string = '';
-  isRegister: boolean = false;
-  loading: boolean = false;
-  error: string = '';
-  success: string = '';
-  returnUrl: string = '';
+  isRegister = false;
+  loading = false;
+  error = '';
+  success = '';
+
+  // LOGIN
+  loginEmail = '';
+  loginPassword = '';
+
+  // REGISTER
+  registerName = '';
+  registerEmail = '';
+  registerPassword = '';
 
   private destroy$ = new Subject<void>();
 
@@ -73,120 +78,29 @@ export class LoginComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    // Pega a URL de retorno da query ou padrão para o painel
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/cliente/dashboard';
+    // Verificar se deve começar no registro
+    this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
+      if (params['mode'] === 'register') {
+        this.isRegister = true;
+      }
+    });
+  }
 
-    // Verificar se deve iniciar no modo cadastro
-    const mode = this.route.snapshot.queryParams['mode'];
-    if (mode === 'register') {
-      this.isRegister = true;
-    }
-
-    // Se já estiver autenticado, redirecionar para returnUrl
-    if (this.authService.isAuthenticated()) {
-      this.router.navigate([this.returnUrl]);
-    }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   toggleForm(): void {
     this.isRegister = !this.isRegister;
     this.error = '';
     this.success = '';
-    this.email = '';
-    this.password = '';
-    this.nome = '';
   }
 
-  login(): void {
-    if (!this.email || !this.password) {
-      this.error = 'Por favor, preencha todos os campos';
-      return;
-    }
-
-    this.loading = true;
-    this.error = '';
-
-    this.authService.login(this.email, this.password)
-      .then((user) => {
-        this.loading = false;
-        this.success = 'Login realizado com sucesso!';
-        setTimeout(() => {
-          this.router.navigateByUrl(this.returnUrl);
-        }, 1500);
-      })
-      .catch((err: any) => {
-        this.loading = false;
-        this.error = this.translateError(err.code) || err.message || 'Erro ao fazer login. Tente novamente.';
-      });
-  }
-
-  async loginWithGoogle(): Promise<void> {
-    this.loading = true;
-    this.error = '';
-    
-    try {
-      await this.authService.loginWithGoogle();
-      this.loading = false;
-      this.success = 'Login com Google realizado com sucesso!';
-      setTimeout(() => {
-        this.router.navigateByUrl(this.returnUrl);
-      }, 1500);
-    } catch (err: any) {
-      this.loading = false;
-      this.error = this.translateError(err.code) || 'Erro ao fazer login com Google.';
-    }
-  }
-
-  register(): void {
-    if (!this.email || !this.password || !this.nome) {
-      this.error = 'Por favor, preencha todos os campos';
-      return;
-    }
-
-    if (this.password.length < 6) {
-      this.error = 'A senha deve ter pelo menos 6 caracteres';
-      return;
-    }
-
-    this.loading = true;
-    this.error = '';
-
-    this.authService.register(this.email, this.password, this.nome, '')
-      .then((user) => {
-        this.loading = false;
-        this.success = 'Cadastro realizado com sucesso! Bem-vindo!';
-        setTimeout(() => {
-          this.router.navigateByUrl(this.returnUrl);
-        }, 1500);
-      })
-      .catch((err: any) => {
-        this.loading = false;
-        this.error = this.translateError(err.code) || err.message || 'Erro ao fazer cadastro. Tente novamente.';
-      });
-  }
-
-  private translateError(code: string): string {
-    switch (code) {
-      case 'auth/user-not-found':
-        return 'Usuário não encontrado.';
-      case 'auth/wrong-password':
-        return 'Senha incorreta.';
-      case 'auth/email-already-in-use':
-        return 'Este email já está sendo utilizado.';
-      case 'auth/weak-password':
-        return 'A senha é muito fraca.';
-      case 'auth/invalid-email':
-        return 'Email inválido.';
-      case 'auth/popup-closed-by-user':
-        return 'Login cancelado.';
-      default:
-        return '';
-    }
-  }
-
+  // Wrapper para satisfazer o HTML que usa submit()
   submit(): void {
     if (this.isRegister) {
       this.register();
@@ -195,8 +109,80 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+  async login() {
+    if (!this.loginEmail || !this.loginPassword) {
+      this.error = 'Preencha todos os campos';
+      return;
+    }
+
+    this.loading = true;
+    this.error = '';
+    
+    try {
+      await this.authService.login(this.loginEmail, this.loginPassword);
+      this.success = 'Bem-vindo de volta!';
+      setTimeout(() => this.router.navigate(['/cliente/dashboard']), 1000);
+    } catch (err: any) {
+      this.error = this.mapError(err.code);
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  async register() {
+    if (!this.registerEmail || !this.registerPassword || !this.registerName) {
+      this.error = 'Preencha todos os campos';
+      return;
+    }
+
+    this.loading = true;
+    this.error = '';
+
+    try {
+      await this.authService.register(
+        this.registerEmail,
+        this.registerPassword,
+        this.registerName,
+        'Nenhum plano'
+      );
+      this.success = 'Conta criada com sucesso!';
+      setTimeout(() => this.router.navigate(['/cliente/dashboard']), 1500);
+    } catch (err: any) {
+      this.error = this.mapError(err.code);
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  async loginWithGoogle() {
+    try {
+      this.loading = true;
+      this.error = '';
+      await this.authService.loginWithGoogle();
+      this.success = 'Login efetuado com sucesso!';
+      setTimeout(() => this.router.navigate(['/cliente/dashboard']), 1000);
+    } catch (err: any) {
+      console.error('Google Login Error:', err);
+      this.error = this.mapError(err.code || err.message);
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  private mapError(code: string): string {
+    switch (code) {
+      case 'auth/user-not-found': return 'Utilizador não encontrado.';
+      case 'auth/wrong-password': return 'Senha incorreta.';
+      case 'auth/email-already-in-use': return 'Este email já está em uso.';
+      case 'auth/weak-password': return 'A senha é muito fraca.';
+      case 'auth/invalid-email': return 'Email inválido.';
+      case 'auth/popup-closed-by-user': return 'A janela de login foi fechada antes de concluir.';
+      case 'auth/cancelled-by-user': return 'Operação cancelada pelo utilizador.';
+      case 'auth/operation-not-allowed': return 'O login com Google não está ativado no Firebase Console.';
+      case 'auth/popup-blocked': return 'O seu navegador bloqueou a janela de login.';
+      default: 
+        if (code?.includes('network-request-failed')) return 'Erro de rede. Verifique sua conexão.';
+        return 'Ocorreu um erro ao entrar com Google. Tente novamente.';
+    }
   }
 }

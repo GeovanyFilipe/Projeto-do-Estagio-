@@ -37,6 +37,10 @@ type ConnectionLog @table {
   user: User!
   server: Server!
   connectTime: Timestamp!
+<<<<<<< HEAD
+  disconnectTime: Timestamp!
+  dataTransferredGB: Float
+=======
   disconnectTime: Timestamp
   dataTransferredGB: Float
 }
@@ -68,4 +72,5 @@ type Invoice @table {
   status: String!
   createdAt: Timestamp!
   planName: String!
+>>>>>>> 7cb0d603539b19c13fce02c59ef5c06568f1ec75
 }

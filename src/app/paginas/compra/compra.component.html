@@ -27,9 +27,14 @@
           <input type="radio" name="pagamento" value="cartao" [(ngModel)]="metodoPagamento">
           <div class="metodo-conteudo">
             <span>Cartão de crédito ou débito</span>
+
+
+
+
+
             <div class="icons">
-              <img *ngIf="!tipoCartao || tipoCartao === 'visa'" src="/imagens/visa-removebg-preview.png" alt="Visa" class="payment-icon">
-              <img *ngIf="!tipoCartao || tipoCartao === 'mastercard'" src="/imagens/MasterCard.png" alt="Mastercard" class="payment-icon">
+              <img *ngIf="!tipoCartao || tipoCartao === 'visa'" src="/imagens/visa-removebg-preview.png" alt="Visa" class="payment-icon visa-icon">
+              <img *ngIf="!tipoCartao || tipoCartao === 'mastercard'" src="/imagens/MasterCard.png" alt="Mastercard" class="payment-icon mastercard-icon">
             </div>
           </div>
         </label>

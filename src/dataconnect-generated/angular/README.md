@@ -17,6 +17,9 @@ You can also follow the instructions from the [Data Connect documentation](https
   - [*Connecting to the local Emulator*](#connecting-to-the-local-emulator)
 - [**Queries**](#queries)
   - [*ListSubscriptionTypes*](#listsubscriptiontypes)
+
+- [**Mutations**](#mutations)
+=======
   - [*ListUserDevices*](#listuserdevices)
   - [*GetUserSubscription*](#getusersubscription)
   - [*ListConnectionLogs*](#listconnectionlogs)
@@ -34,6 +37,7 @@ You can also follow the instructions from the [Data Connect documentation](https
   - [*DeleteDevice*](#deletedevice)
   - [*UpdateDeviceSeen*](#updatedeviceseen)
   - [*CreateInvoice*](#createinvoice)
+>>>>>>> 7cb0d603539b19c13fce02c59ef5c06568f1ec75
 
 # TanStack Query Firebase & TanStack Angular Query
 This SDK provides [Angular](https://angular.dev/) injectors generated specific to your application, for the operations found in the connector `example`. These injectors are generated using [TanStack Query Firebase](https://react-query-firebase.invertase.dev/) by our partners at Invertase, a library built on top of [TanStack Angular Query v5](https://tanstack.com/query/v5/docs/framework/angular/overview) and [AngularFire](https://github.com/angular/angularfire/tree/main).
@@ -193,6 +197,13 @@ export class MyComponent {
 }
 ```
 
+
+# Mutations
+
+No Mutations were generated for the `example` connector.
+
+If you want to learn more about how to use Mutations in Data Connect, you can follow the examples from the [Data Connect documentation](https://firebase.google.com/docs/data-connect/web-sdk#operations-react-angular).
+=======
 ## ListUserDevices
 You can execute the `ListUserDevices` Query using the following Query injector, which is defined in [dataconnect-generated/angular/index.d.ts](./index.d.ts):
 
@@ -1758,5 +1769,5 @@ export class MyComponent {
     this.mutation.mutate(createInvoiceVars, this.options());
   }
 }
-```
+
 

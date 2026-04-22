@@ -43,6 +43,7 @@ exports.injectCreateInvoice = function injectCreateInvoice(args, injector) {
   return injectDataConnectMutation(createInvoiceRef, args, injector, CallerSdkTypeEnum.GeneratedAngular);
 }
 
+
 exports.injectListSubscriptionTypes = function injectListSubscriptionTypes(options, injector) {
   const finalInjector = injector || inject(EnvironmentInjector);
   const dc = finalInjector.get(DataConnect);
@@ -54,6 +55,8 @@ exports.injectListSubscriptionTypes = function injectListSubscriptionTypes(optio
     };
   }, finalInjector, CallerSdkTypeEnum.GeneratedAngular);
 }
+
+
 
 exports.injectListUserDevices = function injectListUserDevices(args, options, injector) {
   const finalInjector = injector || inject(EnvironmentInjector);

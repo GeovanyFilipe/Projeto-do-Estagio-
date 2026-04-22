@@ -1,4 +1,16 @@
 query ListSubscriptionTypes @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public") {
+<<<<<<< HEAD
+      subscriptionTypes {
+        id
+        name
+        price
+        durationMonths
+        maxSpeedMbps
+        maxDevices
+        description
+      }
+    }
+=======
   subscriptionTypes {
     id
     name
@@ -79,3 +91,4 @@ query GetUser($id: UUID!) @auth(level: USER) {
     }
   }
 }
+>>>>>>> 7cb0d603539b19c13fce02c59ef5c06568f1ec75

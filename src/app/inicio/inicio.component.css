@@ -65,14 +65,6 @@
   color: #fff;
 }
 
-.hero-title {
-  font-size: 56px;
-  font-weight: 700;
-  margin: 0;
-  line-height: 1.2;
-  color: #fff;
-}
-
  .hero-subtitle {
   font-size: 20px;
   opacity: 0.95;
@@ -421,6 +413,21 @@
 }
 
 /* Mobile */
+@media (max-width: 768px) {
+  .dropdown-menu {
+    left: 50% !important;
+    transform: translateX(-50%) translateY(-15px) !important;
+    width: 90%; /* Ocupa a maior parte da largura no mobile */
+    min-width: 0;
+  }
+
+  .dropdown-menu.show {
+    transform: translateX(-50%) translateY(0) !important;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
 .navbar-menu.mobile-open .dropdown-menu {
   opacity: 1;
   visibility: visible;

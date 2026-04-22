@@ -1,46 +1,62 @@
-mutation CreateDemoData @transaction @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users.") {
+mutation CreateDemoData @transaction @auth(level: PUBLIC, insecureReason: "This is seed data and does not expose any sensitive information.") {
   user_insertMany(data: [
     {
-      id: "c6a1e2d3-4f5a-6b7c-8d9e-0f1a2b3c4d5e",
-      username: "userone",
-      email: "userone@example.com",
-      passwordHash: "hashedpassword1",
-      createdAt: "2023-01-01T10:00:00Z"
+      id: "b45a0b73-c15c-4a37-b247-4f40d6e644b9",
+      email: "alice@example.com",
+      passwordHash: "hashed_password_alice",
+      createdAt: "2023-01-01T10:00:00Z",
+      firstName: "Alice",
+      lastName: "Smith",
+      lastLoginAt: "2023-10-26T14:30:00Z"
     },
     {
-      id: "b8c7d6e5-4a3b-2c1d-0e9f-8a7b6c5d4e3f",
-      username: "usertwo",
-      email: "usertwo@example.com",
-      passwordHash: "hashedpassword2",
-      createdAt: "2023-01-02T11:00:00Z"
+      id: "f3b8e7c2-9e20-4e1d-8a5f-1c4b7d6a9e0f",
+      email: "bob@example.com",
+      passwordHash: "hashed_password_bob",
+      createdAt: "2023-01-05T11:00:00Z",
+      firstName: "Bob",
+      lastName: "Johnson",
+      lastLoginAt: "2023-10-25T16:00:00Z"
     }
   ])
   server_insertMany(data: [
     {
-      id: "123e4567-e89b-12d3-a456-426614174000",
-      name: "Server A",
-      location: "New York",
+      id: "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+      name: "Server-US-East",
+      location: "Virginia, USA",
       ipAddress: "192.168.1.1",
-      status: "Active",
-      createdAt: "2023-01-01T09:00:00Z",
-      country: "USA",
-      city: "New York",
-      load: 50
+      description: "Primary server for US East region",
+      latency: 20
     },
     {
-      id: "a1b2c3d4-e5f6-7890-1234-567890abcdef",
-      name: "Server B",
-      location: "London",
+      id: "b1c2d3e4-f5a6-8901-2345-67890abcdef0",
+      name: "Server-EU-West",
+      location: "Dublin, Ireland",
       ipAddress: "192.168.1.2",
-      status: "Idle",
-      createdAt: "2023-01-03T14:00:00Z",
-      country: "UK",
-      city: "London",
-      load: 20
+      description: "Primary server for EU West region",
+      latency: 50
     }
   ])
   subscriptionType_insertMany(data: [
     {
+<<<<<<< HEAD
+      id: "c1d2e3f4-a5b6-0123-4567-890abcdef012",
+      name: "Basic Plan",
+      price: 9.99,
+      durationMonths: 1,
+      maxSpeedMbps: 50,
+      maxDevices: 2,
+      description: "Entry-level VPN plan"
+    },
+    {
+      id: "d1e2f3a4-b5c6-1234-5678-90abcdef0123",
+      name: "Premium Plan",
+      price: 19.99,
+      durationMonths: 12,
+      maxSpeedMbps: 200,
+      maxDevices: 5,
+      description: "Advanced VPN plan with higher speeds"
+=======
       id: "f8e7d6c5-b4a3-2109-8765-4321fedcba98",
       name: "Individual",
       durationMonths: 1,
@@ -75,51 +91,46 @@ mutation CreateDemoData @transaction @auth(level: USER, insecureReason: "This op
       maxSpeedMbps: 500,
       maxDevices: 15,
       description: "Solução completa com máxima segurança e dispositivos"
+>>>>>>> 7cb0d603539b19c13fce02c59ef5c06568f1ec75
     }
   ])
 
   userSubscription_insertMany(data: [
     {
-      userId: "c6a1e2d3-4f5a-6b7c-8d9e-0f1a2b3c4d5e",
-      subscriptionTypeId: "f8e7d6c5-b4a3-2109-8765-4321fedcba98",
-      startDate: "2023-01-10",
-      endDate: "2023-02-10",
-      status: "Active",
-      createdAt: "2023-01-10T12:00:00Z",
-      paymentMethod: "Credit Card",
+      id: "e1f2a3b4-c5d6-2345-6789-0abcdef01234",
+      userId: "b45a0b73-c15c-4a37-b247-4f40d6e644b9",
+      subscriptionTypeId: "c1d2e3f4-a5b6-0123-4567-890abcdef012",
+      startDate: "2023-01-01T10:00:00Z",
+      endDate: "2024-01-01T10:00:00Z",
+      isActive: true,
       autoRenew: true
     },
     {
-      userId: "b8c7d6e5-4a3b-2c1d-0e9f-8a7b6c5d4e3f",
-      subscriptionTypeId: "1a2b3c4d-5e6f-789a-bcde-f01234567890",
-      startDate: "2023-01-15",
-      endDate: "2024-01-15",
-      status: "Active",
-      createdAt: "2023-01-15T13:00:00Z",
-      paymentMethod: "PayPal",
-      autoRenew: true
+      id: "f1a2b3c4-d5e6-3456-7890-abcdef012345",
+      userId: "f3b8e7c2-9e20-4e1d-8a5f-1c4b7d6a9e0f",
+      subscriptionTypeId: "d1e2f3a4-b5c6-1234-5678-90abcdef0123",
+      startDate: "2023-02-01T12:00:00Z",
+      endDate: "2024-02-01T12:00:00Z",
+      isActive: false,
+      autoRenew: false
     }
   ])
   connectionLog_insertMany(data: [
     {
-      userId: "c6a1e2d3-4f5a-6b7c-8d9e-0f1a2b3c4d5e",
-      serverId: "123e4567-e89b-12d3-a456-426614174000",
-      connectionTime: "2023-01-10T12:05:00Z",
-      disconnectionTime: "2023-01-10T12:35:00Z",
-      createdAt: "2023-01-10T12:35:00Z",
-      durationMinutes: 30,
-      dataTransferredMB: 150.75,
-      connectionStatus: "Disconnected"
+      id: "0a1b2c3d-4e5f-6789-abcd-ef0123456789",
+      userId: "b45a0b73-c15c-4a37-b247-4f40d6e644b9",
+      serverId: "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+      connectTime: "2023-10-26T14:30:00Z",
+      disconnectTime: "2023-10-26T15:00:00Z",
+      dataTransferredGB: 1.5
     },
     {
-      userId: "b8c7d6e5-4a3b-2c1d-0e9f-8a7b6c5d4e3f",
-      serverId: "a1b2c3d4-e5f6-7890-1234-567890abcdef",
-      connectionTime: "2023-01-15T13:10:00Z",
-      disconnectionTime: "2023-01-15T14:10:00Z",
-      createdAt: "2023-01-15T14:10:00Z",
-      durationMinutes: 60,
-      dataTransferredMB: 500.20,
-      connectionStatus: "Disconnected"
+      id: "1b2c3d4e-5f67-890a-bcde-f01234567890",
+      userId: "f3b8e7c2-9e20-4e1d-8a5f-1c4b7d6a9e0f",
+      serverId: "b1c2d3e4-f5a6-8901-2345-67890abcdef0",
+      connectTime: "2023-10-25T16:00:00Z",
+      disconnectTime: "2023-10-25T17:00:00Z",
+      dataTransferredGB: 2.3
     }
   ])
 }

@@ -11,6 +11,9 @@ This README will guide you through the process of using the generated JavaScript
   - [*Connecting to the local Emulator*](#connecting-to-the-local-emulator)
 - [**Queries**](#queries)
   - [*ListSubscriptionTypes*](#listsubscriptiontypes)
+
+- [**Mutations**](#mutations)
+=======
   - [*ListUserDevices*](#listuserdevices)
   - [*GetUserSubscription*](#getusersubscription)
   - [*ListConnectionLogs*](#listconnectionlogs)
@@ -28,6 +31,7 @@ This README will guide you through the process of using the generated JavaScript
   - [*DeleteDevice*](#deletedevice)
   - [*UpdateDeviceSeen*](#updatedeviceseen)
   - [*CreateInvoice*](#createinvoice)
+>>>>>>> 7cb0d603539b19c13fce02c59ef5c06568f1ec75
 
 # Accessing the connector
 A connector is a collection of Queries and Mutations. One SDK is generated for each connector - this SDK is generated for the connector `example`. You can find more information about connectors in the [Data Connect documentation](https://firebase.google.com/docs/data-connect#how-does).
@@ -173,6 +177,13 @@ executeQuery(ref).then((response) => {
 });
 ```
 
+
+# Mutations
+
+No mutations were generated for the `example` connector.
+
+If you want to learn more about how to use mutations in Data Connect, you can follow the examples from the [Data Connect documentation](https://firebase.google.com/docs/data-connect/web-sdk#using-mutations).
+=======
 ## ListUserDevices
 You can execute the `ListUserDevices` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
 ```typescript
@@ -2063,5 +2074,6 @@ executeMutation(ref).then((response) => {
   const data = response.data;
   console.log(data.invoice_insert);
 });
-```
+
+
 

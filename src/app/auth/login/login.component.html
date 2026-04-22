@@ -1,120 +1,119 @@
-<div class="login-container">
-  <div class="login-box" @boxEntrance>
+<main class="login-container" id="main-content" tabindex="-1">
+  <section class="login-box" @boxEntrance>
+    
     <!-- Logo -->
-    <div class="login-logo" @logoEntrance>
-      <svg width="80" height="80" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <header class="login-logo" @logoEntrance>
+      <svg width="80" height="80" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img">
+        <title>Logótipo AngolanVPN</title>
         <rect width="100" height="100" fill="#1e3a5f" rx="20" />
-        <path d="M50 20 L70 30 L70 50 C70 65 50 80 50 80 C50 80 30 65 30 50 L30 30 Z" fill="#00d4ff" stroke="#fff"
-          stroke-width="2" />
+        <path d="M50 20 L70 30 L70 50 C70 65 50 80 50 80 C50 80 30 65 30 50 L30 30 Z"
+          fill="#00d4ff" stroke="#fff" stroke-width="2" />
         <path d="M50 40 L58 48 L52 48 L52 58 L48 58 L48 48 L42 48 Z" fill="#fff" />
       </svg>
       <h1>VPN Angola</h1>
+    </header>
+
+    <div class="header-text" *ngIf="!error && !success">
+      <h2>{{ isRegister ? 'Criar conta' : 'Entrar na sua conta' }}</h2>
+      <p>{{ isRegister ? 'Crie sua conta para continuar' : 'Acesse sua área segura' }}</p>
     </div>
 
     <!-- Mensagens de erro e sucesso -->
-    <div *ngIf="error" class="alert alert-error" @alertSlide>
+    <div *ngIf="error" class="alert alert-error" @alertSlide role="alert">
       <span>{{ error }}</span>
     </div>
-    <div *ngIf="success" class="alert alert-success" @alertSlide>
+    <div *ngIf="success" class="alert alert-success" @alertSlide role="status">
       <span>{{ success }}</span>
     </div>
 
-    <!-- Abas -->
-    <div class="tabs">
-      <button class="tab" [class.active]="!isRegister" (click)="!isRegister || toggleForm()">
-        Login
-      </button>
-      <button class="tab" [class.active]="isRegister" (click)="isRegister || toggleForm()">
-        Cadastro
-      </button>
-    </div>
-
-    <!-- Formulário Login -->
+    <!-- ================= LOGIN ================= -->
     <form *ngIf="!isRegister" (ngSubmit)="submit()" class="form" @formSwitch>
       <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" [(ngModel)]="email" placeholder="seu@email.com" required />
+        <label for="loginEmail">Email</label>
+        <input type="email" [(ngModel)]="loginEmail" name="loginEmail" id="loginEmail"
+          placeholder="seu@email.com" required aria-required="true" />
       </div>
 
       <div class="form-group">
-        <label for="password">Senha</label>
-        <input type="password" id="password" name="password" [(ngModel)]="password" placeholder="Mínimo 6 caracteres"
-          required />
+        <label for="loginPassword">Senha</label>
+        <input type="password" [(ngModel)]="loginPassword" name="loginPassword" id="loginPassword"
+          placeholder="Sua senha" required aria-required="true" />
       </div>
 
       <button type="submit" class="btn-submit" [disabled]="loading">
-        <span *ngIf="!loading">Entrar</span>
-        <span *ngIf="loading">Carregando...</span>
+        {{ loading ? 'Aguarde...' : 'Entrar' }}
       </button>
 
-      <div class="divider">
-        <span>OU</span>
-      </div>
+      <div class="divider">OU</div>
 
       <button type="button" class="btn-google" (click)="loginWithGoogle()" [disabled]="loading">
-        <svg viewBox="0 0 48 48" width="24" height="24">
-          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
-          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
-          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24s.92 7.54 2.56 10.78l7.97-6.19z"></path>
-          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
-          <path fill="none" d="M0 0h48v48H0z"></path>
+        <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
         </svg>
         Entrar com Google
       </button>
 
       <p class="help-text">
-        Não tem conta? <a href="#" (click)="toggleForm(); $event.preventDefault()">Cadastre-se</a>
+        Não tem conta?
+        <a href="#" (click)="toggleForm(); $event.preventDefault()">
+          Criar conta
+        </a>
       </p>
     </form>
 
-    <!-- Formulário Cadastro -->
+    <!-- ================= REGISTRO ================= -->
     <form *ngIf="isRegister" (ngSubmit)="submit()" class="form" @formSwitch>
       <div class="form-group">
-        <label for="register-name">Nome Completo</label>
-        <input type="text" id="register-name" name="nome" [(ngModel)]="nome" placeholder="Seu nome completo" required />
+        <label for="registerName">Nome</label>
+        <input type="text" [(ngModel)]="registerName" name="registerName" id="registerName"
+          placeholder="Seu nome" required aria-required="true" />
       </div>
 
       <div class="form-group">
-        <label for="register-email">Email</label>
-        <input type="email" id="register-email" name="email" [(ngModel)]="email" placeholder="seu@email.com" required />
+        <label for="registerEmail">Email</label>
+        <input type="email" [(ngModel)]="registerEmail" name="registerEmail" id="registerEmail"
+          placeholder="seu@email.com" required aria-required="true" />
       </div>
 
       <div class="form-group">
-        <label for="register-password">Senha</label>
-        <input type="password" id="register-password" name="password" [(ngModel)]="password"
-          placeholder="Mínimo 6 caracteres" required />
+        <label for="registerPassword">Senha</label>
+        <input type="password" [(ngModel)]="registerPassword" name="registerPassword" id="registerPassword"
+          placeholder="Mínimo 6 caracteres" required aria-required="true" />
       </div>
 
       <button type="submit" class="btn-submit" [disabled]="loading">
-        <span *ngIf="!loading">Cadastrar</span>
-        <span *ngIf="loading">Carregando...</span>
+        {{ loading ? 'Carregando...' : 'Cadastrar' }}
       </button>
 
-      <div class="divider">
-        <span>OU</span>
-      </div>
+      <div class="divider">OU</div>
 
       <button type="button" class="btn-google" (click)="loginWithGoogle()" [disabled]="loading">
-        <svg viewBox="0 0 48 48" width="24" height="24">
-          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
-          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
-          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24s.92 7.54 2.56 10.78l7.97-6.19z"></path>
-          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
-          <path fill="none" d="M0 0h48v48H0z"></path>
+        <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
         </svg>
         Entrar com Google
       </button>
 
       <p class="help-text">
-        Já tem conta? <a href="#" (click)="toggleForm(); $event.preventDefault()">Faça login</a>
+        Já tem conta?
+        <a href="#" (click)="toggleForm(); $event.preventDefault()">
+          Fazer login
+        </a>
       </p>
     </form>
 
-    <!-- Links úteis -->
-    <div class="footer-links">
-      <a href="/">Voltar para início</a>
+    <!-- LINKS -->
+    <footer class="footer-links">
+      <a routerLink="/">Voltar</a>
       <span>•</span>
-      <a href="/suporte/tecnico">Precisa de ajuda?</a>
-    </div>
-  </div>
-</div>
+      <a routerLink="/suporte/tecnico">Ajuda</a>
+    </footer>
+
+  </section>
+</main>

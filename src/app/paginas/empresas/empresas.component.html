@@ -1,33 +1,34 @@
 <app-menu></app-menu>
 
-<div class="pagina-container">
+<main class="pagina-container" id="main-content" tabindex="-1">
   <section class="hero">
     <h1>Soluções para Empresas</h1>
     <p>VPN empresarial com suporte dedicado</p>
   </section>
 
   <section class="beneficios-container">
+    <h2 class="sr-only">Vantagens para o seu negócio</h2>
     <div class="beneficios-grid">
-      <div class="beneficio-card">
-        <div class="icon">🏢</div>
+      <article class="beneficio-card">
+        <div class="icon" role="img" aria-label="Escritório">🏢</div>
         <h3>Múltiplas Licenças</h3>
         <p>Desconto para múltiplos usuários e dispositivos</p>
-      </div>
-      <div class="beneficio-card">
-        <div class="icon">👥</div>
+      </article>
+      <article class="beneficio-card">
+        <div class="icon" role="img" aria-label="Grupo">👥</div>
         <h3>Gerenciamento Centralizado</h3>
         <p>Controle completo de acesso e permissões</p>
-      </div>
-      <div class="beneficio-card">
-        <div class="icon">📊</div>
+      </article>
+      <article class="beneficio-card">
+        <div class="icon" role="img" aria-label="Gráficos">📊</div>
         <h3>Relatórios Detalhados</h3>
         <p>Monitoramento e análise de uso</p>
-      </div>
-      <div class="beneficio-card">
-        <div class="icon">🔐</div>
+      </article>
+      <article class="beneficio-card">
+        <div class="icon" role="img" aria-label="Cadeado">🔐</div>
         <h3>Segurança Avançada</h3>
         <p>Criptografia de nível empresarial</p>
-      </div>
+      </article>
     </div>
   </section>
 
@@ -36,6 +37,6 @@
     <p>Nossa equipe comercial está pronta para oferecer uma solução personalizada</p>
     <button class="btn-contato" (click)="goToSolicitarOrcamento()">Solicitar Orçamento</button>
   </section>
-  <app-rodape></app-rodape>
+</main>
 
-</div>
+<app-rodape></app-rodape>

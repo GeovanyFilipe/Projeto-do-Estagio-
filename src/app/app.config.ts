@@ -5,11 +5,14 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
 
-// Firebase imports
+// Firebase
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideAnalytics, getAnalytics, ScreenTrackingService, UserTrackingService } from '@angular/fire/analytics';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { provideDataConnect, getDataConnect } from '@angular/fire/data-connect';
 import { environment } from '../environments/environment';
+import { connectorConfig } from '@dataconnect/generated';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,12 +25,19 @@ export const appConfig: ApplicationConfig = {
         anchorScrolling: 'enabled'
       })
     ),
+
     provideHttpClient(),
 
-    // Firebase — inicialização única e simples
+    // Firebase core
     provideFirebaseApp(() => initializeApp(environment.firebase)),
+
     provideAuth(() => getAuth()),
+
+    provideAnalytics(() => getAnalytics()),
+    ScreenTrackingService,
+    UserTrackingService,
+
     provideFirestore(() => getFirestore()),
-    provideFirestore(() => getFirestore()),
+    provideDataConnect(() => getDataConnect(connectorConfig))
   ]
 };

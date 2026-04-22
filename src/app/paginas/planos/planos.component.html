@@ -1,31 +1,34 @@
 <app-menu></app-menu>
 
-<div class="pagina-container">
+<main class="pagina-container" id="main-content" tabindex="-1">
   <section class="hero">
     <h1>Nossos planos</h1>
     <p>Escolha o plano perfeito para suas necessidades</p>
   </section>
 
   <section class="planos-container">
+    <h2 class="sr-only">Opções de assinatura</h2>
     <div class="planos-grid">
-      <div *ngFor="let plano of planos" class="plano-card" [class.destaque]="plano.destaque">
-        <div class="plano-header">
+      <article *ngFor="let plano of planos" class="plano-card" [class.destaque]="plano.destaque">
+        <header class="plano-header">
           <h2>{{ plano.titulo }}</h2>
           <div class="preco">
             <span class="valor">{{ plano.preco }}</span>
             <span class="periodo">/mês</span>
           </div>
-        </div>
+        </header>
         <p class="descricao">{{ plano.descricao }}</p>
         <ul class="features">
           <li *ngFor="let feature of plano.features">
-            <span class="checkmark">✓</span>
+            <span class="checkmark" aria-hidden="true">✓</span>
+            <span class="sr-only">Vantagem: </span>
             {{ feature }}
           </li>
         </ul>
         <button class="btn-plano" [routerLink]="plano.rota">{{ plano.cta }}</button>
-      </div>
+      </article>
     </div>
   </section>
-</div>
+</main>
+
 <app-rodape></app-rodape>

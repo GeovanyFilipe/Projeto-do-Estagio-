@@ -175,15 +175,15 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   goToLogin()     { this.router.navigate(['/login']);                                          this.closeMobileMenu(); }
-  goToCadastro()  { this.router.navigate(['/cadastro']);                                       this.closeMobileMenu(); }
-  goToDashboard() { this.router.navigate(['/dashboard']);                                      this.closeMobileMenu(); }
+  goToCadastro()  { this.router.navigate(['/registro']);                                       this.closeMobileMenu(); }
+  goToDashboard() { this.router.navigate(['/cliente/dashboard']);                              this.closeMobileMenu(); }
   goToPlanos()    { this.router.navigate(['/planos']);                                         this.closeMobileMenu(); }
   goToPerfil()    { this.router.navigate(['/cliente/dashboard'], { fragment: 'perfil' });      this.closeMobileMenu(); }
   goToSuporte()   { this.router.navigate(['/suporte/tecnico']);                                this.closeMobileMenu(); }
 
-  logout() {
-    this.authService.logout();
-    this.router.navigate(['/']);
+  async logout() {
+    await this.authService.logout();
+    this.router.navigate(['/login']);
     this.closeMobileMenu();
   }
 }

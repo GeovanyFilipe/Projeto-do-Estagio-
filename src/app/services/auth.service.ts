@@ -107,18 +107,34 @@ export class AuthService {
   // ─── Login com Google ──────────────────────────────────────────────────────
 
   async loginWithGoogle(): Promise<User> {
+    console.log('[AuthService] Iniciando login com Google...');
+    if (!this.auth) {
+      console.error('[AuthService] Objeto Auth não inicializado!');
+      throw new Error('Firebase Auth não inicializado');
+    }
+    
     const provider = new GoogleAuthProvider();
-    const credential = await signInWithPopup(this.auth, provider);
-    const fbUser = credential.user;
+    // Opcional: provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+    
+    try {
+      const credential = await signInWithPopup(this.auth, provider);
+      console.log('[AuthService] Login com Google bem-sucedido:', credential.user.email);
+      const fbUser = credential.user;
 
-    const basicUser = this.fbUserToUser(fbUser);
-    this.currentUserSubject.next(basicUser);
-    this.isAuthenticatedSubject.next(true);
+      const basicUser = this.fbUserToUser(fbUser);
+      this.currentUserSubject.next(basicUser);
+      this.isAuthenticatedSubject.next(true);
 
-    // Sincroniza com a nuvem em background
-    this.syncWithCloud(fbUser).catch(() => { });
+      // Sincroniza com a nuvem em background
+      this.syncWithCloud(fbUser).catch(err => {
+        console.warn('[AuthService] Erro na sincronização pós-login Google:', err);
+      });
 
-    return basicUser;
+      return basicUser;
+    } catch (error: any) {
+      console.error('[AuthService] Erro fatal no signInWithPopup:', error);
+      throw error;
+    }
   }
 
   // ─── Registo ───────────────────────────────────────────────────────────────
@@ -321,4 +337,3 @@ export class AuthService {
     }
   }
 }
-

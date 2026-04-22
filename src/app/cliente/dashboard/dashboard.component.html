@@ -1,7 +1,8 @@
 <app-menu></app-menu>
 
 <div class="dashboard-container">
-  <!-- Sidebar -->
+
+  <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-header">
       <h2>Meu Painel</h2>
@@ -9,379 +10,195 @@
     </div>
 
     <nav class="sidebar-nav">
-
       <button class="nav-item" [class.active]="activeTab === 'overview'" (click)="selectTab('overview')">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-        </svg>
         <span class="label">Visão Geral</span>
       </button>
 
       <button class="nav-item" [class.active]="activeTab === 'plano'" (click)="selectTab('plano')">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
-        </svg>
         <span class="label">Meu Plano</span>
       </button>
 
       <button class="nav-item" [class.active]="activeTab === 'dispositivos'" (click)="selectTab('dispositivos')">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>
-        </svg>
         <span class="label">Dispositivos</span>
       </button>
 
       <button class="nav-item" [class.active]="activeTab === 'faturamento'" (click)="selectTab('faturamento')">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>
-        </svg>
         <span class="label">Faturamento</span>
       </button>
 
       <div class="sidebar-divider"></div>
 
       <button class="nav-item" [class.active]="activeTab === 'suporte'" (click)="selectTab('suporte')">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-        </svg>
         <span class="label">Suporte</span>
       </button>
-
     </nav>
 
     <div class="sidebar-footer">
       <button class="btn-logout" (click)="confirmLogout()">
-        <svg style="width:18px;height:18px;min-width:18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
-        </svg>
-        <span class="label">Terminar Sessão</span>
+        Terminar Sessão
       </button>
     </div>
   </aside>
 
 
-  <!-- Abas Mobile (navegação dentro do dashboard) -->
-  <nav class="mobile-tabs">
-    <button 
-      class="mobile-tab-item" 
-      [class.active]="activeTab === 'overview'"
-      (click)="selectTab('overview')"
-    >
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-      <span>Visão Geral</span>
-    </button>
-    <button 
-      class="mobile-tab-item" 
-      [class.active]="activeTab === 'plano'"
-      (click)="selectTab('plano')"
-    >
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-      <span>Plano</span>
-    </button>
-    <button 
-      class="mobile-tab-item" 
-      [class.active]="activeTab === 'dispositivos'"
-      (click)="selectTab('dispositivos')"
-    >
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-      <span>Dispositivos</span>
-    </button>
-    <button 
-      class="mobile-tab-item" 
-      [class.active]="activeTab === 'faturamento'"
-      (click)="selectTab('faturamento')"
-    >
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-      <span>Faturas</span>
-    </button>
-    <button 
-      class="mobile-tab-item" 
-      [class.active]="activeTab === 'suporte'"
-      (click)="selectTab('suporte')"
-    >
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      <span>Suporte</span>
-    </button>
-  </nav>
-
-  <!-- Conteúdo Principal -->
+  <!-- MAIN -->
   <main class="main-content">
-    <!-- Header -->
+
+    <!-- HEADER -->
     <header class="dashboard-header">
-      <div class="header-content">
-        <h1>Bem-vindo, {{ currentUser?.nome }}!</h1>
-        <p class="header-subtitle">{{ currentUser?.email }}</p>
-      </div>
+      <h1>Bem-vindo, {{ currentUser?.nome }}</h1>
+      <p>{{ currentUser?.email }}</p>
     </header>
 
-    <!-- Conteúdo abas -->
     <div class="tabs-content">
 
-      <!-- TAB: Visão Geral -->
-      <section *ngIf="activeTab === 'overview'" class="tab-pane active">
+      <!-- ========================= -->
+      <!-- VISÃO GERAL -->
+      <!-- ========================= -->
+      <section *ngIf="activeTab === 'overview'" class="tab-pane">
+
         <div class="overview-grid">
-          <!-- Card de Status (Subscription) -->
+
+          <!-- ASSINATURA -->
           <div class="info-card">
             <div class="card-header">
               <h3>Sua Assinatura</h3>
-              <span class="status-badge" [class]="statusLevel" *ngIf="currentSubscription">
+
+              <span *ngIf="currentSubscription">
                 {{ daysRemaining }} dias restantes
               </span>
-              <span class="status-badge danger" *ngIf="!currentSubscription">
+
+              <span *ngIf="!currentSubscription">
                 Sem Assinatura
               </span>
             </div>
+
             <div class="card-body">
-              <div class="subscription-premium-content">
-                <p class="plan-hero">{{ currentSubscription?.subscriptionType?.name || 'Nenhum plano ativo' }}</p>
-                <div class="premium-progress-container" *ngIf="currentSubscription">
-                  <div class="premium-progress-bar" [style.width.%]="subscriptionProgress" [class]="statusLevel"></div>
-                </div>
-                <div class="date-summary">
-                  <p><span>Início:</span> {{ (currentSubscription?.startDate | date:'dd/MM/yyyy':'UTC') || '---' }}</p>
-                  <p><span>Expira:</span> {{ (currentSubscription?.endDate | date:'dd/MM/yyyy':'UTC') || '---' }}</p>
-                </div>
-              </div>
-              <button class="btn btn-primary" (click)="router.navigate(['/planos'])" style="width: 100%; margin-top: 20px;">
-                {{ currentSubscription ? 'Gerenciar Plano' : 'Assinar agora' }}
+              <p>{{ currentSubscription?.subscriptionType?.name || 'Nenhum plano' }}</p>
+
+              <button class="btn btn-primary" (click)="router.navigate(['/planos'])">
+                {{ currentSubscription ? 'Gerenciar Plano' : 'Assinar' }}
               </button>
             </div>
           </div>
 
 
-          <!-- Card de Uso -->
-          <div class="info-card card-usage">
+          <!-- USO -->
+          <div class="info-card" *ngIf="hasPlan">
             <div class="card-header">
-              <h3>Uso de Largura de Banda</h3>
+              <h3>Uso</h3>
             </div>
-            <div class="card-body" *ngIf="hasPlan">
-              <div class="usage-bar">
-                <div class="usage-fill" style="width: 65%"></div>
-              </div>
-              <p class="usage-text">6.5 GB de 10 GB utilizados</p>
-              <p class="usage-percentage">65%</p>
-            </div>
-            <div class="card-body" *ngIf="!hasPlan">
-              <p class="no-data-text">Adquira um plano para ver seu uso.</p>
+
+            <div class="card-body">
+              <p>0 GB usados</p>
             </div>
           </div>
 
-          <!-- Card de Dispositivos -->
-          <div class="info-card card-devices">
+
+          <!-- DISPOSITIVOS -->
+          <div class="info-card">
             <div class="card-header">
-              <h3>Dispositivos Conectados</h3>
+              <h3>Dispositivos</h3>
             </div>
-            <div class="card-body" *ngIf="hasPlan">
-              <p class="device-count">{{ devices.length }} de {{ deviceLimit }} dispositivos</p>
-              <ul class="device-list">
-                <li class="device-item active">
-                  <span class="device-name">Notebook</span>
-                  <span class="device-status">Ativo agora</span>
-                </li>
-                <li class="device-item active">
-                  <span class="device-name">Celular</span>
-                  <span class="device-status">Ativo agora</span>
+
+            <div class="card-body" *ngIf="hasPlan && devices.length > 0">
+              <p>{{ devices.length }} de {{ deviceLimit }}</p>
+
+              <ul>
+                <li *ngFor="let device of devices">
+                  {{ device.nome }}
                 </li>
               </ul>
-              <button class="btn btn-secondary" (click)="selectTab('dispositivos')">Ver Mais</button>
             </div>
-            <div class="card-body" *ngIf="!hasPlan">
-              <p class="no-data-text">Nenhum dispositivo conectado.</p>
-              <button class="btn btn-secondary" (click)="router.navigate(['/planos'])">Ativar VPN</button>
+
+            <div class="card-body" *ngIf="!hasPlan || devices.length === 0">
+              <p>Nenhum dispositivo</p>
             </div>
           </div>
 
-          <!-- Atividade Recente -->
-          <div class="info-card recent-activity">
+
+          <!-- ATIVIDADE -->
+          <div class="info-card">
             <div class="card-header">
-              <h3>Atividade Recente</h3>
+              <h3>Atividade</h3>
             </div>
+
             <div class="card-body">
-              <div class="activity-feed">
-                <div class="feed-item" *ngFor="let session of sessions.slice(0, 2)">
-                  <div class="feed-icon login-ico">🔑</div>
-                  <div class="feed-text">
-                  <p>Sessão iniciada</p>
-                  <span>IP: {{ session.ipAddress }} • {{ session.loginTime | date:'dd/MM/yyyy HH:mm' }}</span>
-                  </div>
-                </div>
-                <div class="feed-item" *ngFor="let conn of connections.slice(0, 1)">
-                  <div class="feed-icon vpn-ico">🛡️</div>
-                  <div class="feed-text">
-                    <p>VPN Conectada: {{ conn.server.name }}</p>
-                    <span>{{ conn.connectTime | date:'dd/MM/yyyy HH:mm' }}</span>
-                  </div>
-                </div>
-                <div *ngIf="sessions.length === 0 && connections.length === 0" class="no-data-msg">
-                  Sem atividades registradas no banco.
-                </div>
+              <div *ngFor="let session of sessions.slice(0,2)">
+                Sessão - {{ session.loginTime | date:'dd/MM/yyyy HH:mm' }}
               </div>
-              <button class="btn btn-secondary" (click)="selectTab('faturamento')" style="width: 100%; margin-top: 10px;">Ver tudo</button>
+
+              <div *ngIf="sessions.length === 0">
+                Sem atividade
+              </div>
             </div>
           </div>
+
         </div>
 
       </section>
 
-      <!-- TAB: Meu Plano -->
-      <section *ngIf="activeTab === 'plano'" class="tab-pane active">
-        <h2 class="section-title">Planos Disponíveis</h2>
-        
-        <div class="plans-grid">
-          <!-- Nenhum plano local exibido (removido) -->
+
+      <!-- ========================= -->
+      <!-- PLANO -->
+      <!-- ========================= -->
+      <section *ngIf="activeTab === 'plano'" class="tab-pane">
+        <h2>Planos</h2>
+      </section>
+
+
+      <!-- ========================= -->
+      <!-- DISPOSITIVOS -->
+      <!-- ========================= -->
+      <section *ngIf="activeTab === 'dispositivos'" class="tab-pane">
+        <h2>Dispositivos</h2>
+
+        <div *ngIf="devices.length === 0">
+          Nenhum dispositivo
+        </div>
+
+        <div *ngFor="let device of devices">
+          {{ device.nome }} - {{ device.ip }}
         </div>
       </section>
 
-      <!-- TAB: Dispositivos -->
-      <section *ngIf="activeTab === 'dispositivos'" class="tab-pane active">
-        <h2 class="section-title">Meus Dispositivos</h2>
-        
-        <div class="devices-table">
-          <div class="table-header" *ngIf="hasPlan">
-            <div class="table-cell">Dispositivo</div>
-            <div class="table-cell">Status</div>
-            <div class="table-cell">IP</div>
-            <div class="table-cell">Último Acesso</div>
-            <div class="table-cell">Ação</div>
-          </div>
 
-          <div *ngIf="!hasPlan || devices.length === 0" class="no-faturas">
-            <p>Nenhum dispositivo conectado. Adquira um plano para começar a usar.</p>
-            <button class="btn btn-primary" (click)="router.navigate(['/planos'])" style="margin-top: 15px;">Ver Planos</button>
-          </div>
+      <!-- ========================= -->
+      <!-- FATURAMENTO -->
+      <!-- ========================= -->
+      <section *ngIf="activeTab === 'faturamento'" class="tab-pane">
+        <h2>Faturas</h2>
 
-          <ng-container *ngIf="hasPlan">
-            <div *ngFor="let device of devices" class="table-row">
-              <div class="table-cell">
-                <strong>{{ device.nome }}</strong>
-              </div>
-              <div class="table-cell">
-                <span class="status-badge" [class.active]="device.status === 'Ativo'">
-                  {{ device.status }}
-                </span>
-              </div>
-              <div class="table-cell">{{ device.ip }}</div>
-              <div class="table-cell">{{ device.ultimoAcesso }}</div>
-              <div class="table-cell">
-                <button 
-                  class="btn btn-small btn-danger"
-                  (click)="disconnectDevice(device.id)"
-                >
-                  Desconectar
-                </button>
-              </div>
-            </div>
-          </ng-container>
+        <div *ngIf="invoices.length === 0">
+          Nenhuma fatura
+        </div>
+
+        <div *ngFor="let invoice of invoices">
+          {{ invoice.amount }} - {{ invoice.createdAt | date }}
         </div>
       </section>
 
-      <!-- TAB: Faturamento -->
-      <section *ngIf="activeTab === 'faturamento'" class="tab-pane active">
-        <h2 class="section-title">Histórico de Faturas</h2>
-        
-        <div class="invoices-table">
-          <div class="table-header">
-            <div class="table-cell">Data</div>
-            <div class="table-cell">Valor</div>
-            <div class="table-cell">Status</div>
-            <div class="table-cell">Método</div>
-            <div class="table-cell">Ação</div>
-          </div>
 
-          <ng-container *ngIf="invoices.length > 0">
-            <div *ngFor="let invoice of invoices" class="table-row">
-              <div class="table-cell">{{ invoice.createdAt | date:'dd/MM/yyyy' }}</div>
-              <div class="table-cell"><strong>{{ invoice.amount | number:'1.0-0' }} {{ invoice.currency }}</strong></div>
-              <div class="table-cell">
-                <span class="status-badge paid">Pago</span>
-              </div>
-              <div class="table-cell">{{ invoice.paymentMethod }}</div>
-              <div class="table-cell">
-                <button 
-                  class="btn btn-small btn-secondary"
-                  (click)="downloadInvoice(invoice.id)"
-                >
-                  Recibo
-                </button>
-              </div>
-            </div>
-          </ng-container>
-          <div *ngIf="invoices.length === 0" class="no-faturas">
-            Nenhuma fatura encontrada.
-          </div>
-
-      </div>
-    </section>
-
-      <!-- TAB: Suporte -->
-      <section *ngIf="activeTab === 'suporte'" class="tab-pane active">
-        <h2 class="section-title">Central de Suporte</h2>
-        
-        <div class="support-grid">
-          <div class="support-card">
-            <div class="support-icon">💬</div>
-            <h3>Chat de Suporte</h3>
-            <p>Fale com nosso time direto em tempo real</p>
-            <button class="btn btn-primary">Iniciar Chat</button>
-          </div>
-
-          <div class="support-card">
-            <div class="support-icon">📧</div>
-            <h3>Email</h3>
-            <p>Envie sua dúvida para suporte&#64;vpnangola.ao</p>
-            <button class="btn btn-primary">Enviar Email</button>
-          </div>
-
-          <div class="support-card">
-            <div class="support-icon">📱</div>
-            <h3>Suporte Técnico</h3>
-            <p>Resolva problemas técnicos com nosso time</p>
-            <button class="btn btn-primary" (click)="selectTab('suporte'); router.navigate(['/suporte/tecnico'])">
-              Ver Mais
-            </button>
-          </div>
-
-          <div class="support-card">
-            <div class="support-icon">🛍️</div>
-            <h3>Suporte Comercial</h3>
-            <p>Dúvidas sobre planos e preços? Fale conosco</p>
-            <button class="btn btn-primary" (click)="selectTab('suporte'); router.navigate(['/suporte/comercial'])">
-              Ver Mais
-            </button>
-          </div>
-        </div>
-
-        <div class="faq-section">
-          <h3>Perguntas Frequentes</h3>
-          <div class="faq-item">
-            <h4>Como conectar em múltiplos dispositivos?</h4>
-            <p>Com o seu plano atual ({{ currentUser?.plano }}), você pode conectar até {{ deviceLimit }} dispositivos simultaneamente. Vá para "Dispositivos" para gerenciar suas conexões.</p>
-          </div>
-          <div class="faq-item">
-            <h4>Como cancelar minha assinatura?</h4>
-            <p>Você pode cancelar a qualquer momento sem penalidades. Entre em contato com nossa equipe de suporte.</p>
-          </div>
-          <div class="faq-item">
-            <h4>Qual é a política de reembolso?</h4>
-            <p>Oferecemos garantia de 30 dias. Se não estiver satisfeito, devolveremos 100% de seu dinheiro.</p>
-          </div>
-        </div>
+      <!-- ========================= -->
+      <!-- SUPORTE -->
+      <!-- ========================= -->
+      <section *ngIf="activeTab === 'suporte'" class="tab-pane">
+        <h2>Suporte</h2>
       </section>
 
     </div>
+
   </main>
 </div>
 
-<!-- Modal de confirmação de logout -->
-<div *ngIf="showLogoutConfirm" class="modal-overlay" (click)="cancelLogout()">
-  <div class="modal-content" (click)="$event.stopPropagation()">
-    <h3>Confirmar Saída</h3>
-    <p>Tem certeza que deseja sair da sua conta?</p>
-    <div class="modal-actions">
-      <button class="btn btn-secondary" (click)="cancelLogout()">Cancelar</button>
-      <button class="btn btn-danger" (click)="logout()">Sair</button>
-    </div>
+
+<!-- MODAL LOGOUT -->
+<div *ngIf="showLogoutConfirm" class="modal-overlay">
+  <div class="modal-content">
+    <p>Tem certeza que deseja sair?</p>
+
+    <button (click)="cancelLogout()">Cancelar</button>
+    <button (click)="logout()">Sair</button>
   </div>
 </div>
 
