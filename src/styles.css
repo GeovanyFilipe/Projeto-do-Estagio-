@@ -20,3 +20,25 @@ html.menu-open body {
 h1, h2, h3, h4, h5, h6, p, a, li, span, div {
   font-family: 'Ubuntu', sans-serif;
 }
+
+/* ==========================================================================
+   ANGOLAN VPN - GLOBAL ANIMATION STATES
+   ========================================================================== */
+
+/* Elementos que serão revelados via GSAP (genericPageEntrance) 
+   Começam invisíveis para evitar o flash de conteúdo (FOUC) */
+.hero p, .hero-section .hero-subtitle, .hero-buttons, .hero-button,
+.card, .plano-card, .beneficio-card, .featured-card, .download-card, .beneficio-item,
+.btn-primary, .btn-secondary, .btn-submit {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Garante que o wrapper de rotas cubra o ecrã para a animação Overlay */
+.route-wrapper {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+

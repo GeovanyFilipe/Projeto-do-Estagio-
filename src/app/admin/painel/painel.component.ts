@@ -1,7 +1,8 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService, User } from '../../services/auth.service';
-import { DataConnect } from 'firebase/data-connect';
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig } from '@dataconnect/generated';
 import { listUserDevices, getUserSubscription, listUserInvoices, listUserSessions, listConnectionLogs } from '@dataconnect/generated';
 import { Router } from '@angular/router';
 
@@ -16,8 +17,8 @@ import { Router } from '@angular/router';
 })
 export class PainelComponent implements OnInit {
   private authService = inject(AuthService);
-  private dataconnect = inject(DataConnect);
   private router = inject(Router);
+  private ngZone = inject(NgZone);
 
   currentUser: User | null = null;
   devices: any[] = [];
@@ -44,27 +45,41 @@ export class PainelComponent implements OnInit {
 
   private async loadAdminData(userId: string): Promise<void> {
     try {
-      // Carregar dispositivos
-      const devicesRes = await listUserDevices(this.dataconnect, { userId });
-      this.devices = devicesRes.data.devices;
+      const results = await new Promise<any>((resolve, reject) => {
+        this.ngZone.runOutsideAngular(async () => {
+          try {
+            const dc = getDataConnect(connectorConfig);
 
-      // Carregar assinatura
-      const subRes = await getUserSubscription(this.dataconnect, { userId });
-      this.currentSubscription = subRes.data.userSubscriptions[0] || null;
+            // Executar todas as consultas em paralelo de forma pura
+            const [devicesRes, subRes, invoicesRes, sessionsRes, connectionsRes] = await Promise.all([
+              listUserDevices(dc, { userId }),
+              getUserSubscription(dc, { userId }),
+              listUserInvoices(dc, { userId }),
+              listUserSessions(dc, { userId }),
+              listConnectionLogs(dc, { userId })
+            ]);
 
-      // Carregar faturas
-      const invoicesRes = await listUserInvoices(this.dataconnect, { userId });
-      this.invoices = invoicesRes.data.invoices;
+            resolve({
+              devices: devicesRes.data.devices,
+              subscription: subRes.data.userSubscriptions[0] || null,
+              invoices: invoicesRes.data.invoices,
+              sessions: sessionsRes.data.userSessions,
+              connections: connectionsRes.data.connectionLogs
+            });
+          } catch (e) { reject(e); }
+        });
+      });
 
-      // Carregar sessões
-      const sessionsRes = await listUserSessions(this.dataconnect, { userId });
-      this.sessions = sessionsRes.data.userSessions;
+      // Atualizar o estado do componente (dentro do zone para refletir na UI)
+      this.devices = results.devices;
+      this.currentSubscription = results.subscription;
+      this.invoices = results.invoices;
+      this.sessions = results.sessions;
+      this.connections = results.connections;
 
-      // Carregar histórico de conexões VPN
-      const connectionsRes = await listConnectionLogs(this.dataconnect, { userId });
-      this.connections = connectionsRes.data.connectionLogs;
-    } catch (err) {
-      console.error('Erro ao carregar dados do painel do PGLite:', err);
+    } catch (err: any) {
+      const errorMsg = err?.message ? String(err.message) : String(err);
+      console.error('Erro ao carregar dados do painel do Firebase:', errorMsg);
     }
   }
 

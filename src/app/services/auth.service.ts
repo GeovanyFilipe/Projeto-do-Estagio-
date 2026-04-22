@@ -1,4 +1,4 @@
-import { Injectable, inject, Injector, runInInjectionContext } from '@angular/core';
+import { Injectable, inject, Injector, runInInjectionContext, NgZone } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import {
   Auth,
@@ -11,9 +11,6 @@ import {
   User as FirebaseUser
 } from '@angular/fire/auth';
 import {
-  DataConnect
-} from 'firebase/data-connect';
-import {
   createUser,
   logLogin,
   logLogout,
@@ -21,6 +18,9 @@ import {
   listSubscriptionTypes,
   getUserSubscription
 } from '@dataconnect/generated';
+import { environment } from '../../environments/environment';
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig } from '@dataconnect/generated';
 
 
 export interface User {
@@ -45,8 +45,8 @@ export interface LoginResponse {
 })
 export class AuthService {
   private auth: Auth = inject(Auth);
-  private dataconnect: DataConnect = inject(DataConnect);
   private injector: Injector = inject(Injector);
+  private ngZone: NgZone = inject(NgZone);
 
   private currentSessionId: string | null = null;
 
@@ -71,9 +71,9 @@ export class AuthService {
           this.currentUserSubject.next(basicUser);
           this.isAuthenticatedSubject.next(true);
 
-          // Enriquece com dados do PGLite em background
-          this.enrichUserFromPGLite(fbUser.uid).catch(() => { });
-        }  
+          // Verifica subscrição no Firebase Real em background
+          this.getSubscriptionData(fbUser.uid).catch(() => { });
+        }
       } else {
         this.currentUserSubject.next(null);
         this.isAuthenticatedSubject.next(false);
@@ -97,8 +97,8 @@ export class AuthService {
     this.currentUserSubject.next(basicUser);
     this.isAuthenticatedSubject.next(true);
 
-    // 2. Log login no PGLite
-    this.logSessionToPGLite(fbUser.uid).catch(() => { });
+    // 2. Log login no Data Connect
+    this.logSession(fbUser.uid).catch(() => { });
 
     return basicUser;
   }
@@ -115,8 +115,8 @@ export class AuthService {
     this.currentUserSubject.next(basicUser);
     this.isAuthenticatedSubject.next(true);
 
-    // Tenta sincronizar com PGLite em background
-    this.syncGoogleUserToPGLite(fbUser).catch(() => { });
+    // Sincroniza com a nuvem em background
+    this.syncWithCloud(fbUser).catch(() => { });
 
     return basicUser;
   }
@@ -137,8 +137,8 @@ export class AuthService {
     this.currentUserSubject.next(user);
     this.isAuthenticatedSubject.next(true);
 
-    // Guarda no PGLite
-    await this.registerUserInPGLite(user).catch(() => { });
+    // Guarda no Data Connect
+    await this.registerUser(user).catch(() => { });
 
     return user;
   }
@@ -148,16 +148,29 @@ export class AuthService {
 
   async logout(): Promise<void> {
     if (this.currentSessionId) {
-      await logLogout(this.dataconnect, {
-        sessionId: this.currentSessionId,
-        logoutTime: new Date().toISOString()
-      }).catch(() => { });
+      const sessionId = this.currentSessionId;
       this.currentSessionId = null;
+      
+      await new Promise<void>((resolve) => {
+        this.ngZone.runOutsideAngular(() => {
+          const dc = getDataConnect(connectorConfig);
+          logLogout(dc, {
+            sessionId: sessionId,
+            logoutTime: new Date().toISOString()
+          }).then(() => resolve()).catch(() => resolve());
+        });
+      });
     }
 
     await signOut(this.auth);
     this.currentUserSubject.next(null);
     this.isAuthenticatedSubject.next(false);
+  }
+
+  /** Obtém o token JWT do utilizador atual para chamadas seguras ao backend */
+  async getIdToken(): Promise<string | null> {
+    const user = this.auth.currentUser;
+    return user ? await user.getIdToken() : null;
   }
 
 
@@ -180,22 +193,29 @@ export class AuthService {
     // Atualiza em memória imediatamente
     this.currentUserSubject.next({ ...user, plano: novoPlano });
 
-    // Persiste no PGLite em background
+    // Persiste no Data Connect em background (fora do zone para evitar erros circulares)
     try {
-      // Procura o ID do tipo de assinatura
-      const types = await listSubscriptionTypes(this.dataconnect);
-      const type = types.data.subscriptionTypes.find((t: any) => t.name.toLowerCase() === novoPlano.toLowerCase());
+      await new Promise<void>((resolve, reject) => {
+        this.ngZone.runOutsideAngular(async () => {
+          try {
+            const dc = getDataConnect(connectorConfig);
+            const types = await listSubscriptionTypes(dc);
+            const type = types.data.subscriptionTypes.find(t => t.name.toLowerCase() === novoPlano.toLowerCase());
 
-      if (type) {
-        await createSubscription(this.dataconnect, {
-          userId: user.id,
-          typeId: type.id,
-          startDate: new Date().toISOString(),
-          endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() // +30 dias
+            if (type) {
+              await createSubscription(dc, {
+                userId: user.id,
+                typeId: type.id,
+                startDate: new Date().toISOString(),
+                endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+              });
+            }
+            resolve();
+          } catch (e) { reject(e); }
         });
-      }
+      });
     } catch (err) {
-      console.error('Erro ao atualizar plano no PGLite:', err);
+      console.error('Erro ao atualizar plano no Data Connect:', err);
     }
   }
 
@@ -216,66 +236,87 @@ export class AuthService {
     };
   }
 
-  /** Sincroniza utilizador do Google com o PGLite */
-  private async syncGoogleUserToPGLite(fbUser: FirebaseUser): Promise<void> {
+  /** Sincroniza utilizador do Google com a Cloud */
+  private async syncWithCloud(fbUser: FirebaseUser): Promise<void> {
     try {
-      // Tenta criar (vai falhar se já existir, e tudo bem)
-      await this.registerUserInPGLite(this.fbUserToUser(fbUser));
-    } catch (err) {
-      // Se falhar (ex: User já existe), enriquecemos os dados existentes
-    }
-    await this.enrichUserFromPGLite(fbUser.uid);
+      await this.registerUser(this.fbUserToUser(fbUser));
+    } catch (err) { }
+    await this.getSubscriptionData(fbUser.uid);
   }
 
-  /** Procura dados extra no PGLite (ex: Plano) e atualiza o estado */
-  private async enrichUserFromPGLite(uid: string): Promise<void> {
-    try {
-      // Usamos getUserSubscription que já está no SDK
-      const res = await getUserSubscription(this.dataconnect, { userId: uid });
-      const activeSub = res.data.userSubscriptions?.find((s: any) => s.subscriptionType);
+  /** Procura dados de subscrição na Cloud e atualiza o estado */
+  private async getSubscriptionData(uid: string): Promise<void> {
+    if (!uid) return;
 
-      if (activeSub) {
-        const user = this.currentUserSubject.value;
-        if (user) {
-          this.currentUserSubject.next({
-            ...user,
-            plano: activeSub.subscriptionType.name || 'Nenhum plano'
-          });
+    try {
+      const res = await new Promise<any>((resolve, reject) => {
+        this.ngZone.runOutsideAngular(() => {
+          const dc = getDataConnect(connectorConfig);
+          getUserSubscription(dc, { userId: uid }).then(resolve).catch(reject);
+        });
+      });
+      
+      if (res?.data?.userSubscriptions) {
+        const activeSub = res.data.userSubscriptions.find((s: any) => s.subscriptionType);
+        if (activeSub) {
+          const user = this.currentUserSubject.value;
+          if (user) {
+            this.currentUserSubject.next({
+              ...user,
+              plano: activeSub.subscriptionType.name || 'Nenhum plano'
+            });
+          }
         }
       }
-    } catch (err) {
-      console.error('Erro ao enriquecer dados do PGLite:', err);
+    } catch (err: any) {
+      // Log seguro apenas em desenvolvimento
+      if (!environment.production) {
+        const errorMsg = err?.message ? String(err.message) : String(err);
+        console.warn('[Firebase] Erro de subscrição:', errorMsg);
+      }
     }
   }
 
-  /** Regista a sessão no PGLite */
-  private async logSessionToPGLite(uid: string): Promise<void> {
+  /** Regista a sessão no Data Connect */
+  private async logSession(uid: string): Promise<void> {
     try {
       this.currentSessionId = crypto.randomUUID();
-      await logLogin(this.dataconnect, {
-        id: this.currentSessionId,
-        userId: uid,
-        loginTime: new Date().toISOString(),
-        ipAddress: '127.0.0.1', // Em produção viria do servidor
-        userAgent: navigator.userAgent
+      const sessionId = this.currentSessionId;
+      
+      this.ngZone.runOutsideAngular(() => {
+        const dc = getDataConnect(connectorConfig);
+        logLogin(dc, {
+          id: sessionId,
+          userId: uid,
+          loginTime: new Date().toISOString(),
+          ipAddress: '127.0.0.1',
+          userAgent: navigator.userAgent
+        }).catch((err) => {
+          if (!environment.production) {
+            console.warn('[Firebase] Erro ao registar sessão:', err?.message || String(err));
+          }
+        });
       });
-    } catch (err) {
-      console.error('Erro ao registar sessão no PGLite:', err);
+    } catch (err: any) {
+      // Ignora erro silenciando o log principal
     }
   }
 
-  /** Guarda dados do utilizador no PGLite */
-  async registerUserInPGLite(user: User): Promise<void> {
+  async registerUser(user: User): Promise<void> {
     try {
-      await createUser(this.dataconnect, {
-        id: user.id,
-        email: user.email,
-        passwordHash: 'GOOGLE_OR_EXTERNAL_AUTH',
-        firstName: user.nome,
-        createdAt: new Date().toISOString()
+      await new Promise<void>((resolve, reject) => {
+        this.ngZone.runOutsideAngular(() => {
+          const dc = getDataConnect(connectorConfig);
+          createUser(dc, {
+            id: user.id,
+            email: user.email,
+            passwordHash: 'GOOGLE_OR_EXTERNAL_AUTH',
+            firstName: user.nome,
+            createdAt: new Date().toISOString()
+          }).then(() => resolve()).catch(reject);
+        });
       });
     } catch (err) {
-      // Relança para o chamador decidir se é grave (ex: duplicação)
       throw err;
     }
   }

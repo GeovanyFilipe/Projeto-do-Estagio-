@@ -1,6 +1,7 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
 
@@ -10,14 +11,13 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideAnalytics, getAnalytics, ScreenTrackingService, UserTrackingService } from '@angular/fire/analytics';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { provideDataConnect, getDataConnect } from '@angular/fire/data-connect';
-
 import { environment } from '../environments/environment';
 import { connectorConfig } from '@dataconnect/generated';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-
+    provideAnimations(),
     provideRouter(
       routes,
       withInMemoryScrolling({
@@ -38,7 +38,6 @@ export const appConfig: ApplicationConfig = {
     UserTrackingService,
 
     provideFirestore(() => getFirestore()),
-
     provideDataConnect(() => getDataConnect(connectorConfig))
   ]
 };

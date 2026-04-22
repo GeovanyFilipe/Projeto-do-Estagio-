@@ -84,7 +84,7 @@ query GetUser($id: UUID!) @auth(level: USER) {
     id
     email
     firstName
-    userSubscriptions(where: { isActive: { eq: true } }) {
+    userSubscriptions_on_user(where: { isActive: { eq: true } }) {
       subscriptionType {
         name
       }

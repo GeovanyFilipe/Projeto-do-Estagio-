@@ -1,36 +1,52 @@
 import { queryRef, executeQuery, mutationRef, executeMutation, getDataConnect } from 'firebase/data-connect';
 
-// Funções de utilidade locais para evitar dependência de exports internos da Firebase que mudam de nome
-function validateArgs(connectorConfig, dcOrVars, vars, varsRequired) {
-  const isDC = dcOrVars && (typeof dcOrVars.executeMutation === 'function' || typeof dcOrVars.executeQuery === 'function');
-  const dc = isDC ? dcOrVars : getDataConnect(connectorConfig);
-  const v = isDC ? vars : dcOrVars;
-  return { dc, vars: v };
-}
-
-function validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, varsRequired, varsPossible) {
-  const isDC = dcOrVars && (typeof dcOrVars.executeMutation === 'function' || typeof dcOrVars.executeQuery === 'function');
-  const dc = isDC ? dcOrVars : getDataConnect(connectorConfig);
-  let v, opt;
-  
-  if (isDC) {
-    v = varsPossible ? varsOrOptions : undefined;
-    opt = options;
-  } else {
-    v = varsPossible ? dcOrVars : undefined;
-    opt = varsOrOptions;
-  }
-  return { dc, vars: v, options: opt };
-}
-
 export const connectorConfig = {
   connector: 'example',
   service: 'projeto-do-estagio-1',
   location: 'europe-west1'
 };
-export const dataConnectSettings = {
-  cacheSettings: {}
-};
+
+// =======================
+// UTILITÁRIOS (Restaurados localmente para compatibilidade)
+// =======================
+
+function validateArgs(connectorConfig, dcOrVars, vars, isMutation = false) {
+  const isDC =
+    dcOrVars &&
+    (typeof dcOrVars.executeMutation === 'function' ||
+      typeof dcOrVars.executeQuery === 'function');
+
+  const dc = isDC ? dcOrVars : getDataConnect(connectorConfig);
+  const v = isDC ? vars : dcOrVars;
+
+  return { dc, vars: v };
+}
+
+function validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, hasVars = true, isQuery = true) {
+  const isDC =
+    dcOrVars &&
+    (typeof dcOrVars.executeMutation === 'function' ||
+      typeof dcOrVars.executeQuery === 'function');
+
+  const dc = isDC ? dcOrVars : getDataConnect(connectorConfig);
+
+  let vars, opts;
+
+  if (isDC) {
+    vars = hasVars ? varsOrOptions : undefined;
+    opts = options;
+  } else {
+    vars = hasVars ? dcOrVars : undefined;
+    opts = hasVars ? varsOrOptions : dcOrVars;
+  }
+
+  return { dc, vars, options: opts };
+}
+
+// =======================
+// MUTATIONS
+// =======================
+
 export const createUserRef = (dcOrVars, vars) => {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();
@@ -151,6 +167,10 @@ export function createInvoice(dcOrVars, vars) {
   return executeMutation(createInvoiceRef(dcInstance, inputVars));
 }
 
+// =======================
+// QUERIES
+// =======================
+
 export const listSubscriptionTypesRef = (dc) => {
   const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
   dcInstance._useGeneratedSdk();
@@ -221,4 +241,16 @@ listUserSessionsRef.operationName = 'ListUserSessions';
 export function listUserSessions(dcOrVars, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
   return executeQuery(listUserSessionsRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
+}
+
+export const getUserRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetUser', inputVars);
+}
+getUserRef.operationName = 'GetUser';
+
+export function getUser(dcOrVars, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  return executeQuery(getUserRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 }

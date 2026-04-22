@@ -1,10 +1,4 @@
-const {
-  queryRef,
-  executeQuery,
-  mutationRef,
-  executeMutation,
-  getDataConnect
-} = require('firebase/data-connect');
+const { queryRef, executeQuery, mutationRef, executeMutation, getDataConnect } = require('firebase/data-connect');
 
 const connectorConfig = {
   connector: 'example',
@@ -15,10 +9,10 @@ const connectorConfig = {
 exports.connectorConfig = connectorConfig;
 
 // =======================
-// UTILITÁRIOS
+// UTILITÁRIOS (Restaurados localmente para compatibilidade)
 // =======================
 
-function validateArgs(connectorConfig, dcOrVars, vars) {
+function validateArgs(connectorConfig, dcOrVars, vars, isMutation = false) {
   const isDC =
     dcOrVars &&
     (typeof dcOrVars.executeMutation === 'function' ||
@@ -30,7 +24,7 @@ function validateArgs(connectorConfig, dcOrVars, vars) {
   return { dc, vars: v };
 }
 
-function validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options) {
+function validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, hasVars = true, isQuery = true) {
   const isDC =
     dcOrVars &&
     (typeof dcOrVars.executeMutation === 'function' ||
@@ -41,11 +35,11 @@ function validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, optio
   let vars, opts;
 
   if (isDC) {
-    vars = undefined;
+    vars = hasVars ? varsOrOptions : undefined;
     opts = options;
   } else {
-    vars = dcOrVars;
-    opts = varsOrOptions;
+    vars = hasVars ? dcOrVars : undefined;
+    opts = hasVars ? varsOrOptions : dcOrVars;
   }
 
   return { dc, vars, options: opts };
@@ -55,89 +49,227 @@ function validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, optio
 // MUTATIONS
 // =======================
 
-const createUserRef = (dc, vars) => {
-  const { dc: instance, vars: inputVars } = validateArgs(connectorConfig, dc, vars);
-  instance._useGeneratedSdk();
-  return mutationRef(instance, 'CreateUser', inputVars);
+const createUserRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'CreateUser', inputVars);
+}
+createUserRef.operationName = 'CreateUser';
+exports.createUserRef = createUserRef;
+
+exports.createUser = function createUser(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(createUserRef(dcInstance, inputVars));
 };
 
-exports.createUser = (dc, vars) =>
-  executeMutation(createUserRef(dc, vars));
+const logLoginRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'LogLogin', inputVars);
+}
+logLoginRef.operationName = 'LogLogin';
+exports.logLoginRef = logLoginRef;
 
-const logLoginRef = (dc, vars) => {
-  const { dc: instance, vars: inputVars } = validateArgs(connectorConfig, dc, vars);
-  instance._useGeneratedSdk();
-  return mutationRef(instance, 'LogLogin', inputVars);
+exports.logLogin = function logLogin(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(logLoginRef(dcInstance, inputVars));
 };
 
-exports.logLogin = (dc, vars) =>
-  executeMutation(logLoginRef(dc, vars));
+const logLogoutRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'LogLogout', inputVars);
+}
+logLogoutRef.operationName = 'LogLogout';
+exports.logLogoutRef = logLogoutRef;
 
-const logLogoutRef = (dc, vars) => {
-  const { dc: instance, vars: inputVars } = validateArgs(connectorConfig, dc, vars);
-  instance._useGeneratedSdk();
-  return mutationRef(instance, 'LogLogout', inputVars);
+exports.logLogout = function logLogout(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(logLogoutRef(dcInstance, inputVars));
 };
 
-exports.logLogout = (dc, vars) =>
-  executeMutation(logLogoutRef(dc, vars));
+const createSubscriptionRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'CreateSubscription', inputVars);
+}
+createSubscriptionRef.operationName = 'CreateSubscription';
+exports.createSubscriptionRef = createSubscriptionRef;
 
-const createSubscriptionRef = (dc, vars) => {
-  const { dc: instance, vars: inputVars } = validateArgs(connectorConfig, dc, vars);
-  instance._useGeneratedSdk();
-  return mutationRef(instance, 'CreateSubscription', inputVars);
+exports.createSubscription = function createSubscription(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(createSubscriptionRef(dcInstance, inputVars));
 };
 
-exports.createSubscription = (dc, vars) =>
-  executeMutation(createSubscriptionRef(dc, vars));
+const logVpnConnectionRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'LogVPNConnection', inputVars);
+}
+logVpnConnectionRef.operationName = 'LogVPNConnection';
+exports.logVpnConnectionRef = logVpnConnectionRef;
 
-const createInvoiceRef = (dc, vars) => {
-  const { dc: instance, vars: inputVars } = validateArgs(connectorConfig, dc, vars);
-  instance._useGeneratedSdk();
-  return mutationRef(instance, 'CreateInvoice', inputVars);
+exports.logVpnConnection = function logVpnConnection(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(logVpnConnectionRef(dcInstance, inputVars));
 };
 
-exports.createInvoice = (dc, vars) =>
-  executeMutation(createInvoiceRef(dc, vars));
+const logVpnDisconnectionRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'LogVPNDisconnection', inputVars);
+}
+logVpnDisconnectionRef.operationName = 'LogVPNDisconnection';
+exports.logVpnDisconnectionRef = logVpnDisconnectionRef;
+
+exports.logVpnDisconnection = function logVpnDisconnection(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(logVpnDisconnectionRef(dcInstance, inputVars));
+};
+
+const registerDeviceRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'RegisterDevice', inputVars);
+}
+registerDeviceRef.operationName = 'RegisterDevice';
+exports.registerDeviceRef = registerDeviceRef;
+
+exports.registerDevice = function registerDevice(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(registerDeviceRef(dcInstance, inputVars));
+};
+
+const deleteDeviceRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'DeleteDevice', inputVars);
+}
+deleteDeviceRef.operationName = 'DeleteDevice';
+exports.deleteDeviceRef = deleteDeviceRef;
+
+exports.deleteDevice = function deleteDevice(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(deleteDeviceRef(dcInstance, inputVars));
+};
+
+const updateDeviceSeenRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'UpdateDeviceSeen', inputVars);
+}
+updateDeviceSeenRef.operationName = 'UpdateDeviceSeen';
+exports.updateDeviceSeenRef = updateDeviceSeenRef;
+
+exports.updateDeviceSeen = function updateDeviceSeen(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(updateDeviceSeenRef(dcInstance, inputVars));
+};
+
+const createInvoiceRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'CreateInvoice', inputVars);
+}
+createInvoiceRef.operationName = 'CreateInvoice';
+exports.createInvoiceRef = createInvoiceRef;
+
+exports.createInvoice = function createInvoice(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(createInvoiceRef(dcInstance, inputVars));
+};
 
 // =======================
 // QUERIES
 // =======================
 
 const listSubscriptionTypesRef = (dc) => {
-  const instance = getDataConnect(connectorConfig);
-  instance._useGeneratedSdk();
-  return queryRef(instance, 'ListSubscriptionTypes');
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'ListSubscriptionTypes');
+}
+listSubscriptionTypesRef.operationName = 'ListSubscriptionTypes';
+exports.listSubscriptionTypesRef = listSubscriptionTypesRef;
+
+exports.listSubscriptionTypes = function listSubscriptionTypes(dcOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrOptions, options, undefined,false, false);
+  return executeQuery(listSubscriptionTypesRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 };
 
-exports.listSubscriptionTypes = (dcOrOptions, options) => {
-  const { dc: instance } = validateArgsWithOptions(connectorConfig, dcOrOptions, options);
-  return executeQuery(listSubscriptionTypesRef(instance), options?.fetchPolicy);
+const listUserDevicesRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'ListUserDevices', inputVars);
+}
+listUserDevicesRef.operationName = 'ListUserDevices';
+exports.listUserDevicesRef = listUserDevicesRef;
+
+exports.listUserDevices = function listUserDevices(dcOrVars, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  return executeQuery(listUserDevicesRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 };
 
-const getUserSubscriptionRef = (dc, vars) => {
-  const { dc: instance, vars: inputVars } = validateArgs(connectorConfig, dc, vars);
-  instance._useGeneratedSdk();
-  return queryRef(instance, 'GetUserSubscription', inputVars);
+const getUserSubscriptionRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetUserSubscription', inputVars);
+}
+getUserSubscriptionRef.operationName = 'GetUserSubscription';
+exports.getUserSubscriptionRef = getUserSubscriptionRef;
+
+exports.getUserSubscription = function getUserSubscription(dcOrVars, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  return executeQuery(getUserSubscriptionRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 };
 
-exports.getUserSubscription = (dc, vars) =>
-  executeQuery(getUserSubscriptionRef(dc, vars));
+const listConnectionLogsRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'ListConnectionLogs', inputVars);
+}
+listConnectionLogsRef.operationName = 'ListConnectionLogs';
+exports.listConnectionLogsRef = listConnectionLogsRef;
 
-const listConnectionLogsRef = (dc, vars) => {
-  const { dc: instance, vars: inputVars } = validateArgs(connectorConfig, dc, vars);
-  instance._useGeneratedSdk();
-  return queryRef(instance, 'ListConnectionLogs', inputVars);
+exports.listConnectionLogs = function listConnectionLogs(dcOrVars, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  return executeQuery(listConnectionLogsRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 };
 
-exports.listConnectionLogs = (dc, vars) =>
-  executeQuery(listConnectionLogsRef(dc, vars));
+const listUserInvoicesRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'ListUserInvoices', inputVars);
+}
+listUserInvoicesRef.operationName = 'ListUserInvoices';
+exports.listUserInvoicesRef = listUserInvoicesRef;
 
-const listUserSessionsRef = (dc, vars) => {
-  const { dc: instance, vars: inputVars } = validateArgs(connectorConfig, dc, vars);
-  instance._useGeneratedSdk();
-  return queryRef(instance, 'ListUserSessions', inputVars);
+exports.listUserInvoices = function listUserInvoices(dcOrVars, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  return executeQuery(listUserInvoicesRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 };
 
-exports.listUserSessions = (dc, vars) =>
-  executeQuery(listUserSessionsRef(dc, vars));
+const listUserSessionsRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'ListUserSessions', inputVars);
+}
+listUserSessionsRef.operationName = 'ListUserSessions';
+exports.listUserSessionsRef = listUserSessionsRef;
+
+exports.listUserSessions = function listUserSessions(dcOrVars, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  return executeQuery(listUserSessionsRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
+};
+
+const getUserRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetUser', inputVars);
+}
+getUserRef.operationName = 'GetUser';
+exports.getUserRef = getUserRef;
+
+exports.getUser = function getUser(dcOrVars, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  return executeQuery(getUserRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
+};

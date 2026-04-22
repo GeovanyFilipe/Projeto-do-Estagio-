@@ -1,4 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, NgZone } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -6,7 +7,8 @@ import { FormsModule } from '@angular/forms';
 import { MenuComponent } from '../../layout/menu/menu.component';
 import { RodapeComponent } from '../../layout/rodape/rodape.component';
 import { AuthService } from '../../services/auth.service';
-import { DataConnect } from 'firebase/data-connect';
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig } from '@dataconnect/generated';
 import { createInvoice } from '@dataconnect/generated';
 
 
@@ -19,7 +21,6 @@ import { createInvoice } from '@dataconnect/generated';
   styleUrl: './compra.component.css'
 })
 export class CompraComponent {
-  private dataconnect: DataConnect = inject(DataConnect);
   metodoPagamento: 'cartao' | 'ekwanza' = 'cartao';
 
   tipoCartao: string = '';
@@ -31,6 +32,8 @@ export class CompraComponent {
   telefoneEkwanza: string = '';
 
   planoSelecionadoKey: string = '';
+
+  private ngZone: NgZone = inject(NgZone);
 
   plano: any = {
     nome: '',
@@ -65,7 +68,8 @@ export class CompraComponent {
   constructor(
     private route: ActivatedRoute,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) {
     this.route.params.subscribe(params => {
       this.planoSelecionadoKey = params['plano'];
@@ -90,31 +94,39 @@ export class CompraComponent {
     }
 
     try {
-      await this.authService.updatePlano(this.planoSelecionadoKey);
+      // 1. Atualiza o plano em memória/admin
+      await this.authService.updatePlano(String(this.planoSelecionadoKey));
       
-      // Regista a Fatura no PGLite
-      const user = this.authService.getCurrentUser();
-      if (user) {
-        // Extrai o preço numérico do string (ex: "6.000 Kz" -> 6000)
-        const valorNumerico = parseFloat(this.plano.preco.replace(/[^0-9]/g, ''));
-        
-        await createInvoice(this.dataconnect, {
-          id: crypto.randomUUID(),
-          userId: user.id,
-          amount: valorNumerico,
-          currency: 'AOA',
-          paymentMethod: this.metodoPagamento === 'cartao' ? 'Cartão de Crédito' : 'E-Kwanza',
-          status: 'Pago',
-          createdAt: new Date().toISOString(),
-          planName: this.plano.nome
-        });
-      }
+      // 2. Chamar a Cloud Function para processar o pagamento com Stripe
+      const idToken = await this.authService.getIdToken();
+      if (!idToken) throw new Error('Utilizador não autenticado.');
 
-      alert('Pagamento processado com sucesso! Plano ativado.');
+      // URL da função (Ajustar conforme a região de deploy)
+      const functionUrl = 'https://us-central1-angolanvpn-b8e9c.cloudfunctions.net/createPayment';
+      
+      const precoLimpo = String(this.plano.preco || '0').replace(/[^0-9]/g, '');
+      const valorNumerico = parseFloat(precoLimpo) || 0;
+
+      const body = {
+        paymentMethodId: 'pm_card_visa', // Simulado por agora, viria de um Stripe Element
+        amount: valorNumerico,
+        planName: this.plano.nome
+      };
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${idToken}`,
+        'Content-Type': 'application/json'
+      });
+
+      // Chamada HTTP para o backend real
+      await this.http.post(functionUrl, body, { headers }).toPromise();
+
+      alert('Pagamento processado com sucesso via Backend! Plano ativado.');
       this.router.navigate(['/admin']);
-    } catch (err) {
-      console.error('Erro ao processar compra no PGLite:', err);
-      alert('Erro ao processar pagamento. Tente novamente.');
+    } catch (err: any) {
+      const errorMsg = err?.message ? String(err.message) : 'Erro desconhecido';
+      console.error('Erro ao processar compra no Firebase:', errorMsg);
+      alert('Erro ao processar pagamento: ' + errorMsg);
     }
 
   }

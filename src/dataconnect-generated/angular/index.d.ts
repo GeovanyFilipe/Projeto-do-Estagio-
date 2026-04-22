@@ -1,15 +1,4 @@
-
-import { ListSubscriptionTypesData } from '../';
-import { ConnectorConfig, DataConnect, QueryRef, QueryPromise, ExecuteQueryOptions} from '@angular/fire/data-connect';
-import { CreateQueryResult} from '@tanstack/angular-query-experimental';
-import { CreateDataConnectQueryResult, CreateDataConnectQueryOptions } from '@tanstack-query-firebase/angular/data-connect';
-import { FirebaseError } from 'firebase/app';
-import { Injector } from '@angular/core';
-
-export type ListSubscriptionTypesOptions = () => Omit<CreateDataConnectQueryOptions<ListSubscriptionTypesData, undefined>, 'queryFn'>;
-export function injectListSubscriptionTypes(options?: ListSubscriptionTypesOptions, injector?: Injector): CreateDataConnectQueryResult<ListSubscriptionTypesData, undefined>;
-
-import { CreateUserData, CreateUserVariables, LogLoginData, LogLoginVariables, LogLogoutData, LogLogoutVariables, CreateSubscriptionData, CreateSubscriptionVariables, LogVpnConnectionData, LogVpnConnectionVariables, LogVpnDisconnectionData, LogVpnDisconnectionVariables, RegisterDeviceData, RegisterDeviceVariables, DeleteDeviceData, DeleteDeviceVariables, UpdateDeviceSeenData, UpdateDeviceSeenVariables, CreateInvoiceData, CreateInvoiceVariables, ListSubscriptionTypesData, ListUserDevicesData, ListUserDevicesVariables, GetUserSubscriptionData, GetUserSubscriptionVariables, ListConnectionLogsData, ListConnectionLogsVariables, ListUserInvoicesData, ListUserInvoicesVariables, ListUserSessionsData, ListUserSessionsVariables } from '../';
+import { CreateUserData, CreateUserVariables, LogLoginData, LogLoginVariables, LogLogoutData, LogLogoutVariables, CreateSubscriptionData, CreateSubscriptionVariables, LogVpnConnectionData, LogVpnConnectionVariables, LogVpnDisconnectionData, LogVpnDisconnectionVariables, RegisterDeviceData, RegisterDeviceVariables, DeleteDeviceData, DeleteDeviceVariables, UpdateDeviceSeenData, UpdateDeviceSeenVariables, CreateInvoiceData, CreateInvoiceVariables, ListSubscriptionTypesData, ListUserDevicesData, ListUserDevicesVariables, GetUserSubscriptionData, GetUserSubscriptionVariables, ListConnectionLogsData, ListConnectionLogsVariables, ListUserInvoicesData, ListUserInvoicesVariables, ListUserSessionsData, ListUserSessionsVariables, GetUserData, GetUserVariables } from '../';
 import { ConnectorConfig, DataConnect, QueryRef, QueryPromise, ExecuteQueryOptions, MutationRef, MutationPromise} from '@angular/fire/data-connect';
 import { CreateQueryResult, CreateMutationResult} from '@tanstack/angular-query-experimental';
 import { CreateDataConnectQueryResult, CreateDataConnectQueryOptions, CreateDataConnectMutationResult, DataConnectMutationOptionsUndefinedMutationFn } from '@tanstack-query-firebase/angular/data-connect';
@@ -69,3 +58,6 @@ type ListUserSessionsArgs = ListUserSessionsVariables | (() => ListUserSessionsV
 export type ListUserSessionsOptions = () => Omit<CreateDataConnectQueryOptions<ListUserSessionsData, ListUserSessionsVariables>, 'queryFn'>;
 export function injectListUserSessions(args: ListUserSessionsArgs, options?: ListUserSessionsOptions, injector?: Injector): CreateDataConnectQueryResult<ListUserSessionsData, ListUserSessionsVariables>;
 
+type GetUserArgs = GetUserVariables | (() => GetUserVariables);
+export type GetUserOptions = () => Omit<CreateDataConnectQueryOptions<GetUserData, GetUserVariables>, 'queryFn'>;
+export function injectGetUser(args: GetUserArgs, options?: GetUserOptions, injector?: Injector): CreateDataConnectQueryResult<GetUserData, GetUserVariables>;

@@ -51,6 +51,12 @@
   min-height: 650px;
 }
 
+/* Animações agora geridas globalmente pelo AnimationService */
+
+
+/* Animações geridas globalmente */
+
+
 .hero-title {
   font-size: 56px;
   font-weight: 700;

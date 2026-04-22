@@ -15,19 +15,6 @@
   padding: 50px 40px;
   max-width: 450px;
   width: 100%;
-  animation: slideUp 0.5s ease-out;
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 /* Logo */
@@ -38,23 +25,6 @@
 
 .login-logo svg {
   margin-bottom: 15px;
-  animation: bounce 0.6s ease-out;
-}
-
-@keyframes bounce {
-  0% {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-
-  50% {
-    transform: scale(1.05);
-  }
-
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
 }
 
 .login-logo h1 {
@@ -71,19 +41,6 @@
   border-radius: 8px;
   margin-bottom: 20px;
   font-size: 14px;
-  animation: slideDown 0.3s ease-out;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .alert-error {
@@ -132,18 +89,8 @@
 
 /* Formulário */
 .form {
-  animation: fadeIn 0.3s ease-out;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
 
 .form-group {
   margin-bottom: 20px;

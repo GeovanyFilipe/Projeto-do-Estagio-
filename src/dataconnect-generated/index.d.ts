@@ -74,6 +74,19 @@ export interface Device_Key {
   __typename?: 'Device_Key';
 }
 
+export interface GetUserData {
+  user?: {
+    id: UUIDString;
+    email: string;
+    firstName?: string | null;
+    userSubscriptions_on_user: ({
+      subscriptionType: {
+        name: string;
+      };
+    })[];
+  } & User_Key;
+}
+
 export interface GetUserSubscriptionData {
   userSubscriptions: ({
     id: UUIDString;
@@ -89,6 +102,10 @@ export interface GetUserSubscriptionData {
 
 export interface GetUserSubscriptionVariables {
   userId: UUIDString;
+}
+
+export interface GetUserVariables {
+  id: UUIDString;
 }
 
 export interface Invoice_Key {
@@ -458,4 +475,15 @@ export const listUserSessionsRef: ListUserSessionsRef;
 export function listUserSessions(vars: ListUserSessionsVariables, options?: ExecuteQueryOptions): QueryPromise<ListUserSessionsData, ListUserSessionsVariables>;
 export function listUserSessions(dc: DataConnect, vars: ListUserSessionsVariables, options?: ExecuteQueryOptions): QueryPromise<ListUserSessionsData, ListUserSessionsVariables>;
 
+interface GetUserRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: GetUserVariables): QueryRef<GetUserData, GetUserVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars: GetUserVariables): QueryRef<GetUserData, GetUserVariables>;
+  operationName: string;
+}
+export const getUserRef: GetUserRef;
+
+export function getUser(vars: GetUserVariables, options?: ExecuteQueryOptions): QueryPromise<GetUserData, GetUserVariables>;
+export function getUser(dc: DataConnect, vars: GetUserVariables, options?: ExecuteQueryOptions): QueryPromise<GetUserData, GetUserVariables>;
 

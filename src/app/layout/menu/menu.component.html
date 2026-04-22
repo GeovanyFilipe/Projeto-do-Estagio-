@@ -14,19 +14,30 @@
       </a>
     </div>
 
-    <!-- Links Centrais (Desktop) -->
+    <!-- Links Centrais (Desktop) — sem animação Angular (display gerido por CSS) -->
     <div class="nav-links" [class.mobile-open]="isMobileMenuOpen">
 
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
          class="nav-item" (click)="closeMobileMenu()">Início</a>
 
-      <!-- Dropdown Planos -->
-      <div class="nav-item dropdown" [class.open]="isDropdownOpen('planos')">
+      <!-- Dropdown Planos (Desktop: dropdownFade | Mobile: accordionSlide) -->
+      <div class="nav-item dropdown" [class.open]="isDropdownOpen('planos')"
+           (mouseenter)="onMouseEnter('planos')" (mouseleave)="onMouseLeave()">
         <span class="trigger" (click)="toggleDropdown('planos')">
           Planos
           <i class="fas fa-chevron-down arrow-icon" [class.rotated]="isDropdownOpen('planos')"></i>
         </span>
-        <div class="dropdown-content" [class.visible]="isDropdownOpen('planos')">
+        <!-- Desktop -->
+        <div class="dropdown-content desktop-only"
+             [@dropdownFade]="dropdownState('planos')">
+          <a routerLink="/planos/individual"   (click)="closeMobileMenu()">Individual</a>
+          <a routerLink="/planos/negocio"      (click)="closeMobileMenu()">Negócio</a>
+          <a routerLink="/planos/empresarial"  (click)="closeMobileMenu()">Empresarial</a>
+          <a routerLink="/planos/educacional"  (click)="closeMobileMenu()">Educacional</a>
+        </div>
+        <!-- Mobile (accordion) -->
+        <div class="dropdown-content mobile-only"
+             [@accordionSlide]="accordionState('planos')">
           <a routerLink="/planos/individual"   (click)="closeMobileMenu()">Individual</a>
           <a routerLink="/planos/negocio"      (click)="closeMobileMenu()">Negócio</a>
           <a routerLink="/planos/empresarial"  (click)="closeMobileMenu()">Empresarial</a>
@@ -38,12 +49,21 @@
       <a routerLink="/empresas"  routerLinkActive="active" class="nav-item" (click)="closeMobileMenu()">Empresas</a>
 
       <!-- Dropdown Contacto -->
-      <div class="nav-item dropdown" [class.open]="isDropdownOpen('contacto')">
+      <div class="nav-item dropdown" [class.open]="isDropdownOpen('contacto')"
+           (mouseenter)="onMouseEnter('contacto')" (mouseleave)="onMouseLeave()">
         <span class="trigger" (click)="toggleDropdown('contacto')">
           Contacto
           <i class="fas fa-chevron-down arrow-icon" [class.rotated]="isDropdownOpen('contacto')"></i>
         </span>
-        <div class="dropdown-content" [class.visible]="isDropdownOpen('contacto')">
+        <!-- Desktop -->
+        <div class="dropdown-content desktop-only"
+             [@dropdownFade]="dropdownState('contacto')">
+          <a routerLink="/suporte/tecnico"   (click)="closeMobileMenu()">Suporte Técnico</a>
+          <a routerLink="/suporte/comercial" (click)="closeMobileMenu()">Comercial</a>
+        </div>
+        <!-- Mobile (accordion) -->
+        <div class="dropdown-content mobile-only"
+             [@accordionSlide]="accordionState('contacto')">
           <a routerLink="/suporte/tecnico"   (click)="closeMobileMenu()">Suporte Técnico</a>
           <a routerLink="/suporte/comercial" (click)="closeMobileMenu()">Comercial</a>
         </div>
@@ -79,13 +99,15 @@
 
       <!-- Logado -->
       <ng-template #userLoggedIn>
-        <div class="nav-item dropdown account-dropdown" [class.open]="isDropdownOpen('account')">
+        <div class="nav-item dropdown account-dropdown" [class.open]="isDropdownOpen('account')"
+             (mouseenter)="onMouseEnter('account')" (mouseleave)="onMouseLeave()">
           <button class="btn-account logged-in" (click)="toggleDropdown('account')">
             <i class="fas fa-user-circle"></i>
             {{ currentUser?.nome || 'Minha Conta' }}
             <i class="fas fa-chevron-down arrow-icon" [class.rotated]="isDropdownOpen('account')"></i>
           </button>
-          <div class="dropdown-content right-align" [class.visible]="isDropdownOpen('account')">
+          <div class="dropdown-content right-align"
+               [@dropdownFade]="dropdownState('account')">
             <a routerLink="/cliente/dashboard" fragment="perfil" (click)="closeMobileMenu()">
               <i class="fas fa-chart-line"></i> Painel administrativo
             </a>
@@ -106,5 +128,9 @@
   </div>
 </nav>
 
-<!-- Overlay para fechar menu ao clicar fora (mobile) -->
-<div class="mobile-overlay" [class.active]="isMobileMenuOpen" (click)="closeMobileMenu()"></div>
+<!-- Overlay para fechar menu ao clicar fora (mobile) — controlado por Angular Animations -->
+<div class="mobile-overlay"
+     *ngIf="isMobileMenuOpen"
+     [@overlayFade]
+     (click)="closeMobileMenu()">
+</div>
