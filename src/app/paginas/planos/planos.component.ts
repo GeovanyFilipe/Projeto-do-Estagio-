@@ -14,7 +14,8 @@ import { RodapeComponent } from '../../layout/rodape/rodape.component';
 export class PlanosComponent {
   planos = [
     {
-      titulo: '🏢 Plano Empresarial',
+      titulo: 'Plano Empresarial',
+      icon: 'fa-solid fa-building',
       preco: '60.000,00 Kz',
       descricao: 'Ideal para empresas médias e grandes',
       features: [
@@ -30,7 +31,8 @@ export class PlanosComponent {
       destaque: true
     },
     {
-      titulo: '👤 Plano Individual',
+      titulo: 'Plano Individual',
+      icon: 'fa-solid fa-user',
       preco: '6.000,00 kz',
       descricao: 'Para uso pessoal e profissional em poucos dispositivos',
       features: [
@@ -46,7 +48,8 @@ export class PlanosComponent {
       destaque: true
     },
     {
-      titulo: '🎓 Plano Educacional',
+      titulo: 'Plano Educacional',
+      icon: 'fa-solid fa-graduation-cap',
       preco: '10.000,00 kz',
       descricao: 'Especialmente desenhado para estudantes e professores',
       features: [
@@ -63,7 +66,8 @@ export class PlanosComponent {
       destaque: true
     },
     {
-      titulo: '🚀 Plano Startup',
+      titulo: 'Plano Startup',
+      icon: 'fa-solid fa-rocket',
       preco: '15.000,00 kz',
       descricao: 'Acelere o crescimento da sua startup com conexão segura',
       features: [

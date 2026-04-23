@@ -13,11 +13,11 @@ import { RodapeComponent } from '../../../layout/rodape/rodape.component';
 })
 export class IndividualComponent {
     specs = [
-    { icon: '📱', titulo: 'Dispositivos', descricao: 'Até 2 dispositivos simultâneos' },
-    { icon: '⚡', titulo: 'Velocidade', descricao: 'Velocidade estável para uso diário' },
-    { icon: '🌍', titulo: 'Servidores Locais', descricao: 'Conexão com servidores em Angola' },
-    { icon: '🛡️', titulo: 'Estabilidade', descricao: 'Conexão confiável para navegação e apps' },
-    { icon: '🔒', titulo: 'Segurança', descricao: 'Criptografia básica de dados' },
-    { icon: '💬', titulo: 'Suporte', descricao: 'Suporte por email e chat' },
+    { icon: 'fa-solid fa-mobile-screen', titulo: 'Dispositivos', descricao: 'Até 2 dispositivos simultâneos' },
+    { icon: 'fa-solid fa-bolt', titulo: 'Velocidade', descricao: 'Velocidade estável para uso diário' },
+    { icon: 'fa-solid fa-globe', titulo: 'Servidores Locais', descricao: 'Conexão com servidores em Angola' },
+    { icon: 'fa-solid fa-shield-halved', titulo: 'Estabilidade', descricao: 'Conexão confiável para navegação e apps' },
+    { icon: 'fa-solid fa-lock', titulo: 'Segurança', descricao: 'Criptografia básica de dados' },
+    { icon: 'fa-solid fa-comments', titulo: 'Suporte', descricao: 'Suporte por email e chat' },
     ];
 }

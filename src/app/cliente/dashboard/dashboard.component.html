@@ -128,7 +128,7 @@
             <div class="card-body">
               <div class="activity-feed" *ngIf="sessions.length > 0">
                 <div class="feed-item" *ngFor="let session of sessions.slice(0, 2)">
-                  <div class="feed-icon">🔑</div>
+                  <div class="feed-icon"><i class="fa-solid fa-key"></i></div>
                   <div class="feed-text">
                     <p>Login Realizado</p>
                     <span>{{ session.loginTime | date:'dd/MM HH:mm' }}</span>
@@ -275,14 +275,14 @@
           </div>
 
           <div class="support-card" (click)="router.navigate(['/suporte/comercial'])">
-            <div class="support-icon">💼</div>
+            <div class="support-icon"><i class="fa-solid fa-briefcase"></i></div>
             <h3>Comercial</h3>
             <p>Dúvidas sobre pagamentos, planos e parcerias.</p>
             <button class="btn btn-secondary">Contactar</button>
           </div>
 
           <div class="support-card">
-            <div class="support-icon">💬</div>
+            <div class="support-icon"><i class="fa-solid fa-comments"></i></div>
             <h3>Chat ao Vivo</h3>
             <p>Fale agora mesmo com um de nossos consultores.</p>
             <button class="btn btn-primary">Iniciar Chat</button>
