@@ -35,6 +35,7 @@ export class ClienteDashboardComponent implements OnInit, OnDestroy {
   sessions: any[] = [];
   connections: any[] = [];
   availablePlans: any[] = [];
+  deviceLimit: number = 5; // Valor padrão ou baseado no plano
 
   constructor(
     private authService: AuthService,

@@ -55,7 +55,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.error = '';
 
     try {
-      await this.authService.register(this.email, this.password, this.nome, 'Nenhum plano');
+      await this.authService.register(this.email, this.password, this.nome);
 
       this.loading = false;
       this.success = 'Cadastro realizado com sucesso! Bem-vindo!';

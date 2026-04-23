@@ -142,8 +142,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       await this.authService.register(
         this.registerEmail,
         this.registerPassword,
-        this.registerName,
-        'Nenhum plano'
+        this.registerName
       );
       this.success = 'Conta criada com sucesso!';
       setTimeout(() => this.router.navigate(['/cliente/dashboard']), 1500);
