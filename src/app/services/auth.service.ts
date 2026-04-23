@@ -6,7 +6,9 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  User as FirebaseUser
+  User as FirebaseUser,
+  GoogleAuthProvider,
+  signInWithPopup
 } from '@angular/fire/auth';
 
 import {
@@ -40,6 +42,9 @@ export class AuthService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
+  private initializedSubject = new BehaviorSubject<boolean>(false);
+  public initialized$ = this.initializedSubject.asObservable();
+
   constructor() {
     authState(this.auth).subscribe(fbUser => {
       this.ngZone.run(() => {
@@ -51,6 +56,7 @@ export class AuthService {
           this.currentUserSubject.next(null);
           this.isAuthenticatedSubject.next(false);
         }
+        this.initializedSubject.next(true);
       });
     });
   }
@@ -77,12 +83,13 @@ export class AuthService {
       try {
         const credential = await signInWithEmailAndPassword(this.auth, email, password);
         const fbUser = credential.user;
-
         const user = this.fbUserToUser(fbUser);
 
-        // 🔹 Apenas dados simples
+        // 🔹 Logar sessão no Data Connect
         await logLogin({
-          userId: String(fbUser.uid)
+          id: crypto.randomUUID(),
+          userId: String(fbUser.uid),
+          loginTime: new Date().toISOString()
         });
 
         this.currentUserSubject.next(user);
@@ -91,6 +98,31 @@ export class AuthService {
         return user;
       } catch (error: any) {
         console.error('[AuthService] Erro no login:', error);
+        throw error;
+      }
+    });
+  }
+
+  async loginWithGoogle(): Promise<User> {
+    return this.ngZone.run(async () => {
+      try {
+        const provider = new GoogleAuthProvider();
+        const credential = await signInWithPopup(this.auth, provider);
+        const fbUser = credential.user;
+        const user = this.fbUserToUser(fbUser);
+
+        await logLogin({
+          id: crypto.randomUUID(),
+          userId: String(fbUser.uid),
+          loginTime: new Date().toISOString()
+        });
+
+        this.currentUserSubject.next(user);
+        this.isAuthenticatedSubject.next(true);
+
+        return user;
+      } catch (error: any) {
+        console.error('[AuthService] Erro no login Google:', error);
         throw error;
       }
     });
@@ -108,12 +140,17 @@ export class AuthService {
         const user = this.fbUserToUser(fbUser);
         user.nome = nome;
 
-        // ⚠️ IMPORTANTE: só strings!
+        const names = nome.split(' ');
+        const firstName = names[0];
+        const lastName = names.slice(1).join(' ') || '';
+
         await createUser({
           id: String(fbUser.uid),
           email: String(email),
-          nome: String(nome),
-          passwordHash: String(password) // ⚠️ depois substituir por hash real
+          firstName: String(firstName),
+          lastName: String(lastName),
+          passwordHash: String(password),
+          createdAt: new Date().toISOString()
         });
 
         this.currentUserSubject.next(user);
@@ -131,19 +168,7 @@ export class AuthService {
   // LOGOUT
   // =====================
   async logout(): Promise<void> {
-    const userId = this.currentUserSubject.value?.id;
-
     await signOut(this.auth);
-
-    if (userId) {
-      try {
-        await logLogout({
-          userId: String(userId)
-        });
-      } catch (e) {
-        console.warn('[AuthService] Erro ao registar logout:', e);
-      }
-    }
 
     this.ngZone.run(() => {
       this.currentUserSubject.next(null);
@@ -155,6 +180,16 @@ export class AuthService {
   // =====================
   isAuthenticated(): boolean {
     return this.isAuthenticatedSubject.value;
+  }
+
+  getCurrentUser(): User | null {
+    return this.currentUserSubject.value;
+  }
+
+  async getIdToken(): Promise<string | null> {
+    const user = this.auth.currentUser;
+    if (!user) return null;
+    return await user.getIdToken();
   }
 
   // =====================
