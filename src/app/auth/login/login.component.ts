@@ -78,7 +78,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Verificar se deve começar no registro
@@ -117,7 +117,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.loading = true;
     this.error = '';
-    
+
     try {
       await this.authService.login(this.loginEmail, this.loginPassword);
       this.success = 'Bem-vindo de volta!';
@@ -181,7 +181,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       case 'auth/cancelled-by-user': return 'Operação cancelada.';
       case 'auth/operation-not-allowed': return 'Este método de login não está ativo.';
       case 'auth/popup-blocked': return 'O seu navegador bloqueou a janela de popup.';
-      default: 
+      default:
         if (code?.includes('network-request-failed')) return 'Erro de rede. Verifique sua conexão.';
         return 'Ocorreu um erro ao processar o login. Por favor, tente novamente.';
     }

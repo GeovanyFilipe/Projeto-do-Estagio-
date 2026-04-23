@@ -29,7 +29,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/cliente/dashboard';

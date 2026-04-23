@@ -4,14 +4,14 @@ import { Router } from '@angular/router';
 import { AuthService, User } from '../../services/auth.service';
 import { MenuComponent } from '../../layout/menu/menu.component';
 import { RodapeComponent } from '../../layout/rodape/rodape.component';
-import { 
-  listUserDevices, 
-  getUserSubscription, 
-  deleteDevice, 
-  listUserInvoices, 
-  listUserSessions, 
-  listConnectionLogs, 
-  listSubscriptionTypes 
+import {
+  listUserDevices,
+  getUserSubscription,
+  deleteDevice,
+  listUserInvoices,
+  listUserSessions,
+  listConnectionLogs,
+  listSubscriptionTypes
 } from '@dataconnect/generated';
 import { Subscription } from 'rxjs';
 
@@ -39,7 +39,7 @@ export class ClienteDashboardComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     public router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (!this.authService.isAuthenticated()) {
