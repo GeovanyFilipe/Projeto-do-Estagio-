@@ -1,10 +1,12 @@
-import { Component, OnInit, inject, NgZone } from '@angular/core';
+import { Component, OnInit, inject, NgZone, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService, User } from '../../services/auth.service';
 import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig } from '@dataconnect/generated';
 import { listUserDevices, getUserSubscription, listUserInvoices, listUserSessions, listConnectionLogs } from '@dataconnect/generated';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 
@@ -26,6 +28,8 @@ export class PainelComponent implements OnInit {
   invoices: any[] = [];
   sessions: any[] = [];
   connections: any[] = [];
+  
+  private destroy$ = new Subject<void>();
 
 
 
@@ -35,12 +39,19 @@ export class PainelComponent implements OnInit {
       return;
     }
 
-    this.authService.currentUser$.subscribe(user => {
-      this.currentUser = user;
-      if (user) {
-        this.loadAdminData(user.id);
-      }
-    });
+    this.authService.currentUser$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(user => {
+        this.currentUser = user;
+        if (user) {
+          this.loadAdminData(user.id);
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private async loadAdminData(userId: string): Promise<void> {

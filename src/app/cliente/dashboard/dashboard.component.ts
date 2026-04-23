@@ -13,7 +13,8 @@ import {
   listConnectionLogs,
   listSubscriptionTypes
 } from '@dataconnect/generated';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cliente-dashboard',
@@ -26,7 +27,7 @@ export class ClienteDashboardComponent implements OnInit, OnDestroy {
   currentUser: User | null = null;
   activeTab: string = 'overview';
   showLogoutConfirm: boolean = false;
-  private authSub?: Subscription;
+  private destroy$ = new Subject<void>();
 
   // Dados do Dashboard
   devices: any[] = [];
@@ -48,17 +49,20 @@ export class ClienteDashboardComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.authSub = this.authService.currentUser$.subscribe(user => {
-      this.currentUser = user;
-      if (user) {
-        this.loadDashboardData(user.id);
-        this.loadAvailablePlans();
-      }
-    });
+    this.authService.currentUser$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(user => {
+        this.currentUser = user;
+        if (user) {
+          this.loadDashboardData(user.id);
+          this.loadAvailablePlans();
+        }
+      });
   }
 
   ngOnDestroy(): void {
-    if (this.authSub) this.authSub.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private async loadAvailablePlans(): Promise<void> {
