@@ -57,7 +57,7 @@
       <!-- ========================= -->
       <section *ngIf="activeTab === 'overview'" class="tab-pane active">
         <h2 class="section-title">Visão Geral</h2>
-        
+
         <div class="overview-grid">
           <!-- ASSINATURA -->
           <div class="info-card">
@@ -173,10 +173,12 @@
         </div>
 
         <div class="plans-grid">
-          <div class="plan-card" *ngFor="let plan of availablePlans" [class.current]="plan.name === currentSubscription?.subscriptionType?.name">
+          <div class="plan-card" *ngFor="let plan of availablePlans"
+            [class.current]="plan.name === currentSubscription?.subscriptionType?.name">
             <div class="plan-header">
               <h3>{{ plan.name }}</h3>
-              <span class="badge badge-current" *ngIf="plan.name === currentSubscription?.subscriptionType?.name">Atual</span>
+              <span class="badge badge-current"
+                *ngIf="plan.name === currentSubscription?.subscriptionType?.name">Atual</span>
             </div>
             <div class="plan-price">
               <span class="price">{{ plan.price | number:'1.0-0' }}</span>
@@ -187,7 +189,8 @@
               <p>✓ Velocidade {{ plan.maxSpeedMbps }}Mbps</p>
               <p>✓ Suporte prioritário</p>
             </div>
-            <button class="btn btn-primary w-100" [disabled]="plan.name === currentSubscription?.subscriptionType?.name" (click)="changePlan(plan.name)">
+            <button class="btn btn-primary w-100" [disabled]="plan.name === currentSubscription?.subscriptionType?.name"
+              (click)="changePlan(plan.name)">
               {{ plan.name === currentSubscription?.subscriptionType?.name ? 'Plano Ativo' : 'Mudar para este' }}
             </button>
           </div>
@@ -209,7 +212,7 @@
             <span>Status</span>
             <span>Ação</span>
           </div>
-          
+
           <div class="table-row" *ngFor="let device of devices">
             <div class="table-cell"><strong>{{ device.deviceName }}</strong></div>
             <div class="table-cell">{{ device.ipAddress || '---' }}</div>
@@ -290,7 +293,8 @@
           <h3>Perguntas Frequentes</h3>
           <div class="faq-item">
             <h4>Como configurar a VPN no meu dispositivo?</h4>
-            <p>Vá até a página de Download e siga as instruções para o seu sistema operacional (Windows, Android, iOS).</p>
+            <p>Vá até a página de Download e siga as instruções para o seu sistema operacional (Windows, Android, iOS).
+            </p>
           </div>
           <div class="faq-item">
             <h4>Qual o limite de dispositivos por conta?</h4>
