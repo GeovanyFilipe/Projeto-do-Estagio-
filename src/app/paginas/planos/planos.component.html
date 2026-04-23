@@ -11,7 +11,7 @@
     <div class="planos-grid">
       <article *ngFor="let plano of planos" class="plano-card" [class.destaque]="plano.destaque">
         <header class="plano-header">
-          <h2>{{ plano.titulo }}</h2>
+          <h2><i class="{{ plano.icon }}"></i> {{ plano.titulo }}</h2>
           <div class="preco">
             <span class="valor">{{ plano.preco }}</span>
             <span class="periodo">/mês</span>

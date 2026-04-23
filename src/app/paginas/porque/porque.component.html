@@ -9,7 +9,7 @@
   <section class="razoes-container">
     <div class="razoes-grid">
       <div *ngFor="let razao of razoes" class="razao-card">
-        <div class="razao-icon">{{ razao.icon }}</div>
+        <div class="razao-icon"><i class="{{ razao.icon }}"></i></div>
         <h3>{{ razao.titulo }}</h3>
         <p>{{ razao.descricao }}</p>
       </div>

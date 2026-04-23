@@ -4,7 +4,7 @@
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-badge">📈 Crescimento Digital</div>
+    <div class="hero-badge"><i class="fa-solid fa-chart-line"></i> Crescimento Digital</div>
     <h1>Plano Startup</h1>
     <p>Conectividade inteligente e segura para acelerar o crescimento da sua startup</p>
 
@@ -50,7 +50,7 @@
 
       <div class="specs-grid">
         <div class="spec-card" *ngFor="let spec of specs">
-          <div class="spec-icon">{{ spec.icon }}</div>
+          <div class="spec-icon"><i class="{{ spec.icon }}"></i></div>
 
           <div class="spec-info">
             <h3>{{ spec.titulo }}</h3>

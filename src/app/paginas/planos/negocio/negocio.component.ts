@@ -13,11 +13,11 @@ import { RodapeComponent } from '../../../layout/rodape/rodape.component';
 })
 export class NegocioComponent {
     specs = [
-  { icon: '💻', titulo: 'Dispositivos', descricao: 'Até 5 dispositivos simultâneos' },
-  { icon: '⚡', titulo: 'Velocidade', descricao: 'Velocidade rápida e estável' },
-  { icon: '📡', titulo: 'Baixa Latência', descricao: 'Ideal para sistemas e serviços locais' },
-  { icon: '🌐', titulo: 'Plataformas Empresariais', descricao: 'Acesso otimizado a ERP, CRM e serviços online' },
-  { icon: '🔒', titulo: 'Segurança', descricao: 'Criptografia avançada de dados' },
-  { icon: '🎧', titulo: 'Suporte', descricao: 'Suporte prioritário básico' },
+  { icon: 'fa-solid fa-laptop', titulo: 'Dispositivos', descricao: 'Até 5 dispositivos simultâneos' },
+  { icon: 'fa-solid fa-bolt', titulo: 'Velocidade', descricao: 'Velocidade rápida e estável' },
+  { icon: 'fa-solid fa-satellite-dish', titulo: 'Baixa Latência', descricao: 'Ideal para sistemas e serviços locais' },
+  { icon: 'fa-solid fa-globe', titulo: 'Plataformas Empresariais', descricao: 'Acesso otimizado a ERP, CRM e serviços online' },
+  { icon: 'fa-solid fa-lock', titulo: 'Segurança', descricao: 'Criptografia avançada de dados' },
+  { icon: 'fa-solid fa-headset', titulo: 'Suporte', descricao: 'Suporte prioritário básico' },
 ];
 }
