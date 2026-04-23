@@ -5,7 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import * as L from 'leaflet';
 import { MenuComponent } from "../../layout/menu/menu.component";
 import { RodapeComponent } from '../../layout/rodape/rodape.component';
-import { AuthService, User } from '../../services/auth.service';
+import { AuthService, AppUser } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { logVpnConnection, logVpnDisconnection } from '@dataconnect/generated';
 import { getDataConnect } from 'firebase/data-connect';
@@ -32,7 +32,7 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
   fakeIp = '102.112.200.178';
   provider = 'AngolanVPN';
 
-  currentUser: User | null = null;
+  currentUser: AppUser | null = null;
   private currentConnectionLogId: string | null = null;
   private ngZone = inject(NgZone);
 
@@ -81,7 +81,7 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
 
     // Subscribes para atualizar usuário logado
     this.currentUser = this.authService.getCurrentUser();
-    this.authService.currentUser$
+    this.authService.user$
       .pipe(takeUntil(this.destroy$))
       .subscribe(user => this.currentUser = user);
   }
@@ -129,7 +129,7 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
 
     // Registo de conexão
     if (this.isConnected && this.currentUser) {
-      const userId = this.currentUser.id;
+      const userId = this.currentUser.uid;
       this.currentConnectionLogId = crypto.randomUUID();
       const logId = this.currentConnectionLogId;
 
