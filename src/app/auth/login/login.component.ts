@@ -81,10 +81,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    // Verificar se deve começar no registro
     this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
       if (params['mode'] === 'register') {
         this.isRegister = true;
+      }
+      // Vindo do AuthGuard porque o email não foi verificado
+      if (params['reason'] === 'email-not-verified') {
+        this.error = '⚠️ O teu email ainda não foi verificado. Verifica a tua caixa de entrada.';
       }
     });
   }
@@ -119,11 +122,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.error = '';
 
     try {
-      await this.authService.login(this.loginEmail, this.loginPassword);
+      await this.authService.signIn(this.loginEmail, this.loginPassword);
       this.success = 'Bem-vindo de volta!';
-      setTimeout(() => this.router.navigate(['/cliente/dashboard']), 1000);
+      const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/cliente/dashboard';
+      setTimeout(() => this.router.navigateByUrl(returnUrl), 800);
     } catch (err: any) {
-      this.error = this.mapError(err.code);
+      this.error = err.message || 'Erro ao entrar. Tenta novamente.';
     } finally {
       this.loading = false;
     }
@@ -135,19 +139,21 @@ export class LoginComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if (this.registerPassword.length < 6) {
+      this.error = 'A palavra-passe deve ter pelo menos 6 caracteres.';
+      return;
+    }
+
     this.loading = true;
     this.error = '';
 
     try {
-      await this.authService.register(
-        this.registerEmail,
-        this.registerPassword,
-        this.registerName
-      );
-      this.success = 'Conta criada com sucesso!';
-      setTimeout(() => this.router.navigate(['/cliente/dashboard']), 1500);
+      await this.authService.signUp(this.registerEmail, this.registerPassword, this.registerName);
+      this.success = '✉️ Conta criada! Verifica a tua caixa de entrada (' + this.registerEmail + ') e clica no link antes de entrar.';
+      this.isRegister = false;
+      this.loginEmail = this.registerEmail; // Preenche o email no form de login
     } catch (err: any) {
-      this.error = this.mapError(err.code);
+      this.error = err.message || 'Erro ao criar conta. Tenta novamente.';
     } finally {
       this.loading = false;
     }
@@ -157,12 +163,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     try {
       this.loading = true;
       this.error = '';
-      await this.authService.loginWithGoogle();
+      await this.authService.signInWithGoogle();
       this.success = 'Login efetuado com sucesso!';
-      setTimeout(() => this.router.navigate(['/cliente/dashboard']), 1000);
+      const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/cliente/dashboard';
+      setTimeout(() => this.router.navigateByUrl(returnUrl), 800);
     } catch (err: any) {
-      console.error('Google Login Error:', err);
-      this.error = this.mapError(err.code || err.message);
+      this.error = err.message || 'Erro ao entrar com Google.';
     } finally {
       this.loading = false;
     }

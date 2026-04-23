@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { AuthService, User } from '../../services/auth.service';
+import { AuthService, AppUser } from '../../services/auth.service';
 import { MenuComponent } from '../../layout/menu/menu.component';
 import { RodapeComponent } from '../../layout/rodape/rodape.component';
 import {
@@ -24,7 +24,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrl: './dashboard.component.css'
 })
 export class ClienteDashboardComponent implements OnInit, OnDestroy {
-  currentUser: User | null = null;
+  currentUser: AppUser | null = null;
   activeTab: string = 'overview';
   showLogoutConfirm: boolean = false;
   private destroy$ = new Subject<void>();
@@ -44,19 +44,16 @@ export class ClienteDashboardComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    if (!this.authService.isAuthenticated()) {
-      this.router.navigate(['/login']);
-      return;
-    }
-
-    this.authService.currentUser$
+    this.authService.user$
       .pipe(takeUntil(this.destroy$))
       .subscribe(user => {
-        this.currentUser = user;
-        if (user) {
-          this.loadDashboardData(user.id);
-          this.loadAvailablePlans();
+        if (!user) {
+          this.router.navigate(['/login']);
+          return;
         }
+        this.currentUser = user as any;
+        this.loadDashboardData((user as any).uid ?? (user as any).id);
+        this.loadAvailablePlans();
       });
   }
 
@@ -151,7 +148,7 @@ export class ClienteDashboardComponent implements OnInit, OnDestroy {
     if (this.currentUser && this.currentUser.plano !== newPlan) {
       if (confirm(`Alterar para ${newPlan}?`)) {
         try {
-          await this.authService.updatePlano(newPlan);
+          this.authService.updatePlanLocally(newPlan);
           alert('Plano alterado com sucesso!');
         } catch (error) {
           alert('Erro ao alterar o plano.');

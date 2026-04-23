@@ -105,7 +105,7 @@ export class CompraComponent implements OnDestroy {
 
     try {
       // 1. Atualiza o plano em memória/admin
-      await this.authService.updatePlano(String(this.planoSelecionadoKey));
+      await this.authService.updatePlanLocally(String(this.planoSelecionadoKey));
       
       // 2. Chamar a Cloud Function para processar o pagamento com Stripe
       const idToken = await this.authService.getIdToken();

@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, NgZone, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService, User } from '../../services/auth.service';
+import { AuthService, AppUser } from '../../services/auth.service';
 import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig } from '@dataconnect/generated';
 import { listUserDevices, getUserSubscription, listUserInvoices, listUserSessions, listConnectionLogs } from '@dataconnect/generated';
@@ -22,7 +22,7 @@ export class PainelComponent implements OnInit {
   private router = inject(Router);
   private ngZone = inject(NgZone);
 
-  currentUser: User | null = null;
+  currentUser: AppUser | null = null;
   devices: any[] = [];
   currentSubscription: any = null;
   invoices: any[] = [];
@@ -34,18 +34,15 @@ export class PainelComponent implements OnInit {
 
 
   ngOnInit(): void {
-    if (!this.authService.isAuthenticated()) {
-      this.router.navigate(['/login']);
-      return;
-    }
-
-    this.authService.currentUser$
+    this.authService.user$
       .pipe(takeUntil(this.destroy$))
       .subscribe(user => {
-        this.currentUser = user;
-        if (user) {
-          this.loadAdminData(user.id);
+        if (!user) {
+          this.router.navigate(['/login']);
+          return;
         }
+        this.currentUser = user as any;
+        this.loadAdminData(user.uid);
       });
   }
 

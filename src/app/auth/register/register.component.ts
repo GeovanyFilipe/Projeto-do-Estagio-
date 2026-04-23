@@ -55,14 +55,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.error = '';
 
     try {
-      await this.authService.register(this.email, this.password, this.nome);
+      await this.authService.signUp(this.email, this.password, this.nome);
 
       this.loading = false;
-      this.success = 'Cadastro realizado com sucesso! Bem-vindo!';
-
-      setTimeout(() => {
-        this.router.navigateByUrl(this.returnUrl);
-      }, 1500);
+      this.success = '✉️ Verifica a tua caixa de entrada e clica no link antes de entrar.';
+      setTimeout(() => this.router.navigate(['/login']), 3000);
 
     } catch (err: any) {
       this.loading = false;
