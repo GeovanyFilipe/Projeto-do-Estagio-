@@ -35,7 +35,7 @@ export class ClienteDashboardComponent implements OnInit, OnDestroy {
   sessions: any[] = [];
   connections: any[] = [];
   availablePlans: any[] = [];
-  deviceLimit: number = 5; // Valor padrão ou baseado no plano
+
 
   constructor(
     private authService: AuthService,
@@ -95,6 +95,13 @@ export class ClienteDashboardComponent implements OnInit, OnDestroy {
   // --- LOGICA UI ---
   get hasPlan(): boolean {
     return !!this.currentUser && this.currentUser.plano !== 'Nenhum plano' && this.currentUser.plano !== '';
+  }
+
+  get deviceLimit(): number {
+    if (this.currentSubscription?.subscriptionType) {
+      return this.currentSubscription.subscriptionType.maxDevices;
+    }
+    return 0;
   }
 
   get daysRemaining(): number {
