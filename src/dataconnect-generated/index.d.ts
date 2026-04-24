@@ -1,8 +1,4 @@
-
-import { ConnectorConfig, DataConnect, QueryRef, QueryPromise, ExecuteQueryOptions, DataConnectSettings } from 'firebase/data-connect';
-
 import { ConnectorConfig, DataConnect, QueryRef, QueryPromise, ExecuteQueryOptions, MutationRef, MutationPromise, DataConnectSettings } from 'firebase/data-connect';
-
 
 export const connectorConfig: ConnectorConfig;
 export const dataConnectSettings: DataConnectSettings;
@@ -19,8 +15,6 @@ export interface ConnectionLog_Key {
   id: UUIDString;
   __typename?: 'ConnectionLog_Key';
 }
-
-
 
 export interface CreateInvoiceData {
   invoice_insert: Invoice_Key;
@@ -130,7 +124,6 @@ export interface ListConnectionLogsVariables {
   userId: UUIDString;
 }
 
-
 export interface ListSubscriptionTypesData {
   subscriptionTypes: ({
     id: UUIDString;
@@ -142,8 +135,6 @@ export interface ListSubscriptionTypesData {
     description?: string | null;
   } & SubscriptionType_Key)[];
 }
-
-
 
 export interface ListUserDevicesData {
   devices: ({
@@ -241,7 +232,6 @@ export interface RegisterDeviceVariables {
   lastSeen: TimestampString;
 }
 
-
 export interface Server_Key {
   id: UUIDString;
   __typename?: 'Server_Key';
@@ -251,8 +241,6 @@ export interface SubscriptionType_Key {
   id: UUIDString;
   __typename?: 'SubscriptionType_Key';
 }
-
-
 
 export interface UpdateDeviceSeenData {
   device_update?: Device_Key | null;
@@ -268,7 +256,6 @@ export interface UserSession_Key {
   __typename?: 'UserSession_Key';
 }
 
-
 export interface UserSubscription_Key {
   id: UUIDString;
   __typename?: 'UserSubscription_Key';
@@ -279,7 +266,18 @@ export interface User_Key {
   __typename?: 'User_Key';
 }
 
+export interface VerifyUserData {
+  users: ({
+    id: UUIDString;
+    email: string;
+    firstName?: string | null;
+  } & User_Key)[];
+}
 
+export interface VerifyUserVariables {
+  email: string;
+  passwordHash: string;
+}
 
 interface CreateUserRef {
   /* Allow users to create refs without passing in DataConnect */
@@ -401,7 +399,6 @@ export const createInvoiceRef: CreateInvoiceRef;
 export function createInvoice(vars: CreateInvoiceVariables): MutationPromise<CreateInvoiceData, CreateInvoiceVariables>;
 export function createInvoice(dc: DataConnect, vars: CreateInvoiceVariables): MutationPromise<CreateInvoiceData, CreateInvoiceVariables>;
 
-
 interface ListSubscriptionTypesRef {
   /* Allow users to create refs without passing in DataConnect */
   (): QueryRef<ListSubscriptionTypesData, undefined>;
@@ -413,7 +410,6 @@ export const listSubscriptionTypesRef: ListSubscriptionTypesRef;
 
 export function listSubscriptionTypes(options?: ExecuteQueryOptions): QueryPromise<ListSubscriptionTypesData, undefined>;
 export function listSubscriptionTypes(dc: DataConnect, options?: ExecuteQueryOptions): QueryPromise<ListSubscriptionTypesData, undefined>;
-
 
 interface ListUserDevicesRef {
   /* Allow users to create refs without passing in DataConnect */
@@ -486,4 +482,16 @@ export const getUserRef: GetUserRef;
 
 export function getUser(vars: GetUserVariables, options?: ExecuteQueryOptions): QueryPromise<GetUserData, GetUserVariables>;
 export function getUser(dc: DataConnect, vars: GetUserVariables, options?: ExecuteQueryOptions): QueryPromise<GetUserData, GetUserVariables>;
+
+interface VerifyUserRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: VerifyUserVariables): QueryRef<VerifyUserData, VerifyUserVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars: VerifyUserVariables): QueryRef<VerifyUserData, VerifyUserVariables>;
+  operationName: string;
+}
+export const verifyUserRef: VerifyUserRef;
+
+export function verifyUser(vars: VerifyUserVariables, options?: ExecuteQueryOptions): QueryPromise<VerifyUserData, VerifyUserVariables>;
+export function verifyUser(dc: DataConnect, vars: VerifyUserVariables, options?: ExecuteQueryOptions): QueryPromise<VerifyUserData, VerifyUserVariables>;
 

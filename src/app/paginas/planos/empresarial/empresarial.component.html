@@ -4,7 +4,7 @@
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-badge">🏢 Solução Corporativa</div>
+    <div class="hero-badge"><i class="fa-solid fa-building"></i> Solução Corporativa</div>
     <h1>Plano Empresarial</h1>
     <p>Conectividade segura e de alto desempenho para a sua empresa</p>
     <div class="hero-tags">
@@ -46,7 +46,7 @@
 
       <div class="specs-grid">
         <div class="spec-card" *ngFor="let spec of specs">
-          <div class="spec-icon">{{ spec.icon }}</div>
+          <div class="spec-icon"><i class="{{ spec.icon }}"></i></div>
 
           <div class="spec-info">
             <h3>{{ spec.titulo }}</h3>

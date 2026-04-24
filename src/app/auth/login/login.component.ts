@@ -58,8 +58,13 @@ import {
   ],
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  isRegister = false;
-  loading = false;
+  mode: 'login' | 'register' | 'recovery' = 'login';
+  
+  // Loading states per mode
+  isLoggingIn = false;
+  isRegistering = false;
+  isRecovering = false;
+
   error = '';
   success = '';
 
@@ -78,13 +83,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    // Verificar se deve começar no registro
     this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
       if (params['mode'] === 'register') {
-        this.isRegister = true;
+        this.mode = 'register';
       }
     });
   }
@@ -94,16 +98,28 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  toggleForm(): void {
-    this.isRegister = !this.isRegister;
+  setMode(newMode: 'login' | 'register' | 'recovery'): void {
+    this.mode = newMode;
+    this.resetStates();
+  }
+
+  private resetStates(): void {
+    this.isLoggingIn = false;
+    this.isRegistering = false;
+    this.isRecovering = false;
     this.error = '';
     this.success = '';
   }
 
-  // Wrapper para satisfazer o HTML que usa submit()
+  toggleForm(): void {
+    this.setMode(this.mode === 'register' ? 'login' : 'register');
+  }
+
   submit(): void {
-    if (this.isRegister) {
+    if (this.mode === 'register') {
       this.register();
+    } else if (this.mode === 'recovery') {
+      this.recoverPassword();
     } else {
       this.login();
     }
@@ -115,17 +131,18 @@ export class LoginComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.loading = true;
+    this.isLoggingIn = true;
     this.error = '';
-    
+
     try {
-      await this.authService.login(this.loginEmail, this.loginPassword);
+      await this.authService.signIn(this.loginEmail, this.loginPassword);
       this.success = 'Bem-vindo de volta!';
-      setTimeout(() => this.router.navigate(['/cliente/dashboard']), 1000);
+      const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/cliente/dashboard';
+      setTimeout(() => this.router.navigateByUrl(returnUrl), 800);
     } catch (err: any) {
-      this.error = this.mapError(err.code);
+      this.error = err.message || 'Erro ao entrar. Tenta novamente.';
     } finally {
-      this.loading = false;
+      this.isLoggingIn = false;
     }
   }
 
@@ -135,37 +152,58 @@ export class LoginComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.loading = true;
+    if (this.registerPassword.length < 6) {
+      this.error = 'A palavra-passe deve ter pelo menos 6 caracteres.';
+      return;
+    }
+
+    this.isRegistering = true;
     this.error = '';
 
     try {
-      await this.authService.register(
-        this.registerEmail,
-        this.registerPassword,
-        this.registerName,
-        'Nenhum plano'
-      );
-      this.success = 'Conta criada com sucesso!';
-      setTimeout(() => this.router.navigate(['/cliente/dashboard']), 1500);
+      await this.authService.signUp(this.registerEmail, this.registerPassword, this.registerName);
+      this.success = 'Conta criada com sucesso! Bem-vindo!';
+      const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/cliente/dashboard';
+      setTimeout(() => this.router.navigateByUrl(returnUrl), 800);
     } catch (err: any) {
-      this.error = this.mapError(err.code);
+      this.error = err.message || 'Erro ao criar conta. Tenta novamente.';
     } finally {
-      this.loading = false;
+      this.isRegistering = false;
     }
   }
 
   async loginWithGoogle() {
     try {
-      this.loading = true;
+      this.isLoggingIn = true; // Use loggingIn state for google too
       this.error = '';
-      await this.authService.loginWithGoogle();
+      await this.authService.signInWithGoogle();
       this.success = 'Login efetuado com sucesso!';
-      setTimeout(() => this.router.navigate(['/cliente/dashboard']), 1000);
+      const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/cliente/dashboard';
+      setTimeout(() => this.router.navigateByUrl(returnUrl), 800);
     } catch (err: any) {
-      console.error('Google Login Error:', err);
-      this.error = this.mapError(err.code || err.message);
+      this.error = err.message || 'Erro ao entrar com Google.';
     } finally {
-      this.loading = false;
+      this.isLoggingIn = false;
+    }
+  }
+
+  async recoverPassword() {
+    if (!this.loginEmail) {
+      this.error = 'Por favor, introduza o seu email.';
+      return;
+    }
+
+    this.isRecovering = true;
+    this.error = '';
+
+    try {
+      await this.authService.resetPassword(this.loginEmail);
+      this.success = 'Enviámos um link de recuperação para o seu email.';
+      setTimeout(() => this.setMode('login'), 3000);
+    } catch (err: any) {
+      this.error = err.message || 'Erro ao enviar email de recuperação.';
+    } finally {
+      this.isRecovering = false;
     }
   }
 
@@ -173,16 +211,17 @@ export class LoginComponent implements OnInit, OnDestroy {
     switch (code) {
       case 'auth/user-not-found': return 'Utilizador não encontrado.';
       case 'auth/wrong-password': return 'Senha incorreta.';
+      case 'auth/invalid-credential': return 'Email ou senha incorretos.';
       case 'auth/email-already-in-use': return 'Este email já está em uso.';
-      case 'auth/weak-password': return 'A senha é muito fraca.';
-      case 'auth/invalid-email': return 'Email inválido.';
-      case 'auth/popup-closed-by-user': return 'A janela de login foi fechada antes de concluir.';
-      case 'auth/cancelled-by-user': return 'Operação cancelada pelo utilizador.';
-      case 'auth/operation-not-allowed': return 'O login com Google não está ativado no Firebase Console.';
-      case 'auth/popup-blocked': return 'O seu navegador bloqueou a janela de login.';
-      default: 
+      case 'auth/weak-password': return 'A senha deve ter pelo menos 6 caracteres.';
+      case 'auth/invalid-email': return 'O formato do email é inválido.';
+      case 'auth/popup-closed-by-user': return 'A janela foi fechada antes de concluir o login.';
+      case 'auth/cancelled-by-user': return 'Operação cancelada.';
+      case 'auth/operation-not-allowed': return 'Este método de login não está ativo.';
+      case 'auth/popup-blocked': return 'O seu navegador bloqueou a janela de popup.';
+      default:
         if (code?.includes('network-request-failed')) return 'Erro de rede. Verifique sua conexão.';
-        return 'Ocorreu um erro ao entrar com Google. Tente novamente.';
+        return 'Ocorreu um erro ao processar o login. Por favor, tente novamente.';
     }
   }
 }

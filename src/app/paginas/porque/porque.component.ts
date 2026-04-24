@@ -17,22 +17,22 @@ export class PorqueComponent {
     {
       titulo: 'Privacidade Total',
       descricao: 'Sua privacidade é nossa prioridade. Criptografia de ponta a ponta em todas as conexões.',
-      icon: '🔒'
+      icon: 'fa-solid fa-lock'
     },
     {
       titulo: 'Velocidade',
       descricao: 'Servidores otimizados para garantir a melhor velocidade de conexão possível.',
-      icon: '⚡'
+      icon: 'fa-solid fa-bolt'
     },
     {
       titulo: 'Suporte 24/7',
       descricao: 'Suporte técnico em português disponível 24 horas, 7 dias por semana.',
-      icon: '💬'
+      icon: 'fa-solid fa-comments'
     },
     {
       titulo: 'Baixo Custo',
       descricao: 'Os preços mais competitivos do mercado com recursos premium.',
-      icon: '💰'
+      icon: 'fa-solid fa-money-bill'
     }
   ];
 

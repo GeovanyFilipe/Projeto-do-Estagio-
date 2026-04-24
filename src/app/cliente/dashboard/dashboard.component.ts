@@ -1,16 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { AuthService, User } from '../../services/auth.service';
+import { AuthService, AppUser } from '../../services/auth.service';
 import { MenuComponent } from '../../layout/menu/menu.component';
 import { RodapeComponent } from '../../layout/rodape/rodape.component';
-import { listUserDevices, getUserSubscription, deleteDevice, listUserInvoices, listUserSessions, listConnectionLogs, listSubscriptionTypes } from '@dataconnect/generated';
-import { inject } from '@angular/core';
-import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig } from '@dataconnect/generated';
-
-
-
+import {
+  listUserDevices,
+  getUserSubscription,
+  deleteDevice,
+  listUserInvoices,
+  listUserSessions,
+  listConnectionLogs,
+  listSubscriptionTypes
+} from '@dataconnect/generated';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cliente-dashboard',
@@ -19,11 +23,13 @@ import { connectorConfig } from '@dataconnect/generated';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class ClienteDashboardComponent implements OnInit {
-  currentUser: User | null = null;
+export class ClienteDashboardComponent implements OnInit, OnDestroy {
+  currentUser: AppUser | null = null;
   activeTab: string = 'overview';
   showLogoutConfirm: boolean = false;
+  private destroy$ = new Subject<void>();
 
+  // Dados do Dashboard
   devices: any[] = [];
   currentSubscription: any = null;
   invoices: any[] = [];
@@ -32,8 +38,62 @@ export class ClienteDashboardComponent implements OnInit {
   availablePlans: any[] = [];
 
 
+  private ngZone = inject(NgZone);
 
+  constructor(
+    private authService: AuthService,
+    public router: Router
+  ) { }
 
+  ngOnInit(): void {
+    this.authService.user$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(user => {
+        if (!user) {
+          this.router.navigate(['/login']);
+          return;
+        }
+        this.currentUser = user as any;
+        this.loadDashboardData((user as any).uid ?? (user as any).id);
+        this.loadAvailablePlans();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private async loadAvailablePlans(): Promise<void> {
+    try {
+      const res = await listSubscriptionTypes();
+      this.availablePlans = res.data.subscriptionTypes;
+    } catch (err) {
+      console.error('Erro ao carregar tipos de assinatura:', err);
+    }
+  }
+
+  private async loadDashboardData(userId: string): Promise<void> {
+    try {
+      const [devicesRes, subRes, invoicesRes, sessionsRes, connRes] = await Promise.all([
+        listUserDevices({ userId }),
+        getUserSubscription({ userId }),
+        listUserInvoices({ userId }),
+        listUserSessions({ userId }),
+        listConnectionLogs({ userId })
+      ]);
+
+      this.devices = devicesRes.data.devices;
+      this.currentSubscription = subRes.data.userSubscriptions[0] || null;
+      this.invoices = invoicesRes.data.invoices;
+      this.sessions = sessionsRes.data.userSessions;
+      this.connections = connRes.data.connectionLogs;
+    } catch (err: any) {
+      console.error('Erro ao carregar dados do dashboard:', err.message || err);
+    }
+  }
+
+  // --- LOGICA UI ---
   get hasPlan(): boolean {
     return !!this.currentUser && this.currentUser.plano !== 'Nenhum plano' && this.currentUser.plano !== '';
   }
@@ -45,76 +105,10 @@ export class ClienteDashboardComponent implements OnInit {
     return 0;
   }
 
-
-
-
-
-  constructor(
-    private authService: AuthService,
-    public router: Router
-  ) {}
-
-  ngOnInit(): void {
-    // Verificar se está autenticado
-    if (!this.authService.isAuthenticated()) {
-      this.router.navigate(['/login']);
-      return;
-    }
-
-    this.authService.currentUser$.subscribe(user => {
-      this.currentUser = user;
-      if (user) {
-        this.loadDashboardData(user.id);
-        this.loadAvailablePlans();
-      }
-    });
-  }
-
-  private async loadAvailablePlans(): Promise<void> {
-    try {
-      const dc = getDataConnect(connectorConfig);
-      const res = await listSubscriptionTypes(dc);
-      this.availablePlans = res.data.subscriptionTypes;
-    } catch (err) {
-      console.error('Erro ao carregar tipos de assinatura:', err);
-    }
-  }
-
-
-  private async loadDashboardData(userId: string): Promise<void> {
-    try {
-      const dc = getDataConnect(connectorConfig);
-      
-      // Carregar dispositivos
-      const devicesRes = await listUserDevices(dc, { userId });
-      this.devices = devicesRes.data.devices;
-
-      // Carregar assinatura
-      const subRes = await getUserSubscription(dc, { userId });
-      this.currentSubscription = subRes.data.userSubscriptions[0] || null;
-
-      // Carregar faturas
-      const invoicesRes = await listUserInvoices(dc, { userId });
-      this.invoices = invoicesRes.data.invoices;
-
-      // Carregar histórico de atividade
-      const sessionsRes = await listUserSessions(dc, { userId });
-      this.sessions = sessionsRes.data.userSessions;
-
-      const connRes = await listConnectionLogs(dc, { userId });
-      this.connections = connRes.data.connectionLogs;
-    } catch (err: any) {
-      const errorMsg = err?.message ? String(err.message) : String(err);
-      console.error('Erro ao carregar dados do dashboard do Firebase:', errorMsg);
-    }
-  }
-
-  // Getters para UI dinâmica
   get daysRemaining(): number {
     if (!this.currentSubscription?.endDate) return 0;
     const end = new Date(this.currentSubscription.endDate).getTime();
-    const now = new Date().getTime();
-    const diff = end - now;
+    const diff = end - Date.now();
     return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
   }
 
@@ -122,7 +116,7 @@ export class ClienteDashboardComponent implements OnInit {
     if (!this.currentSubscription?.startDate || !this.currentSubscription?.endDate) return 0;
     const start = new Date(this.currentSubscription.startDate).getTime();
     const end = new Date(this.currentSubscription.endDate).getTime();
-    const now = new Date().getTime();
+    const now = Date.now();
 
     if (now >= end) return 100;
     if (now <= start) return 0;
@@ -139,59 +133,37 @@ export class ClienteDashboardComponent implements OnInit {
     return 'danger';
   }
 
-
-
-  selectTab(tab: string): void {
-    this.activeTab = tab;
-  }
-
   async disconnectDevice(deviceId: string): Promise<void> {
-    const confirmed = confirm('Tem certeza que deseja desconectar este dispositivo?');
-    if (confirmed) {
+    if (confirm('Deseja desconectar este dispositivo?')) {
       try {
-        const dc = getDataConnect(connectorConfig);
-        await deleteDevice(dc, { id: deviceId });
+        await deleteDevice({ id: deviceId });
         this.devices = this.devices.filter(d => d.id !== deviceId);
       } catch (err) {
-        alert('Erro ao desconectar dispositivo.');
+        alert('Erro ao desconectar.');
       }
     }
   }
 
-
-  downloadInvoice(invoiceId: number): void {
-    alert(`Baixando fatura ${invoiceId}`);
-    // Em produção, seria um download real
-  }
-
   async changePlan(newPlan: string): Promise<void> {
     if (this.currentUser && this.currentUser.plano !== newPlan) {
-      const confirmed = confirm(`Alterar para ${newPlan}?`);
-      if (confirmed) {
+      if (confirm(`Alterar para ${newPlan}?`)) {
         try {
-          await this.authService.updatePlano(newPlan);
+          this.authService.updatePlanLocally(newPlan);
           alert('Plano alterado com sucesso!');
         } catch (error) {
-          alert('Erro ao alterar o plano. Tente novamente.');
+          alert('Erro ao alterar o plano.');
         }
       }
     }
   }
 
-  contacterSuporte(): void {
-    this.router.navigate(['/suporte/tecnico']);
-  }
-
-  confirmLogout(): void {
-    this.showLogoutConfirm = true;
-  }
-
   logout(): void {
     this.authService.logout();
-    this.router.navigate(['/']);
   }
 
-  cancelLogout(): void {
-    this.showLogoutConfirm = false;
-  }
+  selectTab(tab: string): void { this.activeTab = tab; }
+  confirmLogout(): void { this.showLogoutConfirm = true; }
+  cancelLogout(): void { this.showLogoutConfirm = false; }
+  contacterSuporte(): void { this.router.navigate(['/suporte/tecnico']); }
+  downloadInvoice(id: number): void { alert(`Baixando fatura ${id}`); }
 }

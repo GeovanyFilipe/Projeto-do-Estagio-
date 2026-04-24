@@ -14,13 +14,13 @@ import { RodapeComponent } from '../../../layout/rodape/rodape.component';
 export class EducacionalComponent {
 
   specs = [
-    { icon: '👨‍💻', titulo: 'Dispositivos', descricao: 'Até 10 dispositivos simultâneos' },
-    { icon: '⚡', titulo: 'Velocidade', descricao: 'Velocidade estável para múltiplos usuários' },
-    { icon: '🌐', titulo: 'Plataformas Educacionais', descricao: 'Acesso seguro a plataformas de ensino' },
-    { icon: '🛡️', titulo: 'Proteção', descricao: 'Proteção contra phishing e ameaças online' },
-    { icon: '🔒', titulo: 'Controle de Conteúdo', descricao: 'Filtro de sites impróprios' },
-    { icon: '📊', titulo: 'Gestão de Uso', descricao: 'Controle de utilização da internet' },
-    { icon: '🎧', titulo: 'Suporte', descricao: 'Suporte técnico dedicado' },
+    { icon: 'fa-solid fa-laptop-code', titulo: 'Dispositivos', descricao: 'Até 10 dispositivos simultâneos' },
+    { icon: 'fa-solid fa-bolt', titulo: 'Velocidade', descricao: 'Velocidade estável para múltiplos usuários' },
+    { icon: 'fa-solid fa-globe', titulo: 'Plataformas Educacionais', descricao: 'Acesso seguro a plataformas de ensino' },
+    { icon: 'fa-solid fa-shield-virus', titulo: 'Proteção', descricao: 'Proteção contra phishing e ameaças online' },
+    { icon: 'fa-solid fa-lock', titulo: 'Controle de Conteúdo', descricao: 'Filtro de sites impróprios' },
+    { icon: 'fa-solid fa-chart-column', titulo: 'Gestão de Uso', descricao: 'Controle de utilização da internet' },
+    { icon: 'fa-solid fa-headset', titulo: 'Suporte', descricao: 'Suporte técnico dedicado' },
   ];
 
 }

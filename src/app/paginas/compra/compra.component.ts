@@ -1,14 +1,14 @@
-import { Component, inject, NgZone } from '@angular/core';
+import { Component, inject, NgZone, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { MenuComponent } from '../../layout/menu/menu.component';
 import { RodapeComponent } from '../../layout/rodape/rodape.component';
 import { AuthService } from '../../services/auth.service';
-import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig } from '@dataconnect/generated';
 import { createInvoice } from '@dataconnect/generated';
 
 
@@ -20,7 +20,7 @@ import { createInvoice } from '@dataconnect/generated';
   templateUrl: './compra.component.html',
   styleUrl: './compra.component.css'
 })
-export class CompraComponent {
+export class CompraComponent implements OnDestroy {
   metodoPagamento: 'cartao' | 'ekwanza' = 'cartao';
 
   tipoCartao: string = '';
@@ -32,6 +32,7 @@ export class CompraComponent {
   telefoneEkwanza: string = '';
 
   planoSelecionadoKey: string = '';
+  private destroy$ = new Subject<void>();
 
   private ngZone: NgZone = inject(NgZone);
 
@@ -71,13 +72,20 @@ export class CompraComponent {
     private router: Router,
     private http: HttpClient
   ) {
-    this.route.params.subscribe(params => {
-      this.planoSelecionadoKey = params['plano'];
+    this.route.params
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
+        this.planoSelecionadoKey = params['plano'];
 
-      this.plano =
-        this.planos[this.planoSelecionadoKey] ||
-        this.planos['individual'];
-    });
+        this.plano =
+          this.planos[this.planoSelecionadoKey] ||
+          this.planos['individual'];
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   async finalizarCompra() {
@@ -95,7 +103,7 @@ export class CompraComponent {
 
     try {
       // 1. Atualiza o plano em memória/admin
-      await this.authService.updatePlano(String(this.planoSelecionadoKey));
+      await this.authService.updatePlanLocally(String(this.planoSelecionadoKey));
       
       // 2. Chamar a Cloud Function para processar o pagamento com Stripe
       const idToken = await this.authService.getIdToken();

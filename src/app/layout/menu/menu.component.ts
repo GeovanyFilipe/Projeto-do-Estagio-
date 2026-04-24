@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { AuthService, User } from '../../services/auth.service';
+import { AuthService, AppUser } from '../../services/auth.service';
 import { AnimationService } from '../../services/animation.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -73,7 +73,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   isProfileMenuOpen = false;
   activeDropdown: string | null = null;
   isAuthenticated = false;
-  currentUser: User | null = null;
+  currentUser: AppUser | null = null;
 
   private destroy$ = new Subject<void>();
 
@@ -89,7 +89,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(isAuth => this.isAuthenticated = isAuth);
 
-    this.authService.currentUser$
+    this.authService.user$
       .pipe(takeUntil(this.destroy$))
       .subscribe(user => this.currentUser = user);
   }

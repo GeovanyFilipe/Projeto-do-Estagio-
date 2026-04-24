@@ -1,19 +1,23 @@
-import { Injectable } from '@angular/core';
-import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { AuthService } from './auth.service';
-
+import { Injectable, inject } from '@angular/core';
+import {
+  CanActivate,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+  Router
+} from '@angular/router';
 import { Observable } from 'rxjs';
 import { filter, switchMap, map, take } from 'rxjs/operators';
+import { AuthService } from './auth.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+/**
+ * AuthGuard — Protege rotas que requerem utilizador autenticado.
+ * Se não autenticado → redireciona para /login com returnUrl.
+ */
+@Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  private authService = inject(AuthService);
+  private router      = inject(Router);
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -21,21 +25,24 @@ export class AuthGuard implements CanActivate {
   ): Observable<boolean> {
 
     return this.authService.initialized$.pipe(
-      filter(initialized => initialized), // espera Firebase inicializar
+      // Espera o Firebase terminar de inicializar antes de decidir
+      filter((initialized): initialized is true => initialized === true),
       take(1),
       switchMap(() =>
-        this.authService.isAuthenticated$.pipe(
+        this.authService.user$.pipe(
           take(1),
-          map(isAuth => {
-            if (isAuth) {
-              return true;
+          map(user => {
+
+            // Não autenticado → vai para login
+            if (!user) {
+              this.router.navigate(['/login'], {
+                queryParams: { returnUrl: state.url }
+              });
+              return false;
             }
 
-            this.router.navigate(['/login'], {
-              queryParams: { returnUrl: state.url }
-            });
-
-            return false;
+            // Autenticado → permite acesso
+            return true;
           })
         )
       )

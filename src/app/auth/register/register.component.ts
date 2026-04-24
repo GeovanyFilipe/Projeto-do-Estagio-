@@ -29,7 +29,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/cliente/dashboard';
@@ -55,14 +55,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.error = '';
 
     try {
-      await this.authService.register(this.email, this.password, this.nome, 'Nenhum plano');
+      await this.authService.signUp(this.email, this.password, this.nome);
 
       this.loading = false;
-      this.success = 'Cadastro realizado com sucesso! Bem-vindo!';
-
-      setTimeout(() => {
-        this.router.navigateByUrl(this.returnUrl);
-      }, 1500);
+      this.success = 'Conta criada com sucesso! Bem-vindo!';
+      setTimeout(() => this.router.navigateByUrl(this.returnUrl), 1000);
 
     } catch (err: any) {
       this.loading = false;

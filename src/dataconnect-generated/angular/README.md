@@ -17,15 +17,13 @@ You can also follow the instructions from the [Data Connect documentation](https
   - [*Connecting to the local Emulator*](#connecting-to-the-local-emulator)
 - [**Queries**](#queries)
   - [*ListSubscriptionTypes*](#listsubscriptiontypes)
-
-- [**Mutations**](#mutations)
-=======
   - [*ListUserDevices*](#listuserdevices)
   - [*GetUserSubscription*](#getusersubscription)
   - [*ListConnectionLogs*](#listconnectionlogs)
   - [*ListUserInvoices*](#listuserinvoices)
   - [*ListUserSessions*](#listusersessions)
   - [*GetUser*](#getuser)
+  - [*VerifyUser*](#verifyuser)
 - [**Mutations**](#mutations)
   - [*CreateUser*](#createuser)
   - [*LogLogin*](#loglogin)
@@ -37,7 +35,6 @@ You can also follow the instructions from the [Data Connect documentation](https
   - [*DeleteDevice*](#deletedevice)
   - [*UpdateDeviceSeen*](#updatedeviceseen)
   - [*CreateInvoice*](#createinvoice)
->>>>>>> 7cb0d603539b19c13fce02c59ef5c06568f1ec75
 
 # TanStack Query Firebase & TanStack Angular Query
 This SDK provides [Angular](https://angular.dev/) injectors generated specific to your application, for the operations found in the connector `example`. These injectors are generated using [TanStack Query Firebase](https://react-query-firebase.invertase.dev/) by our partners at Invertase, a library built on top of [TanStack Angular Query v5](https://tanstack.com/query/v5/docs/framework/angular/overview) and [AngularFire](https://github.com/angular/angularfire/tree/main).
@@ -197,13 +194,6 @@ export class MyComponent {
 }
 ```
 
-
-# Mutations
-
-No Mutations were generated for the `example` connector.
-
-If you want to learn more about how to use Mutations in Data Connect, you can follow the examples from the [Data Connect documentation](https://firebase.google.com/docs/data-connect/web-sdk#operations-react-angular).
-=======
 ## ListUserDevices
 You can execute the `ListUserDevices` Query using the following Query injector, which is defined in [dataconnect-generated/angular/index.d.ts](./index.d.ts):
 
@@ -715,6 +705,90 @@ export class MyComponent {
     };
   };
   query = injectGetUser(this.getUserVars, this.options);
+}
+```
+
+## VerifyUser
+You can execute the `VerifyUser` Query using the following Query injector, which is defined in [dataconnect-generated/angular/index.d.ts](./index.d.ts):
+
+```javascript
+injectVerifyUser(args: VerifyUserArgs, options?: VerifyUserOptions, injector?: Injector): CreateDataConnectQueryResult<VerifyUserData, VerifyUserVariables>;
+```
+
+### Variables
+The `VerifyUser` Query requires an argument of type `VerifyUserVariables`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+
+```javascript
+export interface VerifyUserVariables {
+  email: string;
+  passwordHash: string;
+}
+```
+### Return Type
+Recall that calling the `VerifyUser` Query injector returns a `CreateDataConnectQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
+
+To check the status of a Query, use the `CreateDataConnectQueryResult.status()` function. You can also check for pending / success / error status using the `CreateDataConnectQueryResult.isPending()`, `CreateDataConnectQueryResult.isSuccess()`, and `CreateDataConnectQueryResult.isError()` functions.
+
+To access the data returned by a Query, use the `CreateDataConnectQueryResult.data()` function. The data for the `VerifyUser` Query is of type `VerifyUserData`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+```javascript
+export interface VerifyUserData {
+  users: ({
+    id: UUIDString;
+    email: string;
+    firstName?: string | null;
+  } & User_Key)[];
+}
+```
+
+To learn more about the `CreateDataConnectQueryResult` object, see the [TanStack Query Firebase documentation](https://docs.page/invertase/tanstack-query-firebase/angular/data-connect/functions/injectDataConnectQuery) and the [TanStack Angular Query documentation](https://tanstack.com/query/v5/docs/framework/angular/reference/functions/injectquery).
+
+### Using `VerifyUser`'s Query injector
+
+```javascript
+... // other imports
+import { connectorConfig, VerifyUserVariables } from '@dataconnect/generated';
+import { injectVerifyUser, VerifyUserOptions } from '@dataconnect/generated/angular'
+import { DataConnect } from '@angular/fire/data-connect';
+import { initializeApp } from '@angular/fire/app';
+
+@Component({
+  ... // other component fields
+  template: `
+    <!-- You can render your component dynamically based on the status of the Query. -->
+    @if (query.isPending()) {
+      Loading...
+    }
+    @if (query.error()) {
+      An error has occurred: {{ query.error() }}
+    }
+    <!-- If the Query is successful, you can access the data returned using
+      the CreateDataConnectQueryResult.data() function. -->
+    @if (query.data(); as data) {
+      <!-- use your data to display something -->
+            <div>Query successful!</div>
+    }
+  `,
+})
+export class MyComponent {
+  // The `VerifyUser` Query requires an argument of type `VerifyUserVariables`:
+  verifyUserVars: VerifyUserVariables = {
+    email: ..., 
+    passwordHash: ..., 
+  };
+
+  // Since the execution of the query is eager, you don't have to call `execute` to "execute" the Query.
+  // Call the Query injector function to get a `CreateDataConnectQueryResult` object which holds the state of your Query.
+  query = injectVerifyUser(this.verifyUserVars);
+  // Variables can be defined inline as well.
+  query = injectVerifyUser({ email: ..., passwordHash: ..., });
+
+  // You can also pass in an options function (not object) of type `VerifyUserOptions` to the Query injector function.
+  options: VerifyUserOptions = () => {
+    return {
+      staleTime: 5 * 1000
+    };
+  };
+  query = injectVerifyUser(this.verifyUserVars, this.options);
 }
 ```
 
@@ -1769,5 +1843,5 @@ export class MyComponent {
     this.mutation.mutate(createInvoiceVars, this.options());
   }
 }
-
+```
 
