@@ -9,8 +9,6 @@ import { takeUntil } from 'rxjs/operators';
 import { MenuComponent } from '../../layout/menu/menu.component';
 import { RodapeComponent } from '../../layout/rodape/rodape.component';
 import { AuthService } from '../../services/auth.service';
-import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig } from '@dataconnect/generated';
 import { createInvoice } from '@dataconnect/generated';
 
 

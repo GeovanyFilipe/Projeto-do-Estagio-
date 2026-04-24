@@ -13,13 +13,13 @@ import {
   GoogleAuthProvider,
   User as FirebaseUser
 } from '@angular/fire/auth';
+
+// Data Connect — as queries e mutações que já existem no projeto
 import {
-  Firestore,
-  doc,
-  getDoc,
-  setDoc,
-  serverTimestamp
-} from '@angular/fire/firestore';
+  createUser,
+  getUser,
+  getUserSubscription
+} from '@dataconnect/generated';
 
 // ─── Modelo de Utilizador da Aplicação ───────────────────────────────────────
 export interface AppUser {
@@ -28,7 +28,6 @@ export interface AppUser {
   email: string;
   plano: string;
   status: 'Ativo' | 'Inativo' | 'Pendente';
-  emailVerified: boolean;
   avatar: string;
   provider: 'email' | 'google' | 'mixed';
 }
@@ -45,41 +44,44 @@ export class AuthError extends Error {
 export class AuthService {
 
   // ── Dependências ─────────────────────────────────────────────────────────────
-  private auth     = inject(Auth);
-  private firestore = inject(Firestore);
-  private router   = inject(Router);
-  private ngZone   = inject(NgZone);
+  private auth   = inject(Auth);
+  private router = inject(Router);
+  private ngZone = inject(NgZone);
 
   // ── Estado Reativo ────────────────────────────────────────────────────────────
-  private _user$          = new BehaviorSubject<AppUser | null>(null);
-  private _initialized$   = new BehaviorSubject<boolean>(false);
-  private _loading$       = new BehaviorSubject<boolean>(false);
+  private _user$        = new BehaviorSubject<AppUser | null>(null);
+  private _initialized$ = new BehaviorSubject<boolean>(false);
+  private _loading$     = new BehaviorSubject<boolean>(false);
+  private _isAuth$      = new BehaviorSubject<boolean>(false);
 
-  public readonly user$         = this._user$.asObservable();
-  public readonly initialized$  = this._initialized$.asObservable();
-  public readonly loading$      = this._loading$.asObservable();
-  public readonly isAuthenticated$: Observable<boolean> = new BehaviorSubject<boolean>(false);
+  public readonly user$            = this._user$.asObservable();
+  public readonly initialized$     = this._initialized$.asObservable();
+  public readonly loading$         = this._loading$.asObservable();
+  public readonly isAuthenticated$ = this._isAuth$.asObservable();
 
   constructor() {
     // Observer principal — reage a qualquer mudança de estado do Firebase Auth
-    authState(this.auth).subscribe(async fbUser => {
+    authState(this.auth).subscribe(fbUser => {
       if (fbUser) {
-        // Mostra estado temporário imediatamente (sem bloquear a UI)
+        // 1. Mostra o utilizador IMEDIATAMENTE (dados básicos do Firebase Auth)
+        const quickUser = this._quickUser(fbUser);
         this.ngZone.run(() => {
-          (this.isAuthenticated$ as BehaviorSubject<boolean>).next(true);
+          this._user$.next(quickUser);
+          this._isAuth$.next(true);
+          this._initialized$.next(true); // A app pode avançar já
         });
 
-        // Carrega perfil completo do Firestore
-        const appUser = await this._buildAppUser(fbUser);
-        this.ngZone.run(() => {
-          this._user$.next(appUser);
-          (this.isAuthenticated$ as BehaviorSubject<boolean>).next(true);
-          this._initialized$.next(true);
+        // 2. Carrega dados extra do Data Connect em background (sem bloquear)
+        this._enrichFromDataConnect(fbUser).then(enrichedUser => {
+          this.ngZone.run(() => this._user$.next(enrichedUser));
+        }).catch(() => {
+          // Se o Data Connect falhar, o utilizador continua com os dados básicos
         });
+
       } else {
         this.ngZone.run(() => {
           this._user$.next(null);
-          (this.isAuthenticated$ as BehaviorSubject<boolean>).next(false);
+          this._isAuth$.next(false);
           this._initialized$.next(true);
         });
       }
@@ -92,22 +94,33 @@ export class AuthService {
   async signUp(email: string, password: string, nome: string): Promise<AppUser> {
     this._loading$.next(true);
     try {
-      // 1. Verificar se o email já está em uso
-      await this._checkEmailAvailability(email);
-
-      // 2. Criar conta no Firebase Auth
+      // 1. Criar conta no Firebase Auth
       const credential = await createUserWithEmailAndPassword(this.auth, email, password);
       const fbUser = credential.user;
 
-      // 3. Criar perfil no Firestore (não bloqueia se falhar)
-      this._createFirestoreProfile(fbUser, nome, 'email').catch(e =>
-        console.warn('[AuthService] Perfil Firestore falhou (não crítico):', e.message)
-      );
+      // 2. Criar perfil no Data Connect (não bloqueia se falhar)
+      const names = nome.trim().split(' ');
+      createUser({
+        id: fbUser.uid,
+        email: email,
+        firstName: names[0],
+        lastName: names.slice(1).join(' ') || '',
+        passwordHash: '',
+        createdAt: new Date().toISOString()
+      }).catch(e => console.warn('[AuthService] Perfil DC falhou:', e.message));
 
-      // 4. Autenticar imediatamente e retornar utilizador
-      const appUser = await this._buildAppUser(fbUser);
+      // 3. Autenticar imediatamente
+      const appUser: AppUser = {
+        uid: fbUser.uid,
+        nome: nome,
+        email: email,
+        plano: 'Nenhum plano',
+        status: 'Inativo',
+        avatar: fbUser.photoURL ?? 'assets/default-avatar.png',
+        provider: 'email'
+      };
       this._user$.next(appUser);
-      (this.isAuthenticated$ as BehaviorSubject<boolean>).next(true);
+      this._isAuth$.next(true);
       return appUser;
 
     } catch (error: any) {
@@ -126,9 +139,10 @@ export class AuthService {
       const credential = await signInWithEmailAndPassword(this.auth, email, password);
       const fbUser = credential.user;
 
-      const appUser = await this._buildAppUser(fbUser);
+      // Retornar utilizador imediatamente (o observer vai enriquecer depois)
+      const appUser = this._quickUser(fbUser);
       this._user$.next(appUser);
-      (this.isAuthenticated$ as BehaviorSubject<boolean>).next(true);
+      this._isAuth$.next(true);
       return appUser;
 
     } catch (error: any) {
@@ -148,20 +162,30 @@ export class AuthService {
       const credential = await signInWithPopup(this.auth, provider);
       const fbUser = credential.user;
 
-      // Criar perfil no Firestore se não existir
-      await this._ensureFirestoreProfile(fbUser, 'google');
+      // Criar perfil no Data Connect se for a primeira vez (não bloqueia)
+      const names = (fbUser.displayName ?? '').split(' ');
+      createUser({
+        id: fbUser.uid,
+        email: fbUser.email ?? '',
+        firstName: names[0] || 'Utilizador',
+        lastName: names.slice(1).join(' ') || '',
+        passwordHash: '',
+        createdAt: new Date().toISOString()
+      }).catch(() => {
+        // Ignora se já existir
+      });
 
-      const appUser = await this._buildAppUser(fbUser);
+      const appUser = this._quickUser(fbUser);
+      appUser.provider = 'google';
       this._user$.next(appUser);
-      (this.isAuthenticated$ as BehaviorSubject<boolean>).next(true);
+      this._isAuth$.next(true);
       return appUser;
 
     } catch (error: any) {
-      // Caso especial: email já existe com outro método (ex: email/password)
       if (error.code === 'auth/account-exists-with-different-credential') {
         throw new AuthError(
           'auth/account-exists-with-different-credential',
-          'Este email já está registado com email e palavra-passe. Por favor, entre com email e palavra-passe.'
+          'Este email já está registado com email e palavra-passe. Entra com email e palavra-passe.'
         );
       }
       throw this._mapFirebaseError(error);
@@ -191,7 +215,7 @@ export class AuthService {
     await signOut(this.auth);
     this.ngZone.run(() => {
       this._user$.next(null);
-      (this.isAuthenticated$ as BehaviorSubject<boolean>).next(false);
+      this._isAuth$.next(false);
       this.router.navigate(['/login']);
     });
   }
@@ -200,7 +224,7 @@ export class AuthService {
   // HELPERS PÚBLICOS
   // ═══════════════════════════════════════════════════════════════════════════
   isAuthenticated(): boolean {
-    return (this.isAuthenticated$ as BehaviorSubject<boolean>).value;
+    return this._isAuth$.value;
   }
 
   getCurrentUser(): AppUser | null {
@@ -212,7 +236,6 @@ export class AuthService {
     return user ? await user.getIdToken() : null;
   }
 
-  // Atualiza o plano do utilizador em memória (após compra)
   updatePlanLocally(plano: string): void {
     const user = this._user$.value;
     if (user) {
@@ -221,110 +244,69 @@ export class AuthService {
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // MÉTODOS PRIVADOS (Lógica Interna)
+  // MÉTODOS PRIVADOS
   // ═══════════════════════════════════════════════════════════════════════════
 
-  // Constrói um AppUser combinando Firebase Auth + Firestore
-  private async _buildAppUser(fbUser: FirebaseUser): Promise<AppUser> {
+  // Perfil instantâneo a partir do Firebase Auth (sem rede)
+  private _quickUser(fbUser: FirebaseUser): AppUser {
     const email = fbUser.email ?? '';
-    const defaultUser: AppUser = {
+    return {
       uid: fbUser.uid,
       nome: fbUser.displayName ?? email.split('@')[0],
       email,
       plano: 'Nenhum plano',
       status: 'Inativo',
-      emailVerified: fbUser.emailVerified,
       avatar: fbUser.photoURL ?? 'assets/default-avatar.png',
       provider: 'email'
     };
+  }
+
+  // Enriquece o perfil com dados do Data Connect (plano, nome da DB, etc.)
+  private async _enrichFromDataConnect(fbUser: FirebaseUser): Promise<AppUser> {
+    const base = this._quickUser(fbUser);
 
     try {
-      const profileDoc = await getDoc(doc(this.firestore, 'users', fbUser.uid));
-      if (profileDoc.exists()) {
-        const data = profileDoc.data();
-        return {
-          ...defaultUser,
-          nome: data['nome'] ?? defaultUser.nome,
-          plano: data['plano'] ?? 'Nenhum plano',
-          status: data['status'] ?? 'Inativo',
-          provider: data['provider'] ?? 'email',
-          avatar: data['avatar'] ?? defaultUser.avatar
-        };
+      const [profileRes, subRes] = await Promise.all([
+        getUser({ id: fbUser.uid }).catch(() => null),
+        getUserSubscription({ userId: fbUser.uid }).catch(() => null)
+      ]);
+
+      if (profileRes?.data?.user?.firstName) {
+        base.nome = profileRes.data.user.firstName;
+      }
+
+      const activeSub = (subRes?.data as any)?.userSubscriptions?.[0];
+      if (activeSub?.subscriptionType?.name) {
+        base.plano = activeSub.subscriptionType.name;
+        base.status = 'Ativo';
       }
     } catch (err) {
-      console.warn('[AuthService] Não foi possível carregar perfil do Firestore:', err);
+      // Silencioso — dados básicos já estão disponíveis
     }
 
-    return defaultUser;
+    return base;
   }
 
-  // Cria o documento do utilizador no Firestore (no registo)
-  private async _createFirestoreProfile(
-    fbUser: FirebaseUser,
-    nome: string,
-    provider: AppUser['provider']
-  ): Promise<void> {
-    const userRef = doc(this.firestore, 'users', fbUser.uid);
-    await setDoc(userRef, {
-      uid: fbUser.uid,
-      nome: nome,
-      email: fbUser.email,
-      plano: 'Nenhum plano',
-      status: 'Inativo',
-      provider: provider,
-      avatar: fbUser.photoURL ?? 'assets/default-avatar.png',
-      createdAt: serverTimestamp()
-    });
-  }
-
-  // Garante que o perfil existe no Firestore (para login Google)
-  private async _ensureFirestoreProfile(
-    fbUser: FirebaseUser,
-    provider: AppUser['provider']
-  ): Promise<void> {
-    const userRef = doc(this.firestore, 'users', fbUser.uid);
-    const existing = await getDoc(userRef);
-    if (!existing.exists()) {
-      const nome = fbUser.displayName ?? (fbUser.email ?? '').split('@')[0];
-      await this._createFirestoreProfile(fbUser, nome, provider);
-    }
-  }
-
-  // Verifica se um email já está em uso antes do registo
-  private async _checkEmailAvailability(email: string): Promise<void> {
-    const methods = await fetchSignInMethodsForEmail(this.auth, email);
-    if (methods.length > 0) {
-      const isGoogle = methods.includes('google.com');
-      throw new AuthError(
-        'auth/email-already-in-use',
-        isGoogle
-          ? 'Este email já está registado com o Google. Por favor, use o botão "Entrar com Google".'
-          : 'Este email já está em uso. Por favor, inicia sessão ou recupera a palavra-passe.'
-      );
-    }
-  }
-
-  // Mapeia erros do Firebase para mensagens amigáveis
+  // Mapeia erros do Firebase para mensagens amigáveis em PT
   private _mapFirebaseError(error: any): AuthError {
-    // Se já é um AuthError personalizado, retorna diretamente
     if (error instanceof AuthError) return error;
 
     const messages: Record<string, string> = {
-      'auth/invalid-email':                      'O formato do email é inválido.',
-      'auth/user-not-found':                     'Não existe nenhuma conta com este email.',
-      'auth/wrong-password':                     'Palavra-passe incorreta.',
-      'auth/invalid-credential':                 'Email ou palavra-passe incorretos.',
-      'auth/email-already-in-use':               'Este email já está em uso.',
-      'auth/weak-password':                      'A palavra-passe deve ter pelo menos 6 caracteres.',
-      'auth/popup-closed-by-user':               'O popup foi fechado antes de concluir o login.',
-      'auth/popup-blocked':                      'O navegador bloqueou o popup. Por favor, permite popups para este site.',
-      'auth/network-request-failed':             'Sem ligação à internet. Verifica a tua rede.',
-      'auth/too-many-requests':                  'Demasiadas tentativas. Por favor, aguarda alguns minutos.',
-      'auth/operation-not-allowed':              'Este método de login não está ativo.',
+      'auth/invalid-email':              'O formato do email é inválido.',
+      'auth/user-not-found':             'Não existe nenhuma conta com este email.',
+      'auth/wrong-password':             'Palavra-passe incorreta.',
+      'auth/invalid-credential':         'Email ou palavra-passe incorretos.',
+      'auth/email-already-in-use':       'Este email já está em uso.',
+      'auth/weak-password':              'A palavra-passe deve ter pelo menos 6 caracteres.',
+      'auth/popup-closed-by-user':       'O popup foi fechado antes de concluir o login.',
+      'auth/popup-blocked':              'O navegador bloqueou o popup. Permite popups para este site.',
+      'auth/network-request-failed':     'Sem ligação à internet. Verifica a tua rede.',
+      'auth/too-many-requests':          'Demasiadas tentativas. Aguarda alguns minutos.',
+      'auth/operation-not-allowed':      'Este método de login não está ativo.',
       'auth/account-exists-with-different-credential': 'Este email está associado a outro método de login.',
     };
 
-    const message = messages[error.code] ?? error.message ?? 'Ocorreu um erro inesperado. Tenta novamente.';
+    const message = messages[error.code] ?? error.message ?? 'Ocorreu um erro inesperado.';
     return new AuthError(error.code ?? 'auth/unknown', message);
   }
 }

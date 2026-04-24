@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService, AppUser } from '../../services/auth.service';
@@ -38,6 +38,8 @@ export class ClienteDashboardComponent implements OnInit, OnDestroy {
   availablePlans: any[] = [];
 
 
+  private ngZone = inject(NgZone);
+
   constructor(
     private authService: AuthService,
     public router: Router
@@ -64,7 +66,6 @@ export class ClienteDashboardComponent implements OnInit, OnDestroy {
 
   private async loadAvailablePlans(): Promise<void> {
     try {
-      // Formato corrigido: Sem o objeto 'dc'
       const res = await listSubscriptionTypes();
       this.availablePlans = res.data.subscriptionTypes;
     } catch (err) {
@@ -74,7 +75,6 @@ export class ClienteDashboardComponent implements OnInit, OnDestroy {
 
   private async loadDashboardData(userId: string): Promise<void> {
     try {
-      // Apenas strings simples são passadas agora
       const [devicesRes, subRes, invoicesRes, sessionsRes, connRes] = await Promise.all([
         listUserDevices({ userId }),
         getUserSubscription({ userId }),

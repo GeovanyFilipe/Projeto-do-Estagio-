@@ -8,8 +8,6 @@ import { RodapeComponent } from '../../layout/rodape/rodape.component';
 import { AuthService, AppUser } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { logVpnConnection, logVpnDisconnection } from '@dataconnect/generated';
-import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig } from '@dataconnect/generated';
 
 
 @Component({
@@ -131,33 +129,26 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
     if (this.isConnected && this.currentUser) {
       const userId = this.currentUser.uid;
       this.currentConnectionLogId = crypto.randomUUID();
-      const logId = this.currentConnectionLogId;
 
-      this.ngZone.runOutsideAngular(() => {
-        const dc = getDataConnect(connectorConfig);
-        logVpnConnection(dc, {
-          userId: userId,
-          serverId: "123e4567-e89b-12d3-a456-426614174000",
-          connectTime: new Date().toISOString()
-        }).catch((err: any) => {
-          const errorMsg = err?.message ? String(err.message) : String(err);
-          console.error('Erro ao logar conexão VPN:', errorMsg);
-        });
+      logVpnConnection({
+        userId: userId,
+        serverId: "123e4567-e89b-12d3-a456-426614174000",
+        connectTime: new Date().toISOString()
+      }).catch((err: any) => {
+        const errorMsg = err?.message ? String(err.message) : String(err);
+        console.error('Erro ao logar conexão VPN:', errorMsg);
       });
     } else if (!this.isConnected && this.currentConnectionLogId) {
       const logId = this.currentConnectionLogId;
       this.currentConnectionLogId = null;
 
-      this.ngZone.runOutsideAngular(() => {
-        const dc = getDataConnect(connectorConfig);
-        logVpnDisconnection(dc, {
-          id: logId,
-          disconnectTime: new Date().toISOString(),
-          dataTransferredGB: Math.random() * 2
-        }).catch((err: any) => {
-          const errorMsg = err?.message ? String(err.message) : String(err);
-          console.error('Erro ao logar desconexão VPN:', errorMsg);
-        });
+      logVpnDisconnection({
+        id: logId,
+        disconnectTime: new Date().toISOString(),
+        dataTransferredGB: Math.random() * 2
+      }).catch((err: any) => {
+        const errorMsg = err?.message ? String(err.message) : String(err);
+        console.error('Erro ao logar desconexão VPN:', errorMsg);
       });
     }
   }

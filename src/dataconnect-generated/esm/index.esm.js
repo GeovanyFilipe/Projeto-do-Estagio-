@@ -12,7 +12,8 @@ function validateArgs(connectorConfig, dcOrVars, vars, isMutation = false) {
   const isDC =
     dcOrVars &&
     (typeof dcOrVars.executeMutation === 'function' ||
-      typeof dcOrVars.executeQuery === 'function');
+      typeof dcOrVars.executeQuery === 'function' ||
+      dcOrVars._queryManager !== undefined);
 
   const dc = isDC ? dcOrVars : getDataConnect(connectorConfig);
   const v = isDC ? vars : dcOrVars;
@@ -24,7 +25,8 @@ function validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, optio
   const isDC =
     dcOrVars &&
     (typeof dcOrVars.executeMutation === 'function' ||
-      typeof dcOrVars.executeQuery === 'function');
+      typeof dcOrVars.executeQuery === 'function' ||
+      dcOrVars._queryManager !== undefined);
 
   const dc = isDC ? dcOrVars : getDataConnect(connectorConfig);
   const v = isDC ? varsOrOptions : dcOrVars;

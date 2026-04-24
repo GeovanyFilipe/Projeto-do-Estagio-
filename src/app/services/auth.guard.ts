@@ -10,12 +10,8 @@ import { filter, switchMap, map, take } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
 /**
- * AuthGuard — Protege rotas que requerem:
- *   1. Utilizador autenticado (sessão ativa)
- *   2. Email verificado (emailVerified: true)
- *
- * Se não autenticado → redireciona para /login
- * Se autenticado mas email não verificado → redireciona para /login com aviso
+ * AuthGuard — Protege rotas que requerem utilizador autenticado.
+ * Se não autenticado → redireciona para /login com returnUrl.
  */
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
