@@ -25,10 +25,49 @@
       </div>
 
       <div class="contact-section">
-        <h2>Entre em Contato</h2>
-        <p>Email: geral&#64;fluxodigital.com</p>
-        <p>Whatsapp: +244 937 754 502</p>
-        <button class="btn-chat" (click)="abrirChatAoVivo()">Chat ao Vivo 24/7</button>
+        <h2>Fale com um Técnico</h2>
+        <form class="contact-form" (ngSubmit)="enviarMensagem()" #form="ngForm">
+          <div class="form-group">
+            <input type="text" placeholder="Seu nome" name="nome" required [(ngModel)]="nome" #nomeModel="ngModel" [class.invalid]="nomeModel.invalid && nomeModel.touched">
+          </div>
+          
+          <div class="form-group">
+            <input type="email" placeholder="Seu email" name="email" required email [(ngModel)]="email" #emailModel="ngModel" [class.invalid]="emailModel.invalid && emailModel.touched">
+          </div>
+
+          <div class="form-group">
+            <input type="tel" placeholder="Seu telefone" name="telefone" required [(ngModel)]="telefone" #telModel="ngModel" [class.invalid]="telModel.invalid && telModel.touched">
+          </div>
+
+          <div class="form-group">
+            <input type="text" placeholder="Produto (Ex: AngolanVPN Android)" name="produto" required [(ngModel)]="produto" #prodModel="ngModel" [class.invalid]="prodModel.invalid && prodModel.touched">
+          </div>
+
+          <div class="form-group">
+            <input type="url" placeholder="Link de Referência / URL (Opcional)" name="urlanexo" [(ngModel)]="urlanexo">
+          </div>
+          
+          <div class="form-group">
+            <textarea placeholder="Descreva o problema técnico..." rows="5" name="mensagemTecnica" required minlength="10" [(ngModel)]="mensagemTecnica" #msgModel="ngModel" [class.invalid]="msgModel.invalid && msgModel.touched"></textarea>
+          </div>
+
+          <button type="submit" class="btn-enviar" [disabled]="!form.form.valid || isLoading">
+            <span *ngIf="!isLoading">Enviar Pedido Técnico</span>
+            <span *ngIf="isLoading" class="loader"></span>
+          </button>
+        </form>
+
+        <div class="status-banner" *ngIf="status !== 'idle'" [class.success]="status === 'success'" [class.error]="status === 'error'">
+          <i class="fa-solid" [class.fa-check-circle]="status === 'success'" [class.fa-exclamation-circle]="status === 'error'"></i>
+          {{ statusMessage }}
+        </div>
+
+        <div class="alternative-contact">
+          <p>Ou se preferir:</p>
+          <button class="btn-chat" (click)="abrirChatAoVivo()">
+            <i class="fa-brands fa-whatsapp"></i> Chat via WhatsApp
+          </button>
+        </div>
       </div>
     </div>
   </section>

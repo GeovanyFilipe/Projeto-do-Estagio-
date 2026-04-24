@@ -46,9 +46,19 @@
             <span class="error-msg" *ngIf="msgModel.invalid && msgModel.touched">A mensagem deve ter pelo menos 10 caracteres</span>
           </div>
 
-          <button type="submit" class="btn-enviar" [disabled]="!form.form.valid">Enviar Mensagem</button>
+          <button type="submit" class="btn-enviar" [disabled]="!form.form.valid || isLoading">
+            <span *ngIf="!isLoading">Enviar Mensagem</span>
+            <span *ngIf="isLoading" class="loader"></span>
+          </button>
         </form>
-        <p class="helper-text">As mensagens são armazenadas em localStorage e encaminhadas ao suporte comercial no próximo atendimento.</p>
+
+        <!-- Mensagens de Status Customizadas -->
+        <div class="status-banner" *ngIf="status !== 'idle'" [class.success]="status === 'success'" [class.error]="status === 'error'">
+          <i class="fa-solid" [class.fa-check-circle]="status === 'success'" [class.fa-exclamation-circle]="status === 'error'"></i>
+          {{ statusMessage }}
+        </div>
+
+        <p class="helper-text">As mensagens são encaminhadas diretamente para a nossa equipa comercial.</p>
       </div>
     </div>
   </section>

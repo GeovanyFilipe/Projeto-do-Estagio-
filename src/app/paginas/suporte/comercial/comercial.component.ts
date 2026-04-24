@@ -19,6 +19,10 @@ export class ComercialComponent {
   mensagem = '';
   telefone = '';
 
+  isLoading = false;
+  status: 'idle' | 'success' | 'error' = 'idle';
+  statusMessage = '';
+
   formatarTelefone(event: any) {
     let valor = event.target.value.replace(/\D/g, ''); // Remove tudo que não é dígito
     this.telefone = valor.substring(0, 9); // Limita a 9 dígitos
@@ -29,24 +33,33 @@ export class ComercialComponent {
 
   enviarMensagem() {
     if (!this.nome || !this.email || !this.mensagem || !this.telefone) {
-      alert('Por favor, preencha todos os campos antes de enviar.');
+      this.status = 'error';
+      this.statusMessage = 'Por favor, preencha todos os campos antes de enviar.';
       return;
     }
+
+    this.isLoading = true;
+    this.status = 'idle';
 
     // envia o email
     emailjs.send(
       'service_94cybzf',
       'template_ckd0ye9',
       {
+        name: this.nome,
+        subject: 'Suporte Comercial',
         nome: this.nome,
         email: this.email,
         telefone: this.telefone,
-        mensagem: this.mensagem
+        produto: 'Consulta Comercial',
+        mensagemTecnica: this.mensagem,
+        urlanexo: 'N/A'
       },
       'oS30F7gUdd16Lkhxx' // publicKey
     ).then((res: EmailJSResponseStatus) => {
-      // sucesso
-      alert('Mensagem enviada com sucesso! Nossa equipe comercial irá contactá-lo em breve.');
+      this.isLoading = false;
+      this.status = 'success';
+      this.statusMessage = 'Mensagem enviada com sucesso! Nossa equipe comercial irá contactá-lo em breve.';
 
       // limpa os campos do formulário
       this.nome = '';
@@ -54,10 +67,16 @@ export class ComercialComponent {
       this.telefone = '';
       this.mensagem = '';
 
+      // Limpa a mensagem de sucesso após 5 segundos
+      setTimeout(() => {
+        if (this.status === 'success') this.status = 'idle';
+      }, 5000);
+
       console.log('Email enviado com sucesso!', res);
     }, (err) => {
-      // erro
-      alert('Erro ao enviar mensagem. Por favor, tente novamente.');
+      this.isLoading = false;
+      this.status = 'error';
+      this.statusMessage = 'Erro ao enviar mensagem. Por favor, tente novamente.';
       console.error('Erro ao enviar email:', err);
     });
   }

@@ -98,50 +98,108 @@
   margin-bottom: 20px;
 }
 
-.contact-buttons-grid {
+.contact-form {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  margin-top: 25px;
 }
 
-.btn-contact {
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 12px 16px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+  background: #fcfdfe;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: #0099ff;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(0, 153, 255, 0.1);
+}
+
+.btn-enviar {
+  padding: 14px;
+  background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  padding: 14px 25px;
+  gap: 10px;
+}
+
+.btn-enviar:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 153, 255, 0.3);
+}
+
+/* Loader */
+.loader {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Status Banner */
+.status-banner {
+  margin-top: 15px;
+  padding: 12px 18px;
   border-radius: 10px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  text-decoration: none;
-  border: none;
-  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
 }
 
-.btn-contact:hover {
-  transform: translateY(-3px);
-  filter: brightness(1.1);
+.status-banner.success {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #10b98144;
 }
 
-.btn-email {
-  background: #f1f5f9;
-  color: #1e3a5f;
-  border: 1px solid #e2e8f0;
+.status-banner.error {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #ef444444;
 }
 
-.btn-whatsapp {
-  background: #25d366;
-  color: white;
-  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+.alternative-contact {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px dashed #ddd;
+  text-align: center;
 }
 
-.btn-chat {
-  background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
-  color: white;
-  box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+.alternative-contact p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
 }
 
 .btn-contact .icon {
