@@ -37,7 +37,7 @@ export class AuthGuard implements CanActivate {
           take(1),
           map(user => {
 
-            // 1. Não autenticado → vai para login
+            // Não autenticado → vai para login
             if (!user) {
               this.router.navigate(['/login'], {
                 queryParams: { returnUrl: state.url }
@@ -45,18 +45,7 @@ export class AuthGuard implements CanActivate {
               return false;
             }
 
-            // 2. Autenticado mas email não verificado → bloqueia acesso
-            if (!user.emailVerified) {
-              this.router.navigate(['/login'], {
-                queryParams: {
-                  returnUrl: state.url,
-                  reason: 'email-not-verified'
-                }
-              });
-              return false;
-            }
-
-            // 3. Autenticado e verificado → permite acesso
+            // Autenticado → permite acesso
             return true;
           })
         )

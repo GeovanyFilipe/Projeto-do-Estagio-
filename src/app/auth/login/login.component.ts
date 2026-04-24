@@ -85,10 +85,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       if (params['mode'] === 'register') {
         this.isRegister = true;
       }
-      // Vindo do AuthGuard porque o email não foi verificado
-      if (params['reason'] === 'email-not-verified') {
-        this.error = '⚠️ O teu email ainda não foi verificado. Verifica a tua caixa de entrada.';
-      }
     });
   }
 
@@ -149,9 +145,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     try {
       await this.authService.signUp(this.registerEmail, this.registerPassword, this.registerName);
-      this.success = '✉️ Conta criada! Verifica a tua caixa de entrada (' + this.registerEmail + ') e clica no link antes de entrar.';
-      this.isRegister = false;
-      this.loginEmail = this.registerEmail; // Preenche o email no form de login
+      this.success = 'Conta criada com sucesso! Bem-vindo!';
+      const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/cliente/dashboard';
+      setTimeout(() => this.router.navigateByUrl(returnUrl), 800);
     } catch (err: any) {
       this.error = err.message || 'Erro ao criar conta. Tenta novamente.';
     } finally {

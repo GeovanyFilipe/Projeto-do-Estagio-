@@ -6,12 +6,10 @@ import {
   authState,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  sendEmailVerification,
   sendPasswordResetEmail,
   signOut,
   signInWithPopup,
   fetchSignInMethodsForEmail,
-  linkWithPopup,
   GoogleAuthProvider,
   User as FirebaseUser
 } from '@angular/fire/auth';
@@ -91,26 +89,26 @@ export class AuthService {
   // ═══════════════════════════════════════════════════════════════════════════
   // REGISTO COM EMAIL E PALAVRA-PASSE
   // ═══════════════════════════════════════════════════════════════════════════
-  async signUp(email: string, password: string, nome: string): Promise<void> {
+  async signUp(email: string, password: string, nome: string): Promise<AppUser> {
     this._loading$.next(true);
     try {
-      // 1. Verificar se o email já está em uso (por qualquer método)
+      // 1. Verificar se o email já está em uso
       await this._checkEmailAvailability(email);
 
       // 2. Criar conta no Firebase Auth
       const credential = await createUserWithEmailAndPassword(this.auth, email, password);
       const fbUser = credential.user;
 
-      // 3. Enviar email de verificação (obrigatório)
-      await sendEmailVerification(fbUser);
-
-      // 4. Criar perfil no Firestore (não bloqueia se falhar)
+      // 3. Criar perfil no Firestore (não bloqueia se falhar)
       this._createFirestoreProfile(fbUser, nome, 'email').catch(e =>
         console.warn('[AuthService] Perfil Firestore falhou (não crítico):', e.message)
       );
 
-      // 5. Fazer logout — utilizador deve verificar email primeiro
-      await signOut(this.auth);
+      // 4. Autenticar imediatamente e retornar utilizador
+      const appUser = await this._buildAppUser(fbUser);
+      this._user$.next(appUser);
+      (this.isAuthenticated$ as BehaviorSubject<boolean>).next(true);
+      return appUser;
 
     } catch (error: any) {
       throw this._mapFirebaseError(error);
@@ -127,15 +125,6 @@ export class AuthService {
     try {
       const credential = await signInWithEmailAndPassword(this.auth, email, password);
       const fbUser = credential.user;
-
-      // Bloquear se o email não foi verificado
-      if (!fbUser.emailVerified) {
-        await signOut(this.auth);
-        throw new AuthError(
-          'auth/email-not-verified',
-          'Por favor verifica o teu email antes de entrar. Verifica a tua caixa de entrada.'
-        );
-      }
 
       const appUser = await this._buildAppUser(fbUser);
       this._user$.next(appUser);
@@ -205,18 +194,6 @@ export class AuthService {
       (this.isAuthenticated$ as BehaviorSubject<boolean>).next(false);
       this.router.navigate(['/login']);
     });
-  }
-
-  // ═══════════════════════════════════════════════════════════════════════════
-  // REENVIAR EMAIL DE VERIFICAÇÃO
-  // ═══════════════════════════════════════════════════════════════════════════
-  async resendVerificationEmail(): Promise<void> {
-    const fbUser = this.auth.currentUser;
-    if (fbUser && !fbUser.emailVerified) {
-      await sendEmailVerification(fbUser);
-    } else {
-      throw new AuthError('auth/already-verified', 'Este email já foi verificado.');
-    }
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
