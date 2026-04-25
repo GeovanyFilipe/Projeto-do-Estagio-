@@ -49,9 +49,9 @@ jobs:
       - name: 🐛 Verify Build Output
         run: |
           echo "Build directory contents:"
-          ls -la dist/fluxohost/browser
+          ls -la dist/vpn/browser
           echo "Checking for Firebase config in main.js:"
-          grep -o "apiKey" dist/fluxohost/browser/main.js || echo "No API key found in build"
+          grep -o "apiKey" dist/vpn/browser/main.js || echo "No API key found in build"
 
       - name: 🧹 Secure Clean & Deploy via WebDAV
         env:
@@ -59,7 +59,7 @@ jobs:
           WEBDISK_PASSWORD: ${{ secrets.WEBDISK_PASSWORD }}
         run: |
           # ===== CONFIGURATION =====
-          BUILD_DIR="dist/fluxohost/browser"
+          BUILD_DIR="dist/vpn/browser"
           WEBDISK_URL="https://angolanvpn.com:2078"
           
           # Protected items (won't be touched)
