@@ -38,7 +38,7 @@ jobs:
           # Verify file was created (without exposing secrets)
           grep "production:" src/environments/environment.prod.ts
 
-      - name: 📌 Install Dependencies
+      - name: 📌 Instalação de dependências
         run: npm ci
 
       - name: 🏗️ Build Angular App
