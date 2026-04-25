@@ -1,4 +1,4 @@
-name: 🚀 Secure Angular Deploy with Firebase
+name: 🚀 Deploy Angular + Backend
 on:
   push:
     branches:
@@ -19,7 +19,6 @@ jobs:
 
       - name: 🔐 Inject Firebase Secrets
         run: |
-          # Create production environment file
           mkdir -p src/environments
           cat > src/environments/environment.prod.ts <<EOF
           export const environment = {
@@ -35,10 +34,9 @@ jobs:
           };
           EOF
           
-          # Verify file was created (without exposing secrets)
           grep "production:" src/environments/environment.prod.ts
 
-      - name: 📌 Instalação de dependências
+      - name: 📌 Install Angular Dependencies
         run: npm ci
 
       - name: 🏗️ Build Angular App
@@ -46,23 +44,38 @@ jobs:
         env:
           NODE_OPTIONS: "--max_old_space_size=4096"
 
-      - name: 🐛 Verify Build Output
+      - name: 📦 Install Backend Dependencies
         run: |
-          echo "Build directory contents:"
-          ls -la dist/vpn/browser
-          echo "Checking for Firebase config in main.js:"
-          grep -o "apiKey" dist/vpn/browser/main.js || echo "No API key found in build"
+          if [ -d "backend" ]; then
+            cd backend
+            npm ci || npm install
+            cd ..
+          elif [ -d "src/backend" ]; then
+            cd src/backend
+            npm ci || npm install
+            cd ../..
+          fi
 
-      - name: 🧹 Secure Clean & Deploy via WebDAV
+      - name: 🐛 Debug - List files
+        run: |
+          echo "=== Root directory ==="
+          ls -la
+          echo "=== Backend directory (if exists) ==="
+          ls -la backend 2>/dev/null || ls -la src/backend 2>/dev/null || echo "Backend not found"
+          echo "=== Dist directory ==="
+          ls -la dist/vpn/browser 2>/dev/null || echo "Dist not found"
+
+      - name: 🧹 Deploy via WebDAV
         env:
           WEBDISK_USERNAME: ${{ secrets.WEBDISK_USERNAME }}
           WEBDISK_PASSWORD: ${{ secrets.WEBDISK_PASSWORD }}
         run: |
-          # ===== CONFIGURATION =====
-          BUILD_DIR="dist/vpn/browser"
           WEBDISK_URL="https://angolanvpn.com:2078"
+          BUILD_DIR="dist/vpn/browser"
           
-          # Protected items (won't be touched)
+          # ============================================
+          # PROTECTED ITEMS (não serão apagados)
+          # ============================================
           PROTECTED_ITEMS=(
             "cgi-bin"
             ".well-known"
@@ -77,97 +90,128 @@ jobs:
             "old_angolacables.co.ao.zip"
             "routes-table"
           )
-          # =========================
-
-          # 🔐 Verify WebDAV connection
+          
+          # ============================================
+          # TESTAR CONEXÃO WEBDAV
+          # ============================================
           echo "🔐 Testing WebDAV connection..."
-          if ! curl -u $WEBDISK_USERNAME:$WEBDISK_PASSWORD -X PROPFIND $WEBDISK_URL/ --fail --silent --show-error >/dev/null; then
+          if ! curl -u $WEBDISK_USERNAME:$WEBDISK_PASSWORD -X PROPFIND $WEBDISK_URL/ --fail --silent --show-error >/dev/null 2>&1; then
             echo "❌ FATAL: WebDAV authentication failed!"
             exit 1
           fi
+          echo "✅ WebDAV connection successful!"
 
-          # 🗑️ Get remote items using xmlstarlet
+          # ============================================
+          # LIMPAR FICHEIROS ANTIGOS (exceto protegidos)
+          # ============================================
           echo "📡 Fetching remote file list..."
           sudo apt-get update && sudo apt-get install -y xmlstarlet
-          REMOTE_ITEMS=$(curl -u $WEBDISK_USERNAME:$WEBDISK_PASSWORD -X PROPFIND $WEBDISK_URL/ --silent | \
-            xmlstarlet sel -t -v "//a:href" -n | \
-            sed "s|$WEBDISK_URL||" | sed 's|^/||' | grep -v '^$' | sort -ur)
-
-          # 💣 Delete non-protected items
-          echo "🧹 Starting cleanup..."
+          
+          REMOTE_ITEMS=$(curl -u $WEBDISK_USERNAME:$WEBDISK_PASSWORD -X PROPFIND $WEBDISK_URL/ --silent 2>/dev/null | \
+            xmlstarlet sel -t -v "//a:href" -n 2>/dev/null | \
+            sed "s|$WEBDISK_URL||" | sed 's|^/||' | grep -v '^$' | sort -ur | head -50)
+          
+          echo "🧹 Cleaning up old files..."
           for item in $REMOTE_ITEMS; do
             [[ -z "$item" ]] && continue
             
             protected=false
             for protected_item in "${PROTECTED_ITEMS[@]}"; do
-              [[ "$item" == "$protected_item"* ]] && protected=true && break
+              if [[ "$item" == "$protected_item"* ]]; then
+                protected=true
+                break
+              fi
             done
+            
+            # Não apagar a pasta backend
+            if [[ "$item" == "backend"* ]]; then
+              protected=true
+            fi
 
             if ! $protected; then
               echo "🗑️ Deleting: $item"
-              curl -u $WEBDISK_USERNAME:$WEBDISK_PASSWORD -X DELETE "$WEBDISK_URL/$item" --silent --show-error --fail || \
-              curl -u $WEBDISK_USERNAME:$WEBDISK_PASSWORD -X DELETE "$WEBDISK_URL/$item/" --silent --show-error --fail || true
+              curl -u $WEBDISK_USERNAME:$WEBDISK_PASSWORD -X DELETE "$WEBDISK_URL/$item" --silent --show-error --fail 2>/dev/null || true
+              curl -u $WEBDISK_USERNAME:$WEBDISK_PASSWORD -X DELETE "$WEBDISK_URL/$item/" --silent --show-error --fail 2>/dev/null || true
             else
               echo "🛡️ Preserving: $item"
             fi
           done
 
-          # 🚀 Deploy new build
-          echo "🚀 Uploading build..."
-          find $BUILD_DIR -type f | while read -r file; do
-            remote_path="${file#$BUILD_DIR/}"
-            remote_dir=$(dirname "$remote_path")
-            
-            [[ "$remote_dir" != "." ]] && \
-              curl -u $WEBDISK_USERNAME:$WEBDISK_PASSWORD -X MKCOL "$WEBDISK_URL/$remote_dir" --silent --show-error --fail >/dev/null 2>&1 || true
-            
-            for attempt in {1..3}; do
-              if curl -u $WEBDISK_USERNAME:$WEBDISK_PASSWORD -T "$file" "$WEBDISK_URL/$remote_path" --silent --show-error --fail; then
-                echo "✅ Uploaded: $remote_path"
-                break
-              elif [[ $attempt -eq 3 ]]; then
-                echo "❌ Failed to upload: $remote_path"
-                exit 1
-              else
-                sleep $((attempt * 2))
+          # ============================================
+          # DEPLOY DO ANGULAR
+          # ============================================
+          echo "🚀 Uploading Angular build..."
+          if [ -d "$BUILD_DIR" ]; then
+            find $BUILD_DIR -type f | while read -r file; do
+              remote_path="${file#$BUILD_DIR/}"
+              remote_dir=$(dirname "$remote_path")
+              
+              # Criar diretório se necessário
+              if [[ "$remote_dir" != "." ]]; then
+                curl -u $WEBDISK_USERNAME:$WEBDISK_PASSWORD -X MKCOL "$WEBDISK_URL/$remote_dir" --silent --show-error --fail 2>/dev/null || true
               fi
+              
+              # Upload com retry
+              for attempt in {1..3}; do
+                if curl -u $WEBDISK_USERNAME:$WEBDISK_PASSWORD -T "$file" "$WEBDISK_URL/$remote_path" --silent --show-error --fail 2>/dev/null; then
+                  echo "✅ Angular: $remote_path"
+                  break
+                elif [[ $attempt -eq 3 ]]; then
+                  echo "❌ Failed: $remote_path"
+                else
+                  sleep $((attempt * 2))
+                fi
+              done
             done
-          done
+          else
+            echo "⚠️ Build directory not found: $BUILD_DIR"
+          fi
 
-
-
-          # ===== BACKEND DEPLOY =====
+          # ============================================
+          # DEPLOY DO BACKEND
+          # ============================================
           echo "📦 Deploying Backend API..."
-          BACKEND_DIR="backend"
           
-          if [ -d "$BACKEND_DIR" ]; then
-            # Criar estrutura de diretórios no WebDisk para o backend
-            echo "📁 Creating backend directories..."
-            curl -u $WEBDISK_USERNAME:$WEBDISK_PASSWORD -X MKCOL "$WEBDISK_URL/backend" --silent --show-error --fail >/dev/null 2>&1 || true
+          # Tentar diferentes localizações do backend
+          BACKEND_SOURCE=""
+          if [ -d "backend" ]; then
+            BACKEND_SOURCE="backend"
+            echo "✅ Backend found at root/backend"
+          elif [ -d "src/backend" ]; then
+            BACKEND_SOURCE="src/backend"
+            echo "✅ Backend found at src/backend"
+          fi
+          
+          if [ -n "$BACKEND_SOURCE" ]; then
+            # Criar diretório backend no servidor
+            curl -u $WEBDISK_USERNAME:$WEBDISK_PASSWORD -X MKCOL "$WEBDISK_URL/backend" --silent --show-error --fail 2>/dev/null || true
             
-            # Fazer upload de todos os ficheiros do backend
-            find $BACKEND_DIR -type f | while read -r file; do
-              remote_path="${file#$BACKEND_DIR/}"
+            # Upload de todos os ficheiros (excluindo node_modules)
+            find $BACKEND_SOURCE -type f -not -path "*/node_modules/*" | while read -r file; do
+              remote_path="${file#$BACKEND_SOURCE/}"
               remote_dir=$(dirname "$remote_path")
               
               # Criar subdiretórios
-              if [[ "$remote_dir" != "." ]] && [[ "$remote_dir" != "backend" ]]; then
-                curl -u $WEBDISK_USERNAME:$WEBDISK_PASSWORD -X MKCOL "$WEBDISK_URL/backend/$remote_dir" --silent --show-error --fail >/dev/null 2>&1 || true
+              if [[ "$remote_dir" != "." ]]; then
+                curl -u $WEBDISK_USERNAME:$WEBDISK_PASSWORD -X MKCOL "$WEBDISK_URL/backend/$remote_dir" --silent --show-error --fail 2>/dev/null || true
               fi
               
               # Upload do ficheiro
-              if curl -u $WEBDISK_USERNAME:$WEBDISK_PASSWORD -T "$file" "$WEBDISK_URL/backend/$remote_path" --silent --show-error --fail; then
-                echo "✅ Backend uploaded: $remote_path"
+              if curl -u $WEBDISK_USERNAME:$WEBDISK_PASSWORD -T "$file" "$WEBDISK_URL/backend/$remote_path" --silent --show-error --fail 2>/dev/null; then
+                echo "✅ Backend: $remote_path"
               else
                 echo "⚠️ Failed: $remote_path"
               fi
             done
             
-            # Criar package.json e ficheiros necessários (já devem estar lá)
             echo "✅ Backend deployment completed!"
           else
-            echo "⚠️ Backend directory not found, skipping..."
+            echo "⚠️ Backend directory not found - skipping backend deploy"
+            echo "Current directory structure:"
+            ls -la
+            find . -maxdepth 3 -type d 2>/dev/null | head -20
           fi
 
           echo "🎉 Deployment completed successfully!"
-          echo "🌐 Live at: https://angolanvpn.com"
+          echo "🌐 Frontend: https://angolanvpn.com"
+          echo "🔧 API: https://api.angolanvpn.com"
