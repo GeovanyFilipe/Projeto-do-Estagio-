@@ -13,14 +13,14 @@ import { RodapeComponent } from '../../layout/rodape/rodape.component';
 export class DownloadComponent {
   downloadApp(plataforma: string) {
     const urlMap: { [key: string]: string } = {
-      windows: 'https://example.com/download/windows',
-      macos: 'https://example.com/download/macos',
-      linux: 'https://example.com/download/linux',
-      ios: 'https://example.com/download/ios',
-      android: 'https://example.com/download/android'
+      windows: 'https://openvpn.net/community-downloads/',
+      macos: 'https://tunnelblick.net/category/downloads/',
+      linux: 'https://www.wireguard.com/install/',
+      android: 'https://play.google.com/store/apps/details?id=net.openvpn.openvpn',
+      ios: 'https://apps.apple.com/app/openvpn-connect/id572399834'
     };
 
-    const targetUrl = urlMap[plataforma] || 'https://example.com/download';
+    const targetUrl = urlMap[plataforma] || 'https://openvpn.net/community-downloads/';
     window.open(targetUrl, '_blank');
   }
 }
