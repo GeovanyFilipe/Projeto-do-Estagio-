@@ -48,7 +48,7 @@ export class CompraComponent implements OnDestroy {
       preco: '6.000 Kz',
       descricao: 'Navegar em serviços angolanos com rapidez e segurança'
     },
-    negocio: {
+    startup: {
       nome: 'Plano Startup',
       preco: '15.000 Kz',
       descricao: 'Acelere o crescimento da sua startup com conexão segura e alta performance'

@@ -79,7 +79,7 @@ export class PlanosComponent {
         'Suporte prioritário básico',
       ],
       cta: 'Assinar agora',
-      rota: '/compra/negocio',
+      rota: '/compra/startup',
       destaque: true
     },
   ];

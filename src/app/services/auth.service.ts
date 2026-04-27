@@ -119,7 +119,9 @@ export class AuthService {
         avatar: fbUser.photoURL ?? 'assets/default-avatar.png',
         provider: 'email'
       };
+      localStorage.setItem('last_logged_email', email);
       this._user$.next(appUser);
+
       this._isAuth$.next(true);
       return appUser;
 
@@ -143,7 +145,9 @@ export class AuthService {
       const appUser = this._quickUser(fbUser);
       this._user$.next(appUser);
       this._isAuth$.next(true);
+      localStorage.setItem('last_logged_email', email);
       return appUser;
+
 
     } catch (error: any) {
       throw this._mapFirebaseError(error);
@@ -177,6 +181,9 @@ export class AuthService {
 
       const appUser = this._quickUser(fbUser);
       appUser.provider = 'google';
+      if (appUser.email) {
+        localStorage.setItem('last_logged_email', appUser.email);
+      }
       this._user$.next(appUser);
       this._isAuth$.next(true);
       return appUser;
@@ -212,7 +219,12 @@ export class AuthService {
   // LOGOUT
   // ═══════════════════════════════════════════════════════════════════════════
   async logout(): Promise<void> {
+    const user = this._user$.value;
+    if (user?.email) {
+      localStorage.setItem('last_logged_email', user.email);
+    }
     await signOut(this.auth);
+
     this.ngZone.run(() => {
       this._user$.next(null);
       this._isAuth$.next(false);
@@ -304,9 +316,22 @@ export class AuthService {
       'auth/too-many-requests':          'Demasiadas tentativas. Aguarda alguns minutos.',
       'auth/operation-not-allowed':      'Este método de login não está ativo.',
       'auth/account-exists-with-different-credential': 'Este email está associado a outro método de login.',
+      'auth/internal-error':             'Erro interno do servidor. Tenta novamente.',
+      'auth/error-code:-26':             'Erro ao enviar email. Este email pode não ter uma conta com senha ou está mal formatado.'
     };
 
-    const message = messages[error.code] ?? error.message ?? 'Ocorreu um erro inesperado.';
+    let message = messages[error.code];
+    
+    // Fallback para mensagens genéricas se o código for desconhecido ou estranho
+    if (!message) {
+      if (error.message?.includes('Firebase')) {
+        message = 'Ocorreu um erro na autenticação. Por favor, tente novamente.';
+      } else {
+        message = error.message || 'Ocorreu um erro inesperado.';
+      }
+    }
+
     return new AuthError(error.code ?? 'auth/unknown', message);
   }
+
 }

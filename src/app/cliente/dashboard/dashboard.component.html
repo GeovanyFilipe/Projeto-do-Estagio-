@@ -31,13 +31,15 @@
       <button class="nav-item" [class.active]="activeTab === 'suporte'" (click)="selectTab('suporte')">
         <span class="label">Suporte</span>
       </button>
+
+      <div class="sidebar-divider"></div>
+
+      <button class="nav-item nav-item-danger" (click)="confirmLogout()">
+        <span class="nav-icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
+        <span class="label">Terminar Sessão</span>
+      </button>
     </nav>
 
-    <div class="sidebar-footer">
-      <button class="btn-logout" (click)="confirmLogout()">
-        Terminar Sessão
-      </button>
-    </div>
   </aside>
 
 
@@ -319,13 +321,20 @@
 
 
 <!-- MODAL LOGOUT -->
-<div *ngIf="showLogoutConfirm" class="modal-overlay">
-  <div class="modal-content">
-    <p>Tem certeza que deseja sair?</p>
+<div *ngIf="showLogoutConfirm" class="modal-overlay" (click)="cancelLogout()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-icon">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+    </div>
+    <h3>Encerrar Sessão</h3>
+    <p>Você está prestes a sair da sua conta. Tem certeza que deseja continuar?</p>
 
-    <button (click)="cancelLogout()">Cancelar</button>
-    <button (click)="logout()">Sair</button>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" (click)="cancelLogout()">Cancelar</button>
+      <button class="btn btn-logout-confirm" (click)="logout()">Sair da Conta</button>
+    </div>
   </div>
 </div>
+
 
 <app-rodape></app-rodape>

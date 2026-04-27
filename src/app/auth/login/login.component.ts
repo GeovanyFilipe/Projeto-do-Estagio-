@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -18,7 +18,7 @@ import {
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   animations: [
@@ -91,6 +91,11 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.mode = 'register';
       }
     });
+
+    const savedEmail = localStorage.getItem('last_logged_email');
+    if (savedEmail) {
+      this.loginEmail = savedEmail;
+    }
   }
 
   ngOnDestroy(): void {
@@ -140,7 +145,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/cliente/dashboard';
       setTimeout(() => this.router.navigateByUrl(returnUrl), 800);
     } catch (err: any) {
+      console.error('[Login] Erro ao entrar:', err);
       this.error = err.message || 'Erro ao entrar. Tenta novamente.';
+
     } finally {
       this.isLoggingIn = false;
     }
@@ -166,7 +173,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/cliente/dashboard';
       setTimeout(() => this.router.navigateByUrl(returnUrl), 800);
     } catch (err: any) {
+      console.error('[Login] Erro ao criar conta:', err);
       this.error = err.message || 'Erro ao criar conta. Tenta novamente.';
+
     } finally {
       this.isRegistering = false;
     }
@@ -181,7 +190,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/cliente/dashboard';
       setTimeout(() => this.router.navigateByUrl(returnUrl), 800);
     } catch (err: any) {
+      console.error('[Login] Erro Google:', err);
       this.error = err.message || 'Erro ao entrar com Google.';
+
     } finally {
       this.isLoggingIn = false;
     }
@@ -201,27 +212,12 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.success = 'Enviámos um link de recuperação para o seu email.';
       setTimeout(() => this.setMode('login'), 3000);
     } catch (err: any) {
+      console.error('[Login] Erro recuperação:', err);
       this.error = err.message || 'Erro ao enviar email de recuperação.';
+
     } finally {
       this.isRecovering = false;
     }
   }
-
-  private mapError(code: string): string {
-    switch (code) {
-      case 'auth/user-not-found': return 'Utilizador não encontrado.';
-      case 'auth/wrong-password': return 'Senha incorreta.';
-      case 'auth/invalid-credential': return 'Email ou senha incorretos.';
-      case 'auth/email-already-in-use': return 'Este email já está em uso.';
-      case 'auth/weak-password': return 'A senha deve ter pelo menos 6 caracteres.';
-      case 'auth/invalid-email': return 'O formato do email é inválido.';
-      case 'auth/popup-closed-by-user': return 'A janela foi fechada antes de concluir o login.';
-      case 'auth/cancelled-by-user': return 'Operação cancelada.';
-      case 'auth/operation-not-allowed': return 'Este método de login não está ativo.';
-      case 'auth/popup-blocked': return 'O seu navegador bloqueou a janela de popup.';
-      default:
-        if (code?.includes('network-request-failed')) return 'Erro de rede. Verifique sua conexão.';
-        return 'Ocorreu um erro ao processar o login. Por favor, tente novamente.';
-    }
-  }
 }
+

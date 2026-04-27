@@ -2,7 +2,9 @@
 .pagina-container {
   min-height: 100vh;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding-bottom: 100px;
 }
+
 
 .hero {
   background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%);
